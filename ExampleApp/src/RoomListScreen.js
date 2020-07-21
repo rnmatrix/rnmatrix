@@ -1,10 +1,10 @@
 import React from 'react';
-import { RoomList, matrix } from '..';
-import { screens } from './App';
-import { View, TouchableOpacity } from 'react-native';
+import {RoomList, matrix} from 'rn-matrix';
+import {screens} from './App';
+import {View, TouchableOpacity} from 'react-native';
 
-export default function RoomListScreen({ goToScreen, setCurrentRoom }) {
-  const handleOnRowPress = room => {
+export default function RoomListScreen({goToScreen, setCurrentRoom}) {
+  const handleOnRowPress = (room) => {
     setCurrentRoom(room);
     goToScreen(screens.CHAT);
   };
@@ -25,7 +25,7 @@ export default function RoomListScreen({ goToScreen, setCurrentRoom }) {
         }}>
         <TouchableOpacity
           onPress={createChat}
-          style={{ backgroundColor: 'blue', width: 200, height: 25 }}
+          style={{backgroundColor: 'blue', width: 200, height: 25}}
         />
       </View>
       <RoomList onRowPress={handleOnRowPress} />
