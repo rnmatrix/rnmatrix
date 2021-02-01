@@ -286,6 +286,7 @@ class ChatService {
   }
 
   _listen() {
+    return;
     matrix.getClient().on('accountData', (event) => this._handleAccountDataEvent(event));
     matrix.getClient().on('deleteRoom', (roomId) => this._handleDeleteRoomEvent(roomId));
     matrix

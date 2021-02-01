@@ -242,8 +242,8 @@ PODS:
     - React
   - react-native-randombytes (3.5.3):
     - React
-  - react-native-safe-area-context (3.1.6):
-    - React
+  - react-native-safe-area-context (3.1.9):
+    - React-Core
   - react-native-video (5.1.0-alpha8):
     - React
     - react-native-video/Video (= 5.1.0-alpha8)
@@ -319,14 +319,14 @@ PODS:
     - React
   - RNFS (2.16.6):
     - React
-  - RNGestureHandler (1.7.0):
-    - React
+  - RNGestureHandler (1.9.0):
+    - React-Core
   - RNLocalize (1.4.1):
     - React
-  - RNReanimated (1.13.0):
-    - React
-  - RNScreens (2.10.1):
-    - React
+  - RNReanimated (1.13.2):
+    - React-Core
+  - RNScreens (2.17.1):
+    - React-Core
   - RNSVG (12.1.0):
     - React
   - Yoga (1.14.0)
@@ -526,7 +526,7 @@ SPEC CHECKSUMS:
   react-native-document-picker: 4921045c5c6c78243010f784eae0a3f4b2af7799
   react-native-image-picker: 3d3f85baabca60a00b75fb8facc1376db7bbdafa
   react-native-randombytes: 3638d24759d67c68f6ccba60c52a7a8a8faa6a23
-  react-native-safe-area-context: 4fb3cdeb4a405ec19f18aca80ef2144381ffc761
+  react-native-safe-area-context: b6e0e284002381d2ff29fa4fff42b4d8282e3c94
   react-native-video: dbb8df4f0bbdf80de6797c90fcad8bc12b19401d
   react-native-webview: 6edf4d6f71b9161fc3e96083726a538ee395304d
   React-RCTActionSheet: 910163b6b09685a35c4ebbc52b66d1bfbbe39fc5
@@ -543,14 +543,14 @@ SPEC CHECKSUMS:
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNFileViewer: db62d60dd19007c54b2c959b5e675a46d59f8a43
   RNFS: 2bd9eb49dc82fa9676382f0585b992c424cd59df
-  RNGestureHandler: b6b359bb800ae399a9c8b27032bdbf7c18f08a08
+  RNGestureHandler: 9b7e605a741412e20e13c512738a31bd1611759b
   RNLocalize: 49634a6a605dcdeb319e9c42a5c2f1aec508694b
-  RNReanimated: 89f5e0a04d1dd52fbf27e7e7030d8f80a646a3fc
-  RNScreens: b748efec66e095134c7166ca333b628cd7e6f3e2
+  RNReanimated: e03f7425cb7a38dcf1b644d680d1bfc91c3337ad
+  RNScreens: b6c9607e6fe47c1b6e2f1910d2acd46dd7ecea3a
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   Yoga: 7740b94929bbacbddda59bf115b5317e9a161598
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
 PODFILE CHECKSUM: 6f0451e9a88e800eb5fb453b3c7efcb7bd2fedf8
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.10.1

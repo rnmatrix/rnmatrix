@@ -5,9 +5,17 @@ import ActionSheet from '../../components/ActionSheet';
 import {useHeaderHeight} from '@react-navigation/stack';
 import EmojiButtons from './components/EmojiButtons';
 
+import {useRoom} from '@rn-matrix/core'
+
 export default function ChatScreen({navigation, route}) {
   const {room} = route.params;
   if (!room) navigation.goBack();
+
+  // console.log({useRoomView})
+  const roomView = useRoom(room)
+  console.log({roomView})
+
+  return null
 
   const headerHeight = useHeaderHeight();
 
