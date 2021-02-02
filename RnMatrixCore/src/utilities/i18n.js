@@ -20,7 +20,9 @@ const languageDetector = {
   cacheUserLanguage: Function.prototype,
 };
 
-i18n
+const i18nInstance = i18n.createInstance();
+
+i18nInstance
   .use(initReactI18next)
   .use(languageDetector)
   .init({
@@ -33,4 +35,4 @@ i18n
     },
   });
 
-export default i18n;
+export default i18nInstance;
