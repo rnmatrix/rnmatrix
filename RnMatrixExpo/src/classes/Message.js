@@ -301,12 +301,12 @@ export default class Message {
               break;
             case 'join':
               content.text = i18n.t('messages:content.memberJoined', {
-                sender: sender,
+                sender: content.raw.displayname,
               });
               break;
             case 'leave':
               content.text = i18n.t('messages:content.memberLeft', {
-                sender: sender,
+                sender: content.raw.displayname,
               });
               break;
             default:
