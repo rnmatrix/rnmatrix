@@ -233,12 +233,13 @@ class MatrixService {
     return false;
   }
 
-  async uploadImage(image) {
+  async uploadImage(image, opts) {
     try {
       const url = await this._client.uploadContent(toImageBuffer(image.data), {
         onlyContentUri: true,
         name: image.fileName,
         type: image.type,
+        ...opts,
       });
       return url;
     } catch (e) {

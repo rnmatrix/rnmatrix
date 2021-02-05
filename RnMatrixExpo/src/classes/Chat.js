@@ -451,8 +451,8 @@ export default class Chat {
     matrix.getClient().setRoomName(this.id, newName);
   }
 
-  async setAvatar(image) {
-    const url = await matrix.uploadImage(image);
+  async setAvatar(image, opts) {
+    const url = await matrix.uploadImage(image, opts);
     this.avatar$.next(url);
     return matrix.getClient().sendEvent(this.id, 'm.room.avatar', url);
   }
