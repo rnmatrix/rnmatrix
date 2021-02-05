@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import MenuItem from '../../../common/MenuItem';
-import { useEventEmitter } from '../../../hooks/useEventEmitter';
+import { useEventEmitter } from '@rn-matrix/core/hooks';
 import useNavigation from '../../../hooks/useNavigation';
 import throttle from '../../../utilities/throttle';
 

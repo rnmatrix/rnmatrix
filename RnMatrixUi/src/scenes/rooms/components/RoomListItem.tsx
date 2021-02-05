@@ -6,7 +6,7 @@ import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import ThemedStyles from '../../../styles/ThemedStyles';
 import Highlighter from 'react-native-highlight-words';
 import Icon from '../../../common/Icon';
-import RoomAvatar from '../../roomInfo/components/RoomAvatar';
+import RoomAvatar from '../../../common/RoomAvatar';
 
 const avatarSize = 50;
 

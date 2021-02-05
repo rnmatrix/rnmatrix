@@ -1,13 +1,10 @@
 import { matrix } from '@rn-matrix/core';
 import Color from 'color';
 // @ts-ignore
-import { EventStatus } from 'matrix-js-sdk';
-import moment from 'moment';
 import { useObservableState } from 'observable-hooks';
 import React, { useCallback, useMemo } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import ThemedStyles from '../../../../../../../../styles/ThemedStyles';
-import Icon from '../../../../../../../../common/Icon';
 import { isEmoji } from '../../../../../../../../utilities/emojis';
 import { isIos } from '../../../../../../../../utilities/misc';
 import { BubbleWrapper } from '../BubbleWrapper';
@@ -16,88 +13,6 @@ import { SenderText } from '../SenderText';
 import TimeAndStatus from '../TimeAndStatus';
 import Triangle from '../Triangle';
 
-// export const TextMessageContent = ({
-//   message,
-//   prevSame,
-//   nextSame,
-//   onPress,
-//   onLongPress,
-//   onSwipe,
-//   showReactions,
-//   myBubbleStyle,
-//   otherBubbleStyle,
-//   accentColor,
-//   showSender,
-// }) => {
-//   const getDate = useCallback(() => moment(message.timestamp).format('HH:mm'), [
-//     message.timestamp,
-//   ]);
-//   const theme = ThemedStyles.style;
-//   const myUser = matrix.getMyUser();
-//   const isMe = myUser?.id === message.sender.id;
-//   const _onLongPress = useCallback(() => onLongPress(message), []);
-//   const _onPress = useCallback(() => onPress(message), []);
-//   const content = useObservableState<any>(message.content$);
-//   const status = useObservableState<any>(message.status$);
-//   const reactions = useObservableState<any>(message.reactions$);
-//   const props = { prevSame, nextSame };
-//
-//   const touchableHighlightStyle = useMemo(
-//     () => ({ alignSelf: isMe ? 'flex-end' : 'flex-start' }),
-//     [isMe],
-//   );
-//   const getDefaultBackgroundColor = (me, pressed) => {
-//     return me
-//       ? pressed
-//         ? Color(ThemedStyles.getColor('link')).darken(0.1).hex()
-//         : ThemedStyles.getColor('link')
-//       : pressed
-//       ? Color(ThemedStyles.getColor('primary_background')).darken(0.1).hex()
-//       : ThemedStyles.getColor('primary_background');
-//   };
-//   return (
-//     <View style={[viewStyle(nextSame), styles.rowFlexEnd]}>
-//       <TouchableOpacity
-//         activeOpacity={0.9}
-//         onPress={onPress && _onPress}
-//         onLongPress={onLongPress && _onLongPress}
-//         delayLongPress={150}
-//         style={[
-//           bubbleStyles(isMe, prevSame, nextSame),
-//           { backgroundColor: getDefaultBackgroundColor(isMe, false) },
-//           reactions ? touchableHighlightStyle : null,
-//           isMe ? myBubbleStyle() : otherBubbleStyle(),
-//         ]}
-//         {...props}>
-//         <View
-//           style={[
-//             styles.htmlWrapper,
-//             isMe ? { justifyContent: 'flex-end' } : null,
-//           ]}>
-//           {!prevSame && !isMe && showSender && (
-//             <SenderText isMe={isMe} sender={message.sender} />
-//           )}
-//
-//           <Html html={content?.html} isMe={isMe} accentColor={accentColor} />
-//
-//           <Text
-//             style={[
-//               styles.time,
-//               isMe ? styles.meTime : null,
-//               isMe ? styles.colorWhiteAlpha : theme.colorTertiaryText,
-//             ]}>
-//             {getDate()}
-//           </Text>
-//           {isMe && status === EventStatus.SENDING && (
-//             <View style={styles.sendingContainer}>
-//               <Icon name={'check'} size={16} color="rgba(255, 255, 255, 0.5)" />
-//             </View>
-//           )}
-//         </View>
-//       </TouchableOpacity>
-//     </View>
-//   );
-// };
 
 export default function TextMessage({
   message,

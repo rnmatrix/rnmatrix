@@ -1,11 +1,11 @@
 // @ts-ignore
-import { EventStatus } from 'matrix-js-sdk';
+import { EventStatus } from '@rn-matrix/core/src/types/event';
 import moment from 'moment';
 import React, { useCallback, useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import ThemedStyles from '../../../../../../../styles/ThemedStyles';
 import Icon from '../../../../../../../common/Icon';
-import Color from 'color';
+// import Color from 'color';
 
 interface TimeAndStatusProps {
   isMe: boolean;

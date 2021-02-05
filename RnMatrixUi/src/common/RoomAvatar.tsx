@@ -3,18 +3,18 @@ import { useObservableState } from 'observable-hooks';
 import React, { useCallback, useMemo, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import ProgressPie from 'react-native-progress/Pie';
-import Avatar from '../../../common/Avatar';
-import SmallCircleButton from '../../../common/SmallCircleButton';
+import Avatar from './Avatar';
+import SmallCircleButton from './SmallCircleButton';
 // TODO: add image picker service
 // import imagePickerService, {
 //   CustomImage,
 // } from '../../../../../common/services/image-picker.service';
-import colors from '../../../styles/Colors';
+import colors from '../styles/Colors';
 import Color from 'color';
 import { matrix } from '@rn-matrix/core';
-import ThemedStyles from '../../../styles/ThemedStyles';
-import { getNameColor } from '../../../utilities/get-name-color';
-import { useRoomMemberCount } from './RoomMembersButton';
+import ThemedStyles from '../styles/ThemedStyles';
+import { getNameColor } from '../utilities/get-name-color';
+import { useRoomMemberCount } from '../scenes/roomInfo/components/RoomMembersButton';
 
 const MembersStackedAvatar = ({ members, membersCount, roomName, size }) => {
   const backgroundColor = getNameColor(roomName);
@@ -51,8 +51,7 @@ const MembersStackedAvatar = ({ members, membersCount, roomName, size }) => {
     <View
       style={[
         {
-          width:
-            avatarSize + (reducedMembers.length - 1) * STACKED_AVATAR_PADDING,
+          width: avatarSize + (reducedMembers.length - 1) * STACKED_AVATAR_PADDING,
           height: avatarSize,
           right: (reducedMembers.length - 1) * 1,
         },
@@ -81,10 +80,9 @@ const MembersStackedAvatar = ({ members, membersCount, roomName, size }) => {
               ]}>
               <Text
                 style={[
-                  ThemedStyles.style.fontL,
                   {
-                    color:
-                      color.luminosity() > 0.7 ? colors.dark : colors.light,
+                    color: color.luminosity() > 0.7 ? colors.dark : colors.light,
+                    fontSize: avatarSize / 2.5,
                   },
                 ]}>
                 {membersCountText}
@@ -106,7 +104,7 @@ const MembersStackedAvatar = ({ members, membersCount, roomName, size }) => {
               ]}
             />
           );
-        },
+        }
       )}
     </View>
   );
@@ -121,12 +119,7 @@ type RoomAvatarProps = {
   size?: number;
 };
 
-const RoomAvatar = ({
-  room,
-  canEdit,
-  style,
-  size = DEFAULT_AVATAR_SIZE,
-}: RoomAvatarProps) => {
+const RoomAvatar = ({ room, canEdit, style, size = DEFAULT_AVATAR_SIZE }: RoomAvatarProps) => {
   const theme = ThemedStyles.style;
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -174,14 +167,9 @@ const RoomAvatar = ({
   const roomMembers = useMemo(() => room.getMembers(), [room]);
 
   return (
-    <View
-      style={[theme.centered, ThemedStyles.style.marginHorizontal2x, style]}>
+    <View style={[theme.centered, ThemedStyles.style.marginHorizontal2x, style]}>
       {avatarURI || roomMembers.length <= 2 ? (
-        <Avatar
-          name={name || room.name$.getValue()}
-          size={size}
-          avatarURI={avatarURI}
-        />
+        <Avatar name={name || room.name$.getValue()} size={size} avatarURI={avatarURI} />
       ) : (
         <MembersStackedAvatar
           roomName={name || room.name$.getValue()}
@@ -191,11 +179,7 @@ const RoomAvatar = ({
         />
       )}
       {canEdit && (
-        <SmallCircleButton
-          name="camera"
-          style={styles.avatarSmallButton}
-          onPress={uploadAvatar}
-        />
+        <SmallCircleButton name="camera" style={styles.avatarSmallButton} onPress={uploadAvatar} />
       )}
       {uploading ? (
         <View style={[styles.tapOverlayView, styles.wrappedAvatarOverlayView]}>

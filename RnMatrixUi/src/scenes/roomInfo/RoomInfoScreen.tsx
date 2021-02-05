@@ -10,7 +10,7 @@ import Navbar from '../../common/Navbar';
 import ThemedStyles from '../../styles/ThemedStyles';
 import { useRoomPermissions } from '../userInfo/UserInfo';
 import LeaveRoomButton from './components/LeaveRoomButton';
-import RoomAvatar from './components/RoomAvatar';
+import RoomAvatar from '../../common/RoomAvatar';
 import RoomMembersButton from './components/RoomMembersButton';
 import RoomName from './components/RoomName';
 

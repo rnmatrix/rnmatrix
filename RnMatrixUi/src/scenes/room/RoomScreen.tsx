@@ -15,14 +15,14 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Navbar from '../../common/Navbar';
 import ThemedStyles from '../../styles/ThemedStyles';
 import { useHeaderHeight } from '../../hooks/useHeaderHeight';
-import RoomAvatar from '../roomInfo/components/RoomAvatar';
+import RoomAvatar from '../../common/RoomAvatar';
 import { useRoomMemberCount } from '../roomInfo/components/RoomMembersButton';
 import ActionSheet from './components/ActionSheet';
 import EmojiButtons from './components/EmojiButtons';
 import MessageList from './components/MessageList/MessageList';
 import RoomContext from './RoomContext';
 
-export default function RoomScreen({ route, navigation }) {
+export default function RoomScreen({ route, navigation, customMessageRenderers }) {
   const [room, setRoom] = useState(
     route.params.room || chatService.getChatById(route.params.roomId),
   );
@@ -123,6 +123,7 @@ export default function RoomScreen({ route, navigation }) {
           onLongPress={onLongPress}
           onEndEdit={onEndEdit}
           onCancelReply={onCancelReply}
+          customMessageRenderers={customMessageRenderers}
         />
       </View>
       {/**

@@ -24,6 +24,7 @@ import createRoom, {
   privateShouldBeEncrypted,
 } from '@rn-matrix/core/src/react-sdk-utils/createRoom';
 import DMRoomMap from '@rn-matrix/core/src/react-sdk-utils/DMRoomMap';
+import { EventType, EventTimeline } from '@rn-matrix/core/src/types/event';
 import {
   ask,
   confirm,
@@ -35,12 +36,12 @@ import MultiInviter from '@rn-matrix/core/src/react-sdk-utils/MultiInviter';
 import { E2EStatus } from '@rn-matrix/core/src/react-sdk-utils/ShieldUtils';
 // import { RouteProp, useNavigation } from '@react-navigation/native';
 // import { StackNavigationProp } from '@react-navigation/stack';
-import { EventType } from 'matrix-js-sdk/src/@types/event';
-import { MatrixClient } from 'matrix-js-sdk/src/client';
-import { EventTimeline } from 'matrix-js-sdk/src/models/event-timeline';
-import { Room } from 'matrix-js-sdk/src/models/room';
-import { RoomMember } from 'matrix-js-sdk/src/models/room-member';
-import { User } from 'matrix-js-sdk/src/models/user';
+// import { EventType } from 'matrix-js-sdk/src/@types/event';
+// import { MatrixClient } from 'matrix-js-sdk/src/client';
+// import { EventTimeline } from 'matrix-js-sdk/src/models/event-timeline';
+// import { Room } from 'matrix-js-sdk/src/models/room';
+// import { RoomMember } from 'matrix-js-sdk/src/models/room-member';
+// import { User } from 'matrix-js-sdk/src/models/user';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import Avatar from '../../common/Avatar';
@@ -54,9 +55,7 @@ import Spinner from '../../common/Spinner';
 // } from '../../../../navigation/NavigationTypes';
 // import colors from '../../../../styles/Colors';
 // import MatrixClientContext from '../../contexts/MatrixClientContext';
-import { useAsyncMemo } from '../../hooks/useAsyncMemo';
-import { useEventEmitter } from '../../hooks/useEventEmitter';
-import { useIsEncrypted } from '../../hooks/useIsEncrypted';
+import { useAsyncMemo, useEventEmitter, useIsEncrypted } from '@rn-matrix/core/hooks';
 import useNavigation from '../../hooks/useNavigation';
 import ThemedStyles from '../../styles/ThemedStyles';
 import PresenceLabel from '../../utilities/PresenceLabel';
@@ -64,6 +63,12 @@ import RoomContext, { useRoom } from '../room/RoomContext';
 import PowerSelector from '../roomInfo/components/PowerSelector';
 import { textualPowerLevel } from '../roomInfo/components/Roles';
 // import EncryptionPanel from './EncryptionPanel';
+
+type MatrixClient = any;
+type Room = any;
+type RoomMember = any;
+type User = any;
+
 // TODO: translate
 const _t = (s, obj?) => {
   if (!obj) return s;
@@ -1514,15 +1519,15 @@ const UserInfoHeader: React.FC<{
   let presenceCurrentlyActive;
   let statusMessage;
 
-  if (member instanceof RoomMember && member.user) {
-    presenceState = member.user.presence;
-    presenceLastActiveAgo = member.user.lastActiveAgo;
-    presenceCurrentlyActive = member.user.currentlyActive;
-
-    if (false /*SettingsStore.getValue('feature_custom_status')*/) {
-      statusMessage = member.user._unstable_statusMessage;
-    }
-  }
+  // if (member instanceof RoomMember && member.user) {
+  //   presenceState = member.user.presence;
+  //   presenceLastActiveAgo = member.user.lastActiveAgo;
+  //   presenceCurrentlyActive = member.user.currentlyActive;
+  //
+  //   if (false /*SettingsStore.getValue('feature_custom_status')*/) {
+  //     statusMessage = member.user._unstable_statusMessage;
+  //   }
+  // }
 
   const enablePresenceByHsUrl = true;
   let showPresence = true;

@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Pressable, StyleSheet, Text, TextInput } from 'react-native';
 
 export default function LoginForm({ onLogin }) {
   const [username, setUsername] = useState('');
@@ -31,10 +31,10 @@ export default function LoginForm({ onLogin }) {
       console.log('Error logging in: ', result);
       setError(result.message);
     }
-  }, [onLogin]);
+  }, [onLogin, username, password, homeserver]);
 
   return (
-    <View>
+    <>
       <Text style={styles.label}>Username or MXID</Text>
       <TextInput
         autoFocus
@@ -86,7 +86,7 @@ export default function LoginForm({ onLogin }) {
         ]}>
         <Text style={styles.buttonText}>{loading ? 'LOADING...' : 'LOGIN'}</Text>
       </Pressable>
-    </View>
+    </>
   );
 }
 

@@ -76,8 +76,9 @@ export default function Message({
 
   if (customMessageRenderers) {
     customMessageRenderers.forEach((customMessageRenderer) => {
-      if (customMessageRenderer.checkCondition(message)) {
-        return customMessageRenderer.render(message);
+      const isCustomMessage = customMessageRenderer(message, props);
+      if (isCustomMessage) {
+        return isCustomMessage;
       }
     });
   }

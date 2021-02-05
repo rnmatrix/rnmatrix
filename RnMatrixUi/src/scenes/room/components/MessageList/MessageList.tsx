@@ -43,10 +43,7 @@ type Props = {
   otherTextColor?: any;
   accentColor?: any;
   textColor?: any;
-  customMessageRenderers?: {
-    render: (message: any) => JSX.Element;
-    checkCondition: (message: any) => boolean;
-  }[];
+  customMessageRenderers?: (message: any, props: any) => JSX.Element[];
 };
 
 export default function MessageList({

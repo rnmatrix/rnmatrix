@@ -1,7 +1,7 @@
 import { matrix, Message } from '@rn-matrix/core';
 import Color from 'color';
 // @ts-ignore
-import { EventStatus } from 'matrix-js-sdk';
+import { EventStatus } from '@rn-matrix/core/src/types/event';
 import { useObservableState } from 'observable-hooks';
 import React, { useCallback, useMemo, useState } from 'react';
 import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
