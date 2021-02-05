@@ -66,6 +66,7 @@ export default class Message {
       this.redacted$ = new BehaviorSubject(null);
       this.content$ = new BehaviorSubject(this._getContent());
       this.reactions$ = new BehaviorSubject(null);
+      this.receipts$ = new BehaviorSubject(null);
     }
   }
 
