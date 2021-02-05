@@ -125,7 +125,7 @@ export default class Message {
       if (this.redacted$.getValue() !== newRedacted) this.redacted$.next(newRedacted);
 
       const newStatus = this._matrixEvent.getAssociatedStatus();
-      if (this.status$.getValue() !== newStatus) {
+      if (newStatus && this.status$.getValue() !== newStatus) {
         this.status$.next(newStatus);
       }
 
