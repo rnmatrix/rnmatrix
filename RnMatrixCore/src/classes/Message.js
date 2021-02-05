@@ -290,10 +290,26 @@ export default class Message {
               });
               break;
             case 'join':
-              content.text = i18n.t('messages:content.memberJoined', { sender: sender });
+              content.text = i18n.t('messages:content.memberJoined', {
+                sender,
+                user: content.raw.displayname,
+              });
               break;
             case 'leave':
-              content.text = i18n.t('messages:content.memberLeft', { sender: sender });
+              if (sender === content.raw.displayname) {
+                content.text = i18n.t('messages:content.memberLeft', { sender });
+              } else {
+                content.text = i18n.t('messages:content.memberKicked', {
+                  sender,
+                  user: content.raw.displayname,
+                });
+              }
+              break;
+            case 'ban':
+              content.text = i18n.t('messages:content.memberBanned', {
+                sender,
+                user: content.raw.displayname,
+              });
               break;
             default:
               content.text = i18n.t('messages:content.membershipNotSupport', {

@@ -40,6 +40,8 @@
       "memberInvited": "{{sender}} invited user {{user}} to join the chat",
       "memberJoined": "{{sender}} joined the chat",
       "memberLeft": "{{sender}} left the chat",
+      "memberKicked": "{{sender}} kicked {{user}} out of the chat",
+      "memberBanned": "{{sender}} banned {{user}} from the chat",
       "membershipNotSupport": "This app does not support the membership \"{{membership}}\" yet",
       "memberAvatarRemoved": "{{sender}} removed their avatar",
       "memberAvatarChanged": "{{sender}} changed their avatar",
