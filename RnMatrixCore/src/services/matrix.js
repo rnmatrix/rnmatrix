@@ -16,6 +16,13 @@ const debug = require('debug')('rnm:matrix.js');
 const logger = loglevel.getLogger('matrix');
 logger.setLevel('silent');
 
+/**
+ * FIXME: this is temporary until we find a better place to call this.
+ * Set request object of matrix js sdk before anything else.
+ *
+ * */
+matrixSdk.request(request);
+
 const MATRIX_CLIENT_START_OPTIONS = {
   initialSyncLimit: 6,
   request: request,
@@ -84,7 +91,6 @@ class MatrixService {
       }
       this.stop();
     } else {
-      matrixSdk.request(request);
       this._client = matrixSdk.createClient({
         baseUrl,
         accessToken,
