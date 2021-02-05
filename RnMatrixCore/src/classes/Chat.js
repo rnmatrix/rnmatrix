@@ -451,10 +451,10 @@ export default class Chat {
     return matrix.getClient().setRoomName(this.id, newName);
   }
 
-  async setAvatar(image) {
-    const url = await matrix.uploadImage(image);
+  async setAvatar(image, opts) {
+    const url = await matrix.uploadImage(image, opts);
     this.avatar$.next(url);
-    return matrix.getClient().sendEvent(this.id, 'm.room.avatar', url);
+    return matrix.getClient().sendStateEvent(this.id, 'm.room.avatar', { url });
   }
 
   //* *******************************************************************************
@@ -463,7 +463,7 @@ export default class Chat {
   getAvatarUrl(size) {
     if (this.avatar$.getValue() == null) return null;
     try {
-      return matrix.getImageUrl(this.avatar$.getValue(), size, size, 'crop');
+      return matrix.getImageUrl(this.avatar$.getValue(), size, size, 'scale');
     } catch (e) {
       debug('Error in getAvatarUrl', e);
       return null;
