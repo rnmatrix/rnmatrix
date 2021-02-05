@@ -1,5 +1,6 @@
 import { isEqual } from 'lodash';
 import { EventStatus } from 'matrix-js-sdk';
+import { isEmoji } from '../utilities/is-emoji';
 import { BehaviorSubject } from 'rxjs';
 
 const THUMBNAIL_MAX_SIZE = 250;
@@ -420,7 +421,8 @@ export default class Message {
 
   static isBubbleMessage(message) {
     if (
-      Message.isTextMessage(message.type$?.getValue()) ||
+      (Message.isTextMessage(message.type$?.getValue()) &&
+        !isEmoji(message.content$?.getValue()?.text)) ||
       Message.isImageMessage(message.type$?.getValue()) ||
       Message.isVideoMessage(message.type$?.getValue()) ||
       Message.isFileMessage(message.type$?.getValue()) ||
