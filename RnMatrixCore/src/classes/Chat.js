@@ -448,7 +448,7 @@ export default class Chat {
 
   setName(newName) {
     this.name$.next(newName);
-    matrix.getClient().setRoomName(this.id, newName);
+    return matrix.getClient().setRoomName(this.id, newName);
   }
 
   async setAvatar(image) {
