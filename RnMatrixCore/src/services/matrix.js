@@ -87,7 +87,7 @@ class MatrixService {
     if (this._client && !deviceId) {
       if (this._client.baseUrl === baseUrl && this._client.getAccessToken() === accessToken) {
         debug('Client exists already, ignoring…');
-        return;
+        return this._client;
       }
       this.stop();
     } else {
