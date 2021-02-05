@@ -53,6 +53,7 @@ export default class Chat {
     this.messages$ = new BehaviorSubject(this._getMessages());
     this.snippet$ = new BehaviorSubject(this._getSnippet());
     this.readState$ = new BehaviorSubject(this._getReadState());
+    this.unreadCount$ = new BehaviorSubject(this._getUnreadCount());
     this.atStart$ = new BehaviorSubject(this._isAtStart());
     this.members$ = new BehaviorSubject(this._getMembers());
   }
@@ -117,7 +118,9 @@ export default class Chat {
 
       if (changes.receipt || changes.timeline) {
         const newReadState = this._getReadState();
+        const newUnreadCount = this._getUnreadCount();
         if (this.readState$.getValue() !== newReadState) this.readState$.next(newReadState);
+        if (this.unreadCount$.getValue() !== newUnreadCount) this.unreadCount$.next(newUnreadCount);
       }
 
       if (changes.messages) {
@@ -126,6 +129,14 @@ export default class Chat {
           for (const eventId of Object.keys(changes.messages)) {
             messages.updateMessage(eventId, this.id);
           }
+        }
+      }
+
+      if (changes.members) {
+        const newMembers = this._getMembers()
+
+        if (!isEqual(newMembers, this.members$.getValue())) {
+          this.members$.next(newMembers);
         }
       }
     });
@@ -170,7 +181,6 @@ export default class Chat {
 
   _getReadState() {
     const latestMessage = this.messages$.getValue()[0];
-
     if (!this._matrixRoom.hasUserReadEvent(matrix.getClient().getUserId(), latestMessage)) {
       return 'unread';
     }
@@ -182,6 +192,10 @@ export default class Chat {
     }
 
     return 'readByAll';
+  }
+
+  _getUnreadCount() {
+    return this._matrixRoom.getUnreadNotificationCount()
   }
 
   _getSnippet() {
@@ -277,12 +291,12 @@ export default class Chat {
     await matrix.getClient().forget(this.id);
   }
 
-  async fetchPreviousMessages() {
+  async fetchPreviousMessages(limit) {
     try {
       // TODO: Improve this and gaps detection
       await matrix
         .getClient()
-        .paginateEventTimeline(this._matrixRoom.getLiveTimeline(), { backwards: true });
+        .paginateEventTimeline(this._matrixRoom.getLiveTimeline(), { backwards: true, limit });
 
       this.update({ timeline: true });
     } catch (e) {
