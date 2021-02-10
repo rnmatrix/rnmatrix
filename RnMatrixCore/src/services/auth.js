@@ -95,7 +95,7 @@ class AuthService {
   // ********************************************************************************
   // Actions
   // ********************************************************************************
-  async loginWithPassword(username, password, homeserver, initCrypto = false) {
+  async loginWithPassword(username, password, homeserver, initCrypto = false, deviceName) {
     try {
       let user = username;
       let domain = homeserver;
@@ -122,7 +122,14 @@ class AuthService {
       debug('Logging in as %s on %s', user, homeserverData.baseUrl || domain);
       const client = await matrix.createClient(homeserverData.baseUrl || domain);
       debug('Logging in to created client...', client);
-      const response = await client.loginWithPassword(user, password);
+      const response = await client.login('m.login.password', {
+        password,
+        identifier: {
+          type: 'm.id.user',
+          user: username,
+        },
+        initial_device_display_name: deviceName,
+      });
       debug('Logging in again with device ID... ', JSON.stringify(response));
       await matrix.createClient(
         homeserverData.baseUrl || domain,

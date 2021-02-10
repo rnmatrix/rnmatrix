@@ -35,8 +35,8 @@ class ExternalService {
     return auth.init();
   }
 
-  loginWithPassword(username, password, homeserver, initCrypto = false) {
-    return auth.loginWithPassword(username, password, homeserver, initCrypto);
+  loginWithPassword(username, password, homeserver, initCrypto = false, deviceName) {
+    return auth.loginWithPassword(username, password, homeserver, initCrypto, deviceName);
   }
 
   logout() {

@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import ThemedStyles from '../../../styles/ThemedStyles';
 
-const Header = ({ rightIcon, title, leftIcon }) => {
+type HeaderProps = {
+  rightIcon?: any;
+  title: string;
+  leftIcon?: any;
+}
+
+const Header: FC<HeaderProps> = ({ rightIcon, title, leftIcon }) => {
   const theme = ThemedStyles.style;
 
   return (

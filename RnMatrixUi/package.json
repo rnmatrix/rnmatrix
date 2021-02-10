@@ -23,6 +23,7 @@
   "bugs": {
     "url": "https://gitlab.com/annie-elequin/rn-matrix/issues"
   },
+  "main": "index.ts",
   "homepage": "https://rnmatrix.com",
   "scripts": {
     "android": "react-native run-android",
@@ -46,6 +47,7 @@
     "react-native-document-picker": "^3.5.4",
     "react-native-elements": "^3.1.0",
     "react-native-file-viewer": "^2.1.1",
+    "react-native-flash-message": "^0.1.22",
     "react-native-fs": "^2.16.6",
     "react-native-highlight-words": "^1.0.1",
     "react-native-image-picker": "^2.3.3",

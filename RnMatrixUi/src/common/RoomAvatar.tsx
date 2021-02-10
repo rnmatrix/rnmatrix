@@ -21,8 +21,8 @@ const MembersStackedAvatar = ({ members, membersCount, roomName, size }) => {
   const color = Color(backgroundColor);
   const myUserId = matrix.getMyUser().id;
 
-  // Put own user behind
-  const reducedMembers = members.slice(0, 4).sort((a, b) => a.id !== myUserId);
+  // TODO: put the most relevant user on top. matrix-react-sdk has implemented this neatly.
+  const reducedMembers = members.filter((a, b) => a.id !== myUserId).slice(0, 4);
 
   let avatarSize = size;
   switch (reducedMembers.length) {
@@ -61,7 +61,7 @@ const MembersStackedAvatar = ({ members, membersCount, roomName, size }) => {
         {
           const top = index % 2 === 0 ? 0 : STACKED_AVATAR_PADDING * 2;
 
-          return members.length > 3 && index === reducedMembers.length - 1 ? (
+          return members.length > 4 && index === reducedMembers.length - 1 ? (
             <View
               style={[
                 {

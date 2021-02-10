@@ -1,7 +1,9 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput } from 'react-native';
+import ThemedStyles from '../styles/ThemedStyles';
 
 export default function LoginForm({ onLogin }) {
+  const theme = ThemedStyles.style;
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [homeserver, setHomeserver] = useState('');
@@ -33,6 +35,11 @@ export default function LoginForm({ onLogin }) {
     }
   }, [onLogin, username, password, homeserver]);
 
+  const inputStyles = useMemo(() => [
+    styles.input,
+    theme.input,
+  ], [theme])
+
   return (
     <>
       <Text style={styles.label}>Username or MXID</Text>
@@ -40,7 +47,7 @@ export default function LoginForm({ onLogin }) {
         autoFocus
         autoCapitalize="none"
         autoCorrect={false}
-        style={styles.input}
+        style={inputStyles}
         placeholder="Username or MXID"
         value={username}
         onChangeText={handleUsernameChange}
@@ -50,7 +57,7 @@ export default function LoginForm({ onLogin }) {
         secureTextEntry
         autoCapitalize="none"
         autoCorrect={false}
-        style={styles.input}
+        style={inputStyles}
         placeholder="Password"
         value={password}
         onChangeText={setPassword}
@@ -59,7 +66,7 @@ export default function LoginForm({ onLogin }) {
       <TextInput
         autoCapitalize="none"
         autoCorrect={false}
-        style={styles.input}
+        style={inputStyles}
         placeholder="e.g. matrix.org"
         value={homeserver}
         onChangeText={setHomeserver}

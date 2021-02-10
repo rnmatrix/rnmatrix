@@ -8,7 +8,7 @@ interface OurButtonProps extends TouchableOpacityProps {
 }
 
 export default function Button(props) {
-  const { label, children, style, disabled, type, ...otherProps } = props;
+  const { label, children, style, disabled, type, icon, ...otherProps } = props;
 
   const textStyle = useMemo(() => {
     if (disabled) {
@@ -24,13 +24,14 @@ export default function Button(props) {
     }
 
     return { color: colors.primary };
-  }, []);
+  }, [disabled, type, ThemedStyles]);
 
   return (
     <TouchableOpacity
       {...otherProps}
       disabled={disabled}
-      style={[ThemedStyles.style.paddingVertical, style]}>
+      style={[ThemedStyles.style.paddingVertical, ThemedStyles.style.rowJustifyStart, style]}>
+      {icon}
       {children ? (
         children
       ) : label ? (

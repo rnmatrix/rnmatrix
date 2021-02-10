@@ -63,6 +63,7 @@ import RoomContext, { useRoom } from '../room/RoomContext';
 import PowerSelector from '../roomInfo/components/PowerSelector';
 import { textualPowerLevel } from '../roomInfo/components/Roles';
 // import EncryptionPanel from './EncryptionPanel';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 type MatrixClient = any;
 type Room = any;
@@ -226,18 +227,32 @@ function DeviceItem({ userId, device }: { userId: string; device: IDevice }) {
 
   if (isVerified) {
     return (
-      <View /*className={classes} title={device.deviceId}*/>
-        <View /*className={iconClasses}*/ />
-        <Text>{deviceName}</Text>
-        <Text>{trustedLabel}</Text>
+      <View style={[ThemedStyles.style.rowJustifySpaceBetween]}>
+        <View style={[ThemedStyles.style.rowJustifyStart]}>
+          <Icon
+            name={'shield-check'}
+            size={20}
+            color={ThemedStyles.getColor('success_background')}
+            style={ThemedStyles.style.marginRight}
+          />
+          <Text>{deviceName ? deviceName : 'Unknown device'}</Text>
+        </View>
+        <Text style={[{ color: ThemedStyles.getColor('success_background') }]}>{trustedLabel}</Text>
       </View>
     );
   } else {
     return (
-      <Button onPress={onDeviceClick}>
-        <View />
-        <Text>{deviceName}</Text>
-        <Text>{trustedLabel}</Text>
+      <Button style={[ThemedStyles.style.rowJustifySpaceBetween]} onPress={onDeviceClick}>
+        <View style={[ThemedStyles.style.rowJustifyStart]}>
+          <Icon
+            name={'shield-alert'}
+            size={20}
+            color={ThemedStyles.getColor('danger_background')}
+            style={ThemedStyles.style.marginRight}
+          />
+          <Text>{deviceName ? deviceName : 'Unknown device'}</Text>
+        </View>
+        <Text style={[{ color: ThemedStyles.getColor('danger_background') }]}>{trustedLabel}</Text>
       </Button>
     );
   }

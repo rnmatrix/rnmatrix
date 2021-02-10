@@ -75,7 +75,7 @@ E2EIcon.propTypes = {
   status: PropTypes.oneOf(Object.values(E2E_STATE)),
   className: PropTypes.string,
   size: PropTypes.number,
-  onClick: PropTypes.func,
+  onPress: PropTypes.func,
 };
 
 export default E2EIcon;

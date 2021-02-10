@@ -7,4 +7,7 @@ export { default as RoomMembersScreen } from './src/scenes/roomInfo/RoomMembersS
 export { default as RoomScreen } from './src/scenes/room/RoomScreen';
 export { default as LoginScreen } from './src/scenes/auth/LoginScreen';
 export { default as NewRoomScreen } from './src/scenes/newRoom/NewRoomScreen';
+export { default as NewSessionReviewDialog } from './src/components/NewSessionReviewDialog';
+export { default as SetupEncryptionDialog } from './src/components/SetupEncryption/SetupEncryptionDialog';
+export { default as AccessSecretStorageDialog } from './src/components/AccessSecretStorageDialog';
 export { NewRoomScreens } from './src/scenes/newRoom/NewRoomScreen';

@@ -2,6 +2,8 @@ import '../utilities/poly';
 
 import loglevel from 'loglevel';
 import matrixSdk, { EventTimeline, MemoryStore, AutoDiscovery } from 'matrix-js-sdk';
+import { crossSigningCallbacks } from '../react-sdk-utils/SecurityManager'
+import DeviceListener from '../react-sdk-utils/DeviceListener'
 import { BehaviorSubject } from 'rxjs';
 import request from 'xmlhttp-request';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -36,7 +38,9 @@ const MATRIX_CLIENT_START_OPTIONS = {
   cryptoStore: new AsyncCryptoStore(AsyncStorage),
   sessionStore: {
     getLocalTrustedBackupPubKey: () => null,
+    setLocalTrustedBackupPubKey: () => null,
   }, // js-sdk complains if this isn't supplied but it's only used for remembering a local trusted backup key
+  cryptoCallbacks: crossSigningCallbacks
 };
 
 class MatrixService {
@@ -123,6 +127,9 @@ class MatrixService {
     if (useCrypto) {
       this._client.setGlobalErrorOnUnknownDevices(false);
     }
+
+    DeviceListener.makeShared().start();
+
     this._started = true;
     debug('Matrix client started');
   }

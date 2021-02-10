@@ -334,7 +334,7 @@ export default class MemberList extends React.Component<MemberListProps, MemberL
   //   );
   // };
 
-  _createOverflowTile = (overflowCount, totalCount, onClick) => {
+  _createOverflowTile = (overflowCount, totalCount, onPress) => {
     // For now we'll pretend this is any entity. It should probably be a separate tile.
     // const EntityTile = sdk.getComponent('rooms.EntityTile');
     // const BaseAvatar = sdk.getComponent('avatars.BaseAvatar');
@@ -356,7 +356,7 @@ export default class MemberList extends React.Component<MemberListProps, MemberL
     //     name={text}
     //     presenceState="online"
     //     suppressOnHover={true}
-    //     onClick={onClick}
+    //     onPress={onPress}
     //   />
     // );
   };
@@ -572,7 +572,7 @@ export default class MemberList extends React.Component<MemberListProps, MemberL
         //     key={m.getStateKey()}
         //     name={m.getContent().display_name}
         //     suppressOnHover={true}
-        //     onClick={() => this._onPending3pidInviteClick(m)}
+        //     onPress={() => this._onPending3pidInviteClick(m)}
         //   />
         // );
       }
@@ -700,7 +700,7 @@ export default class MemberList extends React.Component<MemberListProps, MemberL
     //   inviteButton = (
     //     <AccessibleButton
     //       className="mx_MemberList_invite"
-    //       onClick={this.onInviteButtonClick}
+    //       onPress={this.onInviteButtonClick}
     //       disabled={!canInvite}>
     //       <span>{inviteButtonText}</span>
     //     </AccessibleButton>
