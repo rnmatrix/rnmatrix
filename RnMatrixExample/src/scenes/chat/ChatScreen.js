@@ -1,21 +1,36 @@
 import React, {useState} from 'react';
-import {View, Text, Pressable, StatusBar} from 'react-native';
-import {MessageList} from '@rn-matrix/ui';
+import {
+  View,
+  Text,
+  Pressable,
+  StatusBar,
+  FlatList,
+  ActivityIndicator,
+} from 'react-native';
+// import {MessageList} from '@rn-matrix/ui';
 import ActionSheet from '../../components/ActionSheet';
 import {useHeaderHeight} from '@react-navigation/stack';
 import EmojiButtons from './components/EmojiButtons';
 
-import {useRoom} from '@rn-matrix/core'
+import {MessageList} from '@rn-matrix/core';
+
+// function MessageListItem({item}) {
+//   const content = item.getContent();
+//   if (!content) return null;
+//   return (
+//     <Text key={item.getId()} style={{height: 50}}>
+//       {content?.body}
+//     </Text>
+//   );
+// }
 
 export default function ChatScreen({navigation, route}) {
   const {room} = route.params;
   if (!room) navigation.goBack();
 
-  // console.log({useRoomView})
-  const roomView = useRoom(room)
-  console.log({roomView})
-
-  return null
+  return (
+    <MessageList room={room} />
+  );
 
   const headerHeight = useHeaderHeight();
 

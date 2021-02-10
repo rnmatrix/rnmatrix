@@ -10,8 +10,8 @@ import matrix from './src/services/external';
 import Chat from './src/classes/Chat';
 import Message from './src/classes/Message';
 import matrixSdk from 'matrix-js-sdk';
-import {useRoom} from './src/hooks'
 
-export { matrix, matrixSdk, Chat, Message };
+export { matrix, matrixSdk, Chat, Message};
 
-export {useRoom}
+export * from './src/hooks'
+export * from './src/views'

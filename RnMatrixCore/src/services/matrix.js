@@ -208,17 +208,6 @@ class MatrixService {
     }
   }
 
-  getRoomAvatar(matrixRoom) {
-    // const roomState = matrixRoom.getLiveTimeline().getState(EventTimeline.FORWARDS);
-    // const avatarEvent = roomState.getStateEvents('m.room.avatar', '');
-    // let avatar = avatarEvent ? avatarEvent.getContent().url : null;
-    // if (!avatar) {
-    //   if (this.isRoomDirect(matrixRoom.roomId))
-    //     avatar = matrixRoom.getAvatarFallbackMember()?.user?.avatarUrl;
-    // }
-    // return avatar;
-  }
-
   isRoomDirect(roomId) {
     if (!this._client) {
       throw Error('isRoomDirect: No matrix client');

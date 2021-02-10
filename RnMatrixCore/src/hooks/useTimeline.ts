@@ -1,0 +1,114 @@
+import { EventTimeline } from 'matrix-js-sdk/src/models/event-timeline';
+import { RoomMember } from 'matrix-js-sdk/src/models/room-member';
+import { useState, useEffect } from 'react';
+import { matrix } from '../../index';
+import * as WhoIsTyping from '../matrix-react/WhoIsTyping';
+
+export default function useTimeline(room) {
+  const [timeline, setTimeline] = useState<EventTimeline>([]);
+  const [usersTyping, setUsersTyping] = useState<{ list: RoomMember[]; string: string }>({
+    list: [],
+    string: '',
+  });
+  const [atStart, setAtStart] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  //   this.context.on("Room", this.onRoom);
+  //   this.context.on("Room.timeline", this.onRoomTimeline);
+  //   this.context.on("Room.name", this.onRoomName);
+  //   this.context.on("Room.accountData", this.onRoomAccountData);
+  //   this.context.on("RoomState.events", this.onRoomStateEvents);
+  //   this.context.on("RoomState.members", this.onRoomStateMember);
+  //   this.context.on("Room.myMembership", this.onMyMembership);
+  //   this.context.on("accountData", this.onAccountData);
+  //   this.context.on("crypto.keyBackupStatus", this.onKeyBackupStatus);
+  //   this.context.on("deviceVerificationChanged", this.onDeviceVerificationChanged);
+  //   this.context.on("userTrustStatusChanged", this.onUserVerificationChanged);
+  //   this.context.on("crossSigning.keysChanged", this.onCrossSigningKeysChanged);
+  //   this.context.on("Event.decrypted", this.onEventDecrypted);
+  //   this.context.on("event", this.onEvent);
+
+  useEffect(() => {
+    initMessages();
+  }, []);
+
+  useEffect(() => {
+    startListeners();
+    return () => {
+      removeListeners();
+    };
+  }, [timeline]);
+
+  const initMessages = async () => {
+    await fetchPreviousMessages();
+    getMessages()
+  };
+
+  const getMessages = () => {
+    const messageList = [];
+    const roomEvents = room._matrixRoom.getLiveTimeline().getEvents();
+    for (const roomEvent of roomEvents) {
+      messageList.unshift(roomEvent);
+    }
+    setTimeline(messageList);
+  }
+
+  const startListeners = () => {
+    removeListeners();
+    matrix.getClient().on('Room', onRoom);
+    matrix.getClient().on('Room.timeline', onRoomTimeline);
+    matrix.getClient().on('Room.localEchoUpdated', onLocalEchoUpdated);
+    matrix.getClient().on('RoomMember.typing', onTyping);
+  };
+
+  const removeListeners = () => {
+    matrix.getClient().removeListener('Room', onRoom);
+    matrix.getClient().removeListener('Room.timeline', onRoomTimeline);
+    matrix.getClient().removeListener('Room.localEchoUpdated', onLocalEchoUpdated);
+    matrix.getClient().removeListener('RoomMember.typing', onTyping);
+  };
+
+  const onRoom = () => {
+    console.log('onRoom');
+  };
+
+  const onRoomTimeline = (event, matrixRoom) => {
+    // console.log('onRoomTimeline', { event, matrixRoom });
+    if (room.id !== matrixRoom.roomId || isLoading) return;
+    // console.log({ timeline });
+    setTimeline([event, ...timeline]);
+  };
+
+  const onLocalEchoUpdated = (event, room, oldEventId, oldStatus) => {
+    console.log('onLocalEcho', { event, oldEventId, oldStatus });
+  };
+
+  const onTyping = () => {
+    const membersTyping = WhoIsTyping.usersTypingApartFromMeAndIgnored(room._matrixRoom);
+    setUsersTyping({
+      list: membersTyping,
+      string: WhoIsTyping.whoIsTypingString(membersTyping, 3),
+    });
+  };
+
+  const fetchPreviousMessages = async () => {
+    if (atStart) return;
+    setIsLoading(true);
+    const start = !room._matrixRoom.getLiveTimeline().getPaginationToken(EventTimeline.BACKWARDS);
+    if (start) {
+      setAtStart(start);
+      return;
+    }
+    await matrix
+      .getClient()
+      .paginateEventTimeline(room._matrixRoom.getLiveTimeline(), { backwards: true });
+    setIsLoading(false);
+    getMessages()
+  };
+
+  return {
+    timeline,
+    usersTyping,
+    fetchPreviousMessages,
+  };
+}
