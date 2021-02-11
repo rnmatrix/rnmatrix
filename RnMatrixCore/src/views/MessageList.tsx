@@ -57,7 +57,8 @@ export default function MessageList({
   renderScrollToBottom = undefined,
 }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { timeline, usersTyping, fetchPreviousMessages } = useTimeline(room);
+  const { timeline, updates, usersTyping, fetchPreviousMessages } = useTimeline(room);
+  console.log({updates})
 
   const listRef = useRef();
 
@@ -68,7 +69,6 @@ export default function MessageList({
    * const start = !this._matrixRoom.getLiveTimeline().getPaginationToken(EventTimeline.BACKWARDS);
    */
   const handleEndReached = async () => {
-    console.log('handle end reached');
     if (!isLoading) {
       setIsLoading(true);
       await fetchPreviousMessages();
@@ -77,28 +77,7 @@ export default function MessageList({
   };
 
   const renderMessageItem = ({ item, index }) => {
-    return <MessageItem item={item} room={room} />
-    // const content = item.getContent();
-    // console.log({key: typeof item.getId()})
-    // if (!content) return null;
-    // return <Text style={{ height: 50 }}>{content?.body}</Text>;
-    // return (
-    //   <MessageItem
-    //     roomId={room.id}
-    //     messageId={messageId}
-    //     prevMessageId={messageList[index + 1] ? messageList[index + 1] : null}
-    //     nextMessageId={messageList[index - 1] ? messageList[index - 1] : null}
-    //     onPress={onPress}
-    //     onLongPress={onLongPress}
-    //     onSwipe={onSwipe}
-    //     renderTypingIndicator={renderTypingIndicator}
-    //     showReactions={showReactions}
-    //     styles={styles}
-    //     myBubbleStyle={myBubbleStyle}
-    //     otherBubbleStyle={otherBubbleStyle}
-    //     accentColor={accentColor}
-    //   />
-    // );
+    return <MessageItem item={item} room={room} shouldUpdate={updates.includes(item.getId())} onPress={onPress} onLongPress={onLongPress} />
   };
 
   const messageItem = (args) => (renderMessage ? renderMessage(args) : renderMessageItem(args));
@@ -119,7 +98,7 @@ export default function MessageList({
         keyExtractor={(item) => item.getId()}
         ListHeaderComponent={typingIndicator}
         ListFooterComponent={loader}
-        style={{ paddingTop: 6, paddingHorizontal: 12 }}
+        style={{ paddingHorizontal: 12 }}
         {...flatListProps}
       />
       {/* {renderScrollToBottom ? (
@@ -132,20 +111,6 @@ export default function MessageList({
             <Text>V</Text>
           </TouchableOpacity>
         </View>
-      )} */}
-
-      {/* {enableComposer && (
-        <Composer
-          room={room}
-          isEditing={isEditing}
-          isReplying={isReplying}
-          selectedMessage={selectedMessage}
-          onEndEdit={onEndEdit}
-          onCancelReply={onCancelReply}
-          enableReplies={enableReplies}
-          composerStyle={composerStyle}
-          accentColor={accentColor}
-        />
       )} */}
     </Wrapper>
   );

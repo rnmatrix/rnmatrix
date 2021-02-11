@@ -5,7 +5,7 @@ import AppNavigator from './src/AppNavigator';
 import {matrix} from '@rn-matrix/core';
 
 const debug = require('debug');
-debug.enable('rnm:*');
+debug.enable('*');
 
 matrix.initAuth();
 

@@ -110,24 +110,29 @@
 //     });
 // }
 
-// function textForRoomNameEvent(ev) {
-//     const senderDisplayName = ev.sender && ev.sender.name ? ev.sender.name : ev.getSender();
+export function textForRoomNameEvent(ev) {
+  const senderDisplayName = ev.sender && ev.sender.name ? ev.sender.name : ev.getSender();
 
-//     if (!ev.getContent().name || ev.getContent().name.trim().length === 0) {
-//         return _t('%(senderDisplayName)s removed the room name.', {senderDisplayName});
-//     }
-//     if (ev.getPrevContent().name) {
-//         return _t('%(senderDisplayName)s changed the room name from %(oldRoomName)s to %(newRoomName)s.', {
-//             senderDisplayName,
-//             oldRoomName: ev.getPrevContent().name,
-//             newRoomName: ev.getContent().name,
-//         });
-//     }
-//     return _t('%(senderDisplayName)s changed the room name to %(roomName)s.', {
-//         senderDisplayName,
-//         roomName: ev.getContent().name,
-//     });
-// }
+  if (!ev.getContent().name || ev.getContent().name.trim().length === 0) {
+    return `${senderDisplayName} removed the room name.`;
+    // return _t('%(senderDisplayName)s removed the room name.', {senderDisplayName});
+  }
+  if (ev.getPrevContent().name) {
+    return `${senderDisplayName} changed the room name from ${ev.getPrevContent().name} to ${
+      ev.getContent().name
+    }.`;
+    // return _t('%(senderDisplayName)s changed the room name from %(oldRoomName)s to %(newRoomName)s.', {
+    //     senderDisplayName,
+    //     oldRoomName: ev.getPrevContent().name,
+    //     newRoomName: ev.getContent().name,
+    // });
+  }
+  return `${senderDisplayName} changed the room name to ${ev.getContent().name}`;
+  // return _t('%(senderDisplayName)s changed the room name to %(roomName)s.', {
+  //     senderDisplayName,
+  //     roomName: ev.getContent().name,
+  // });
+}
 
 // function textForTombstoneEvent(ev) {
 //     const senderDisplayName = ev.sender && ev.sender.name ? ev.sender.name : ev.getSender();

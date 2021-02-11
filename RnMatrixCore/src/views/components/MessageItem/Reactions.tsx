@@ -1,8 +1,10 @@
-import { null } from 'is';
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
+import { matrix } from '../../../../index';
 
-export default function Reactions({ room, event }) {
+export default function Reactions({ room, event, isMe }) {
+  const [reactions, setReactions] = useState(undefined);
+
   const getReactions = () => {
     const eventId = event.getId();
     if (!eventId) {
@@ -12,54 +14,82 @@ export default function Reactions({ room, event }) {
       console.log(JSON.stringify(this.props.mxEvent, null, 4));
       console.trace('Stacktrace for https://github.com/vector-im/element-web/issues/11120');
     }
-    return room._matrixRoom
+    const newReactions = room._matrixRoom
       .getUnfilteredTimelineSet()
       .getRelationsForEvent(eventId, 'm.annotation', 'm.reaction');
+    if (reactions !== newReactions) {
+      setReactions(newReactions);
+    }
   };
 
-  const reactions = getReactions();
-  if (reactions) {
-    console.log(reactions.getRelations());
-  } else {
-    return null
-  }
+  const renderReactions = useCallback(() => {
+    if (!reactions) return null;
+    return reactions
+      .getSortedAnnotationsByKey()
+      .map(([content, events]) => {
+        const count = events.size;
+        if (!count) {
+          return null;
+        }
+        const userId = matrix.getClient().getUserId();
+        const myReactions = reactions.getAnnotationsBySender()[userId];
+        const myReactionEvent =
+          myReactions &&
+          [...myReactions.values()].find((mxEvent) => {
+            if (mxEvent.isRedacted()) {
+              return false;
+            }
+            return mxEvent.getRelation().key === content;
+          });
+        return (
+          <ReactionBubble
+            key={content}
+            content={content}
+            count={count}
+            isMe={isMe}
+            isMyReaction={!!myReactionEvent}
+          />
+        );
+      })
+      .filter((item) => !!item);
+  }, [reactions]);
 
-  let items = reactions.getSortedAnnotationsByKey().map(([content, events]) => {
-    const count = events.size;
-    if (!count) {
-        return null;
+  useEffect(() => {
+    if (event) {
+      getReactions();
     }
-    // const myReactionEvent = myReactions && myReactions.find(mxEvent => {
-    //     if (mxEvent.isRedacted()) {
-    //         return false;
-    //     }
-    //     return mxEvent.getRelation().key === content;
-    // });
-    return <Text>{content} {count}</Text>
-    // return <ReactionsRowButton
-    //     key={content}
-    //     content={content}
-    //     count={count}
-    //     mxEvent={mxEvent}
-    //     reactionEvents={events}
-    //     myReactionEvent={myReactionEvent}
-    // />;
-}).filter(item => !!item);
-
-console.log({items})
-
-
-return null
+  }, [event]);
 
   return reactions ? (
-    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-      {reactions.getRelations().map((e) => (
-        <ReactionBubble event={e} />
-      ))}
+    <View
+      style={{
+        flexDirection: `row${isMe ? '-reverse' : ''}`,
+        alignItems: 'center',
+        marginTop: 4,
+        marginBottom: 12,
+      }}>
+      {renderReactions()}
     </View>
   ) : null;
 }
 
-function ReactionBubble({ event }) {
-  return <Text>{event.getContent()['m.relates_to'].key}</Text>;
+function ReactionBubble({ content, count, isMe, isMyReaction }) {
+  return (
+    <View
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderWidth: 4,
+        borderColor: isMyReaction ? 'blue' : '#ccc',
+        backgroundColor: isMyReaction ? 'dodgerblue' : '#ccc',
+        paddingVertical: 2,
+        paddingHorizontal: 8,
+        borderRadius: 20,
+        marginLeft: isMe ? 6 : 0,
+        marginRight: isMe ? 0 : 6,
+      }}>
+      <Text style={{ fontSize: 22, marginRight: 4 }}>{content}</Text>
+      <Text style={{ fontSize: 18, fontWeight: '600' }}>{count}</Text>
+    </View>
+  );
 }

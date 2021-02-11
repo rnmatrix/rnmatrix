@@ -3,9 +3,11 @@ import { RoomMember } from 'matrix-js-sdk/src/models/room-member';
 import { useState, useEffect } from 'react';
 import { matrix } from '../../index';
 import * as WhoIsTyping from '../matrix-react/WhoIsTyping';
+import MatrixEvent from '../types/MatrixEvent';
 
 export default function useTimeline(room) {
   const [timeline, setTimeline] = useState<EventTimeline>([]);
+  const [updates, setUpdates] = useState<string[]>([])
   const [usersTyping, setUsersTyping] = useState<{ list: RoomMember[]; string: string }>({
     list: [],
     string: '',
@@ -53,6 +55,8 @@ export default function useTimeline(room) {
     setTimeline(messageList);
   }
 
+  console.log({timeline})
+
   const startListeners = () => {
     removeListeners();
     matrix.getClient().on('Room', onRoom);
@@ -72,11 +76,21 @@ export default function useTimeline(room) {
     console.log('onRoom');
   };
 
-  const onRoomTimeline = (event, matrixRoom) => {
+  const onRoomTimeline = (event: MatrixEvent, matrixRoom) => {
     // console.log('onRoomTimeline', { event, matrixRoom });
     if (room.id !== matrixRoom.roomId || isLoading) return;
     // console.log({ timeline });
-    setTimeline([event, ...timeline]);
+    const newTimeline = [...timeline]
+    const newUpdates = []
+
+    // set updated date on reacted event, so it will update in timeline
+    if (event.getType() === 'm.reaction' && !event.isRedacted()) {
+      const relatesToId = event.getAssociatedId()
+      newUpdates.push(relatesToId)
+    }
+
+    setUpdates(newUpdates)
+    setTimeline([event, ...newTimeline]);
   };
 
   const onLocalEchoUpdated = (event, room, oldEventId, oldStatus) => {
@@ -99,15 +113,22 @@ export default function useTimeline(room) {
       setAtStart(start);
       return;
     }
-    await matrix
+    try {
+      await matrix
       .getClient()
       .paginateEventTimeline(room._matrixRoom.getLiveTimeline(), { backwards: true });
+    } catch (e) {
+      console.log('Problem fetching previous messages...', {matrixClient: matrix.getClient()._clientOpts})
+      console.warn(e)
+    }
+  
     setIsLoading(false);
     getMessages()
   };
 
   return {
     timeline,
+    updates,
     usersTyping,
     fetchPreviousMessages,
   };

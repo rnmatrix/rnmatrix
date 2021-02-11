@@ -10,9 +10,19 @@ import ImageMessage from './ImageMessage';
 
 type Props = {
   item: MatrixEvent;
+  room: any;
+  shouldUpdate: boolean;
+  onPress: Function;
+  onLongPress: Function;
 };
 
-export default function MessageItem({ item: event, room }: Props) {
+export default function MessageItem({
+  item: event,
+  room,
+  shouldUpdate,
+  onPress,
+  onLongPress,
+}: Props) {
   const content = event.getContent();
   if (!content || event.isRedacted()) return null;
 
@@ -22,8 +32,9 @@ export default function MessageItem({ item: event, room }: Props) {
     const messageProps = { event, isMe };
     switch (event.getContent().msgtype) {
       case 'm.text':
+        console.log({ body: event.getContent().body, shouldUpdate });
         return <TextMessage {...messageProps} />;
-      case 'm.file':
+      case 'm.image':
         return <ImageMessage {...messageProps} />;
       default:
         return <Text>msgtype {event.getContent().msgtype}</Text>;
@@ -34,6 +45,8 @@ export default function MessageItem({ item: event, room }: Props) {
     event,
     room,
     isMe,
+    onPress,
+    onLongPress,
   };
 
   switch (event.getType()) {
@@ -41,6 +54,10 @@ export default function MessageItem({ item: event, room }: Props) {
     case EventTypes.roomHistoryVisibility:
     case EventTypes.roomPowerLevels:
     case EventTypes.roomMember:
+    case EventTypes.roomName:
+    case EventTypes.roomCreate:
+    case EventTypes.roomJoinRules:
+    case EventTypes.roomGuestAccess:
       return <EventMessage event={event} />;
     case EventTypes.roomMessage:
       return <MessageWrapper {...roomMessageProps}>{renderMessageType()}</MessageWrapper>;
