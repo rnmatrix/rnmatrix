@@ -32,7 +32,6 @@ export default function MessageItem({
     const messageProps = { event, isMe };
     switch (event.getContent().msgtype) {
       case 'm.text':
-        console.log({ body: event.getContent().body, shouldUpdate });
         return <TextMessage {...messageProps} />;
       case 'm.image':
         return <ImageMessage {...messageProps} />;

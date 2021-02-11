@@ -59,21 +59,15 @@ export default function useTimeline(room) {
 
   const startListeners = () => {
     removeListeners();
-    matrix.getClient().on('Room', onRoom);
     matrix.getClient().on('Room.timeline', onRoomTimeline);
     matrix.getClient().on('Room.localEchoUpdated', onLocalEchoUpdated);
     matrix.getClient().on('RoomMember.typing', onTyping);
   };
 
   const removeListeners = () => {
-    matrix.getClient().removeListener('Room', onRoom);
     matrix.getClient().removeListener('Room.timeline', onRoomTimeline);
     matrix.getClient().removeListener('Room.localEchoUpdated', onLocalEchoUpdated);
     matrix.getClient().removeListener('RoomMember.typing', onTyping);
-  };
-
-  const onRoom = () => {
-    console.log('onRoom');
   };
 
   const onRoomTimeline = (event: MatrixEvent, matrixRoom) => {

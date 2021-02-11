@@ -73,6 +73,26 @@ export default function Reactions({ room, event, isMe }) {
   ) : null;
 }
 
+// TODO for toggling the reaction 
+// onClick = (ev) => {
+//   const { mxEvent, myReactionEvent, content } = this.props;
+//   if (myReactionEvent) {
+//       MatrixClientPeg.get().redactEvent(
+//           mxEvent.getRoomId(),
+//           myReactionEvent.getId(),
+//       );
+//   } else {
+//       MatrixClientPeg.get().sendEvent(mxEvent.getRoomId(), "m.reaction", {
+//           "m.relates_to": {
+//               "rel_type": "m.annotation",
+//               "event_id": mxEvent.getId(),
+//               "key": content,
+//           },
+//       });
+//       dis.dispatch({action: "message_sent"});
+//   }
+// };
+
 function ReactionBubble({ content, count, isMe, isMyReaction }) {
   return (
     <View
