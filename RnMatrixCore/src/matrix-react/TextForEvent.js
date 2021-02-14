@@ -21,86 +21,116 @@
 // import {ALL_RULE_TYPES, ROOM_RULE_TYPES, SERVER_RULE_TYPES, USER_RULE_TYPES} from "./mjolnir/BanList";
 // import {WIDGET_LAYOUT_EVENT_TYPE} from "./stores/widgets/WidgetLayoutStore";
 
-// function textForMemberEvent(ev) {
-//     // XXX: SYJS-16 "sender is sometimes null for join messages"
-//     const senderName = ev.sender ? ev.sender.name : ev.getSender();
-//     const targetName = ev.target ? ev.target.name : ev.getStateKey();
-//     const prevContent = ev.getPrevContent();
-//     const content = ev.getContent();
+function textForMemberEvent(ev) {
+  // XXX: SYJS-16 "sender is sometimes null for join messages"
+  const senderName = ev.sender ? ev.sender.name : ev.getSender();
+  const targetName = ev.target ? ev.target.name : ev.getStateKey();
+  const prevContent = ev.getPrevContent();
+  const content = ev.getContent();
 
-//     const reason = content.reason ? (_t('Reason') + ': ' + content.reason) : '';
-//     switch (content.membership) {
-//         case 'invite': {
-//             const threePidContent = content.third_party_invite;
-//             if (threePidContent) {
-//                 if (threePidContent.display_name) {
-//                     return _t('%(targetName)s accepted the invitation for %(displayName)s.', {
-//                         targetName,
-//                         displayName: threePidContent.display_name,
-//                     });
-//                 } else {
-//                     return _t('%(targetName)s accepted an invitation.', {targetName});
-//                 }
-//             } else {
-//                 return _t('%(senderName)s invited %(targetName)s.', {senderName, targetName});
-//             }
-//         }
-//         case 'ban':
-//             return _t('%(senderName)s banned %(targetName)s.', {senderName, targetName}) + ' ' + reason;
-//         case 'join':
-//             if (prevContent && prevContent.membership === 'join') {
-//                 if (prevContent.displayname && content.displayname && prevContent.displayname !== content.displayname) {
-//                     return _t('%(oldDisplayName)s changed their display name to %(displayName)s.', {
-//                         oldDisplayName: prevContent.displayname,
-//                         displayName: content.displayname,
-//                     });
-//                 } else if (!prevContent.displayname && content.displayname) {
-//                     return _t('%(senderName)s set their display name to %(displayName)s.', {
-//                         senderName: ev.getSender(),
-//                         displayName: content.displayname,
-//                     });
-//                 } else if (prevContent.displayname && !content.displayname) {
-//                     return _t('%(senderName)s removed their display name (%(oldDisplayName)s).', {
-//                         senderName,
-//                         oldDisplayName: prevContent.displayname,
-//                     });
-//                 } else if (prevContent.avatar_url && !content.avatar_url) {
-//                     return _t('%(senderName)s removed their profile picture.', {senderName});
-//                 } else if (prevContent.avatar_url && content.avatar_url &&
-//                     prevContent.avatar_url !== content.avatar_url) {
-//                     return _t('%(senderName)s changed their profile picture.', {senderName});
-//                 } else if (!prevContent.avatar_url && content.avatar_url) {
-//                     return _t('%(senderName)s set a profile picture.', {senderName});
-//                 } else if (SettingsStore.getValue("showHiddenEventsInTimeline")) {
-//                     // This is a null rejoin, it will only be visible if the Labs option is enabled
-//                     return _t("%(senderName)s made no change.", {senderName});
-//                 } else {
-//                     return "";
-//                 }
-//             } else {
-//                 if (!ev.target) console.warn("Join message has no target! -- " + ev.getContent().state_key);
-//                 return _t('%(targetName)s joined the room.', {targetName});
-//             }
-//         case 'leave':
-//             if (ev.getSender() === ev.getStateKey()) {
-//                 if (prevContent.membership === "invite") {
-//                     return _t('%(targetName)s rejected the invitation.', {targetName});
-//                 } else {
-//                     return _t('%(targetName)s left the room.', {targetName});
-//                 }
-//             } else if (prevContent.membership === "ban") {
-//                 return _t('%(senderName)s unbanned %(targetName)s.', {senderName, targetName});
-//             } else if (prevContent.membership === "invite") {
-//                 return _t('%(senderName)s withdrew %(targetName)s\'s invitation.', {
-//                     senderName,
-//                     targetName,
-//                 }) + ' ' + reason;
-//             } else {
-//                 // sender is not target and made the target leave, if not from invite/ban then this is a kick
-//                 return _t('%(senderName)s kicked %(targetName)s.', {senderName, targetName}) + ' ' + reason;
-//             }
-//     }
-// }
+  // const reason = content.reason ? _t('Reason') + ': ' + content.reason : '';
+  const reason = content.reason ? 'Reason' + ': ' + content.reason : '';
+  switch (content.membership) {
+    case 'invite': {
+      const threePidContent = content.third_party_invite;
+      if (threePidContent) {
+        if (threePidContent.display_name) {
+          return `${targetName} accepted the invitation for ${threePidContent.display_name}`;
+          // return _t('%(targetName)s accepted the invitation for %(displayName)s.', {
+          //   targetName,
+          //   displayName: threePidContent.display_name,
+          // });
+        } else {
+          return `${targetName} accepted an invitation.`;
+          // return _t('%(targetName)s accepted an invitation.', { targetName });
+        }
+      } else {
+        return `${senderName} invited ${targetName}.`;
+        // return _t('%(senderName)s invited %(targetName)s.', { senderName, targetName });
+      }
+    }
+    case 'ban':
+      return `${senderName} banned ${targetName}.`;
+    // return _t('%(senderName)s banned %(targetName)s.', { senderName, targetName }) + ' ' + reason;
+    case 'join':
+      if (prevContent && prevContent.membership === 'join') {
+        if (
+          prevContent.displayname &&
+          content.displayname &&
+          prevContent.displayname !== content.displayname
+        ) {
+          return `${prevContent.displayname} changed their display name to ${content.displayname}.`;
+          // return _t('%(oldDisplayName)s changed their display name to %(displayName)s.', {
+          //   oldDisplayName: prevContent.displayname,
+          //   displayName: content.displayname,
+          // });
+        } else if (!prevContent.displayname && content.displayname) {
+          return `${ev.getSender()} set their display name to ${content.displayname}.`;
+          // return _t('%(senderName)s set their display name to %(displayName)s.', {
+          //   senderName: ev.getSender(),
+          //   displayName: content.displayname,
+          // });
+        } else if (prevContent.displayname && !content.displayname) {
+          return `${senderName} removed their display name ${prevContent.displayname}.`;
+          // return _t('%(senderName)s removed their display name (%(oldDisplayName)s).', {
+          //   senderName,
+          //   oldDisplayName: prevContent.displayname,
+          // });
+        } else if (prevContent.avatar_url && !content.avatar_url) {
+          return `${senderName} removed their profile picture.`;
+          // return _t('%(senderName)s removed their profile picture.', { senderName });
+        } else if (
+          prevContent.avatar_url &&
+          content.avatar_url &&
+          prevContent.avatar_url !== content.avatar_url
+        ) {
+          return `${senderName} changed their profile picture.`;
+          // return _t('%(senderName)s changed their profile picture.', { senderName });
+        } else if (!prevContent.avatar_url && content.avatar_url) {
+          return `${senderName} set a profile picture.`;
+          // return _t('%(senderName)s set a profile picture.', { senderName });
+          // } else if (SettingsStore.getValue('showHiddenEventsInTimeline')) {
+          //   // This is a null rejoin, it will only be visible if the Labs option is enabled
+          //   return _t('%(senderName)s made no change.', { senderName });
+        } else {
+          return '';
+        }
+      } else {
+        if (!ev.target) console.warn('Join message has no target! -- ' + ev.getContent().state_key);
+        return `${targetName} joined the room.`;
+        // return _t('%(targetName)s joined the room.', { targetName });
+      }
+    case 'leave':
+      if (ev.getSender() === ev.getStateKey()) {
+        if (prevContent.membership === 'invite') {
+          return `${targetName} rejected the invitation.`;
+          // return _t('%(targetName)s rejected the invitation.', { targetName });
+        } else {
+          return `${targetName} left the room.`;
+          // return _t('%(targetName)s left the room.', { targetName });
+        }
+      } else if (prevContent.membership === 'ban') {
+        return `${senderName} unbanned ${targetName}.`;
+        // return _t('%(senderName)s unbanned %(targetName)s.', { senderName, targetName });
+      } else if (prevContent.membership === 'invite') {
+        return `${senderName} withdrew ${targetName}'s invitation. ${reason}`;
+        // return (
+        //   _t("%(senderName)s withdrew %(targetName)s's invitation.", {
+        //     senderName,
+        //     targetName,
+        //   }) +
+        //   ' ' +
+        //   reason
+        // );
+      } else {
+        // sender is not target and made the target leave, if not from invite/ban then this is a kick
+        return `${senderName} kicked ${targetName}. ${reason}`;
+        // return (
+        //   _t('%(senderName)s kicked %(targetName)s.', { senderName, targetName }) + ' ' + reason
+        // );
+      }
+  }
+}
 
 // function textForTopicEvent(ev) {
 //     const senderDisplayName = ev.sender && ev.sender.name ? ev.sender.name : ev.getSender();
@@ -230,16 +260,17 @@ export function textForRoomNameEvent(ev) {
 //     return text;
 // }
 
-// function textForMessageEvent(ev) {
-//     const senderDisplayName = ev.sender && ev.sender.name ? ev.sender.name : ev.getSender();
-//     let message = senderDisplayName + ': ' + ev.getContent().body;
-//     if (ev.getContent().msgtype === "m.emote") {
-//         message = "* " + senderDisplayName + " " + message;
-//     } else if (ev.getContent().msgtype === "m.image") {
-//         message = _t('%(senderDisplayName)s sent an image.', {senderDisplayName});
-//     }
-//     return message;
-// }
+function textForMessageEvent(ev) {
+  const senderDisplayName = ev.sender && ev.sender.name ? ev.sender.name : ev.getSender();
+  let message = senderDisplayName + ': ' + ev.getContent().body;
+  if (ev.getContent().msgtype === 'm.emote') {
+    message = '* ' + senderDisplayName + ' ' + message;
+  } else if (ev.getContent().msgtype === 'm.image') {
+    message = `${senderDisplayName} sent an image.`;
+    // message = _t('%(senderDisplayName)s sent an image.', { senderDisplayName });
+  }
+  return message;
+}
 
 // function textForCanonicalAliasEvent(ev) {
 //     const senderName = ev.sender && ev.sender.name ? ev.sender.name : ev.getSender();
@@ -580,41 +611,41 @@ export function textForPowerEvent(event) {
 //         "for %(reason)s", {senderName, oldGlob: prevEntity, newGlob: entity, reason});
 // }
 
-// const handlers = {
-//     'm.room.message': textForMessageEvent,
-//     'm.call.invite': textForCallInviteEvent,
-//     'm.call.answer': textForCallAnswerEvent,
-//     'm.call.hangup': textForCallHangupEvent,
-//     'm.call.reject': textForCallRejectEvent,
-// };
+const handlers = {
+  'm.room.message': textForMessageEvent,
+  // 'm.call.invite': textForCallInviteEvent,
+  // 'm.call.answer': textForCallAnswerEvent,
+  // 'm.call.hangup': textForCallHangupEvent,
+  // 'm.call.reject': textForCallRejectEvent,
+};
 
-// const stateHandlers = {
-//     'm.room.canonical_alias': textForCanonicalAliasEvent,
-//     'm.room.name': textForRoomNameEvent,
-//     'm.room.topic': textForTopicEvent,
-//     'm.room.member': textForMemberEvent,
-//     'm.room.third_party_invite': textForThreePidInviteEvent,
-//     'm.room.history_visibility': textForHistoryVisibilityEvent,
-//     'm.room.power_levels': textForPowerEvent,
-//     'm.room.pinned_events': textForPinnedEvent,
-//     'm.room.server_acl': textForServerACLEvent,
-//     'm.room.tombstone': textForTombstoneEvent,
-//     'm.room.join_rules': textForJoinRulesEvent,
-//     'm.room.guest_access': textForGuestAccessEvent,
-//     'm.room.related_groups': textForRelatedGroupsEvent,
+const stateHandlers = {
+  // 'm.room.canonical_alias': textForCanonicalAliasEvent,
+  'm.room.name': textForRoomNameEvent,
+  // 'm.room.topic': textForTopicEvent,
+  'm.room.member': textForMemberEvent,
+  // 'm.room.third_party_invite': textForThreePidInviteEvent,
+  'm.room.history_visibility': textForHistoryVisibilityEvent,
+  'm.room.power_levels': textForPowerEvent,
+  // 'm.room.pinned_events': textForPinnedEvent,
+  // 'm.room.server_acl': textForServerACLEvent,
+  // 'm.room.tombstone': textForTombstoneEvent,
+  // 'm.room.join_rules': textForJoinRulesEvent,
+  // 'm.room.guest_access': textForGuestAccessEvent,
+  // 'm.room.related_groups': textForRelatedGroupsEvent,
 
-//     // TODO: Enable support for m.widget event type (https://github.com/vector-im/element-web/issues/13111)
-//     'im.vector.modular.widgets': textForWidgetEvent,
-//     [WIDGET_LAYOUT_EVENT_TYPE]: textForWidgetLayoutEvent,
-// };
+  // TODO: Enable support for m.widget event type (https://github.com/vector-im/element-web/issues/13111)
+  // 'im.vector.modular.widgets': textForWidgetEvent,
+  // [WIDGET_LAYOUT_EVENT_TYPE]: textForWidgetLayoutEvent,
+};
 
 // // Add all the Mjolnir stuff to the renderer
 // for (const evType of ALL_RULE_TYPES) {
 //     stateHandlers[evType] = textForMjolnirEvent;
 // }
 
-// export function textForEvent(ev) {
-//     const handler = (ev.isState() ? stateHandlers : handlers)[ev.getType()];
-//     if (handler) return handler(ev);
-//     return '';
-// }
+export function textForEvent(ev) {
+  const handler = (ev.isState() ? stateHandlers : handlers)[ev.getType()];
+  if (handler) return handler(ev);
+  return '';
+}

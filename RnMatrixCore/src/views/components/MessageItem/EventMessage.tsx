@@ -1,28 +1,9 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import {
-  textForHistoryVisibilityEvent,
-  textForPowerEvent,
-  textForRoomNameEvent,
-} from '../../../matrix-react/TextForEvent';
-import EventTypes from '../../../types/EventTypes';
+import { textForEvent } from '../../../matrix-react/TextForEvent';
 
 export default function EventMessage({ event }) {
-  const renderContent = () => {
-    switch (event.getType()) {
-      case EventTypes.roomHistoryVisibility:
-        return textForHistoryVisibilityEvent(event);
-      case EventTypes.roomPowerLevels:
-        return textForPowerEvent(event);
-      case EventTypes.roomName:
-        return textForRoomNameEvent(event);
-      default:
-        return event.getType();
-    }
-  };
-
-  const message = renderContent();
-  return message.length > 0 ? (
+  return event ? (
     <View
       style={{
         maxWidth: '75%',
@@ -33,7 +14,9 @@ export default function EventMessage({ event }) {
         borderRadius: 24,
         marginVertical: 10,
       }}>
-      <Text style={{ textAlign: 'center', fontWeight: '600', color: '#fff' }}>{message}</Text>
+      <Text style={{ textAlign: 'center', fontWeight: '600', color: '#fff' }}>
+        {textForEvent(event)}
+      </Text>
     </View>
   ) : null;
 }

@@ -1,7 +1,8 @@
 import { EventTimeline } from 'matrix-js-sdk/src/models/event-timeline';
 import { RoomMember } from 'matrix-js-sdk/src/models/room-member';
 import { useState, useEffect } from 'react';
-import { matrix } from '../../index';
+import matrix from '../../index';
+import { _getCurrentReadReceipt, _indexForEventId } from '../matrix-react/ReadReceipts';
 import * as WhoIsTyping from '../matrix-react/WhoIsTyping';
 import MatrixEvent from '../types/MatrixEvent';
 
@@ -31,6 +32,7 @@ export default function useTimeline(room) {
   //   this.context.on("event", this.onEvent);
 
   useEffect(() => {
+    sendReadReceipt()
     initMessages();
   }, []);
 
@@ -48,7 +50,7 @@ export default function useTimeline(room) {
 
   const getMessages = () => {
     const messageList = [];
-    const roomEvents = room._matrixRoom.getLiveTimeline().getEvents();
+    const roomEvents = room.getLiveTimeline().getEvents();
     for (const roomEvent of roomEvents) {
       messageList.unshift(roomEvent);
     }
@@ -92,7 +94,7 @@ export default function useTimeline(room) {
   };
 
   const onTyping = () => {
-    const membersTyping = WhoIsTyping.usersTypingApartFromMeAndIgnored(room._matrixRoom);
+    const membersTyping = WhoIsTyping.usersTypingApartFromMeAndIgnored(room);
     setUsersTyping({
       list: membersTyping,
       string: WhoIsTyping.whoIsTypingString(membersTyping, 3),
@@ -102,7 +104,7 @@ export default function useTimeline(room) {
   const fetchPreviousMessages = async () => {
     if (atStart) return;
     setIsLoading(true);
-    const start = !room._matrixRoom.getLiveTimeline().getPaginationToken(EventTimeline.BACKWARDS);
+    const start = !room.getLiveTimeline().getPaginationToken(EventTimeline.BACKWARDS);
     if (start) {
       setAtStart(start);
       return;
@@ -110,7 +112,7 @@ export default function useTimeline(room) {
     try {
       await matrix
       .getClient()
-      .paginateEventTimeline(room._matrixRoom.getLiveTimeline(), { backwards: true });
+      .paginateEventTimeline(room.getLiveTimeline(), { backwards: true });
     } catch (e) {
       console.log('Problem fetching previous messages...', {matrixClient: matrix.getClient()._clientOpts})
       console.warn(e)
@@ -119,6 +121,33 @@ export default function useTimeline(room) {
     setIsLoading(false);
     getMessages()
   };
+
+  const sendReadReceipt = async () => {
+    const latestMessage = timeline.getEvents()[timeline.getEvents().length - 1];
+    const readState = getReadState();
+    if (readState === 'unread') {
+      const matrixEvent = room.findEventById(latestMessage);
+      await matrix.getClient().sendReadReceipt(matrixEvent);
+    }
+  }
+
+  const getReadState = () => {
+    const latestMessage = timeline.getEvents()[timeline.getEvents().length - 1];
+
+    if (!room.hasUserReadEvent(matrix.getClient().getUserId(), latestMessage)) {
+      return 'unread';
+    }
+
+    for (const member of room.getJoinedMembers()) {
+      if (!room.hasUserReadEvent(member.userId, latestMessage)) {
+        return 'readByMe';
+      }
+    }
+
+    return 'readByAll';
+  }
+
+  
 
   return {
     timeline,

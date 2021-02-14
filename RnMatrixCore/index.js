@@ -11,7 +11,11 @@ import Chat from './src/classes/Chat';
 import Message from './src/classes/Message';
 import matrixSdk from 'matrix-js-sdk';
 
-export { matrix, matrixSdk, Chat, Message};
+import main from './src/services/main';
 
-export * from './src/hooks'
-export * from './src/views'
+export { matrix, matrixSdk, Chat, Message };
+
+export * from './src/hooks';
+export * from './src/views';
+
+export default main;

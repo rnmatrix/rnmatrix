@@ -36,17 +36,6 @@ class AuthService {
     this._isLoaded$.next(true);
     this._isSyncing = false;
 
-    // We can be logged out of the session because of password reset for example
-    matrix.isReady$().subscribe((isReady) => {
-      if (isReady) {
-        matrix.getClient().on('Session.logged_out', (e) => {
-          // TODO warn the user why this happens
-          debug('Logged out from the client', e);
-          this.logout();
-        });
-      }
-    });
-
     this.loginWithStoredCredentials();
   }
 

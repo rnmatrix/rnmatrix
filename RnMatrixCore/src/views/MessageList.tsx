@@ -58,7 +58,7 @@ export default function MessageList({
 }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { timeline, updates, usersTyping, fetchPreviousMessages } = useTimeline(room);
-  console.log({updates})
+  console.log({ updates });
 
   const listRef = useRef();
 
@@ -77,7 +77,17 @@ export default function MessageList({
   };
 
   const renderMessageItem = ({ item, index }) => {
-    return <MessageItem item={item} room={room} shouldUpdate={updates.includes(item.getId())} onPress={onPress} onLongPress={onLongPress} />
+    const handleOnPress = () => onPress ? onPress(item) : undefined
+    const handleOnLongPress = () => onLongPress ? onLongPress(item) : undefined
+    return (
+      <MessageItem
+        item={item}
+        room={room}
+        shouldUpdate={updates.includes(item.getId())}
+        onPress={handleOnPress}
+        onLongPress={handleOnLongPress}
+      />
+    );
   };
 
   const messageItem = (args) => (renderMessage ? renderMessage(args) : renderMessageItem(args));

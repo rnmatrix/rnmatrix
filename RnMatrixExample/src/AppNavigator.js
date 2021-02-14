@@ -7,7 +7,7 @@ import ChatListScreen from './scenes/chatList/ChatListScreen';
 import ChatScreen from './scenes/chat/ChatScreen';
 import LoginScreen from './scenes/auth/LoginScreen';
 
-import {matrix} from '@rn-matrix/core';
+import rnm, {useMatrix} from '@rn-matrix/core';
 import NewChatScreen from './scenes/newChat/NewChatScreen';
 import ChatMenuScreen from './scenes/chatMenu/ChatMenuScreen';
 
@@ -16,43 +16,41 @@ import ChatMenuScreen from './scenes/chatMenu/ChatMenuScreen';
 const Stack = createStackNavigator();
 
 export default function AppNavigator() {
-  const authLoaded = useObservableState(matrix.authIsLoaded$());
-  const authLoggedIn = useObservableState(matrix.isLoggedIn$());
-  const matrixReady = useObservableState(matrix.isReady$());
+  const {isLoaded, isLoggedIn, isReady} = useMatrix()
 
   const [loadingView, setLoadingView] = useState(false);
 
   console.log(
     'auth loaded',
-    authLoaded,
+    isLoaded,
     'logged in',
-    authLoggedIn,
+    isLoggedIn,
     'matrix ready ',
-    matrixReady,
+    isReady,
   );
 
   useEffect(() => {
-    if (authLoaded && authLoggedIn && !matrixReady) {
+    if (isLoaded && isLoggedIn && !isReady) {
       setTimeout(() => setLoadingView(true), 10000);
     }
-  }, [authLoaded, authLoggedIn, matrixReady]);
+  }, [isLoaded, isLoggedIn, isReady]);
 
-  if (!authLoaded || (authLoggedIn && !matrixReady)) {
+  if (!isLoaded || (isLoggedIn && !isReady)) {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <ActivityIndicator size="large" />
         {loadingView && (
           <>
             <Text style={{textAlign: 'center', maxWidth: 250, marginTop: 24}}>
-              Logged in: {authLoggedIn ? 'YES\n' : 'NO\n'}
-              Matrix ready: {matrixReady ? 'YES\n\n\n' : 'NO\n\n\n'}
+              Logged in: {isLoggedIn ? 'YES\n' : 'NO\n'}
+              Matrix ready: {isReady ? 'YES\n\n\n' : 'NO\n\n\n'}
               This seems to be taking a while... you can try logging out if you
               want.
             </Text>
             <Pressable
               onPress={() => {
                 setLoadingView(false);
-                matrix.logout();
+                rnm.logout();
               }}
               style={({pressed}) => ({
                 backgroundColor: 'dodgerblue',
@@ -67,7 +65,7 @@ export default function AppNavigator() {
         )}
       </View>
     );
-  } else if (authLoggedIn) {
+  } else if (isLoggedIn) {
     return (
       <Stack.Navigator>
         <Stack.Screen
@@ -77,7 +75,7 @@ export default function AppNavigator() {
             title: 'Chats',
             headerLeft: () => (
               <Pressable
-                onPress={matrix.logout}
+                onPress={rnm.logout}
                 style={({pressed}) => ({
                   marginLeft: 6,
                   padding: 12,
@@ -112,7 +110,7 @@ export default function AppNavigator() {
           component={ChatScreen}
           options={({navigation, route}) => ({
             headerBackTitle: 'Back',
-            title: route?.params?.room?.name$?.getValue() || 'Chat',
+            title: 'Chat',
             headerRight: () => {
               return (
                 <Pressable

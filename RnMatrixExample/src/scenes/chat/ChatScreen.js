@@ -7,89 +7,29 @@ import {
   FlatList,
   ActivityIndicator,
 } from 'react-native';
-// import {MessageList} from '@rn-matrix/ui';
 import ActionSheet from '../../components/ActionSheet';
 import {useHeaderHeight} from '@react-navigation/stack';
 import EmojiButtons from './components/EmojiButtons';
 
-import {MessageList} from '@rn-matrix/core';
-
-// function MessageListItem({item}) {
-//   const content = item.getContent();
-//   if (!content) return null;
-//   return (
-//     <Text key={item.getId()} style={{height: 50}}>
-//       {content?.body}
-//     </Text>
-//   );
-// }
+import rnm, {MessageList} from '@rn-matrix/core';
 
 export default function ChatScreen({navigation, route}) {
-  const {room} = route.params;
-  if (!room) navigation.goBack();
+  const {roomId} = route.params;
+  if (!roomId) navigation.goBack();
 
-  return (
-    <MessageList room={room} />
-  );
-
-  const headerHeight = useHeaderHeight();
+  const room = rnm.getClient().getRoom(roomId)
 
   const [actionSheetVisible, setActionSheetVisible] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
-  const [isReplying, setIsReplying] = useState(false);
 
-  const onLongPress = (message) => {
-    setSelectedMessage(message);
-    setActionSheetVisible(true);
-  };
-
-  const onSwipe = (message) => {
-    setSelectedMessage(message);
-    setIsReplying(true);
-  };
-
-  const onEndEdit = () => {
-    setIsEditing(null);
-    setSelectedMessage(null);
-  };
-
-  const onCancelReply = () => {
-    setIsReplying(null);
-    setSelectedMessage(null);
-  };
-
-  const editMessage = () => {
-    setActionSheetVisible(false);
-    setIsEditing(true);
-  };
+  const handleLongMessagePress = (msg) => {
+    setSelectedMessage(msg)
+    setActionSheetVisible(true)
+  }
 
   return (
     <>
-      <View style={{flex: 1, backgroundColor: '#fff'}}>
-        <MessageList
-          room={room}
-          keyboardOffset={headerHeight + StatusBar.currentHeight}
-          enableComposer
-          enableReplies
-          showReactions
-          selectedMessage={selectedMessage}
-          isEditing={isEditing}
-          isReplying={isReplying}
-          onSwipe={onSwipe}
-          onLongPress={onLongPress}
-          onEndEdit={onEndEdit}
-          onCancelReply={onCancelReply}
-          // myBubbleStyle={(pressed) => ({
-          //   backgroundColor: pressed ? 'darkred' : 'red',
-          // })}
-          // otherBubbleStyle={(pressed) => ({
-          //   backgroundColor: 'yellow',
-          // })}
-          // accentColor="orange"
-          // textColor="green"
-        />
-      </View>
+      <MessageList room={room} onLongPress={handleLongMessagePress}  />
       <ActionSheet
         visible={actionSheetVisible}
         gestureEnabled={false}
@@ -102,7 +42,7 @@ export default function ChatScreen({navigation, route}) {
           setSelectedMessage={setSelectedMessage}
         />
         <Pressable
-          onPress={editMessage}
+          // onPress={editMessage}
           style={({pressed}) => ({
             backgroundColor: pressed ? 'lightgray' : '#fff',
             padding: 12,
@@ -115,4 +55,88 @@ export default function ChatScreen({navigation, route}) {
       </ActionSheet>
     </>
   );
+
+  // const headerHeight = useHeaderHeight();
+
+  // const [actionSheetVisible, setActionSheetVisible] = useState(false);
+  // const [selectedMessage, setSelectedMessage] = useState(null);
+  // const [isEditing, setIsEditing] = useState(false);
+  // const [isReplying, setIsReplying] = useState(false);
+
+  // const onLongPress = (message) => {
+  //   setSelectedMessage(message);
+  //   setActionSheetVisible(true);
+  // };
+
+  // const onSwipe = (message) => {
+  //   setSelectedMessage(message);
+  //   setIsReplying(true);
+  // };
+
+  // const onEndEdit = () => {
+  //   setIsEditing(null);
+  //   setSelectedMessage(null);
+  // };
+
+  // const onCancelReply = () => {
+  //   setIsReplying(null);
+  //   setSelectedMessage(null);
+  // };
+
+  // const editMessage = () => {
+  //   setActionSheetVisible(false);
+  //   setIsEditing(true);
+  // };
+
+  // return (
+  //   <>
+  //     <View style={{flex: 1, backgroundColor: '#fff'}}>
+  //       <MessageList
+  //         room={room}
+  //         keyboardOffset={headerHeight + StatusBar.currentHeight}
+  //         enableComposer
+  //         enableReplies
+  //         showReactions
+  //         selectedMessage={selectedMessage}
+  //         isEditing={isEditing}
+  //         isReplying={isReplying}
+  //         onSwipe={onSwipe}
+  //         onLongPress={onLongPress}
+  //         onEndEdit={onEndEdit}
+  //         onCancelReply={onCancelReply}
+  //         // myBubbleStyle={(pressed) => ({
+  //         //   backgroundColor: pressed ? 'darkred' : 'red',
+  //         // })}
+  //         // otherBubbleStyle={(pressed) => ({
+  //         //   backgroundColor: 'yellow',
+  //         // })}
+  //         // accentColor="orange"
+  //         // textColor="green"
+  //       />
+  //     </View>
+  //     <ActionSheet
+  //       visible={actionSheetVisible}
+  //       gestureEnabled={false}
+  //       innerScrollEnabled={false}
+  //       style={{minHeight: 100, padding: 24, paddingBottom: 48}}
+  //       onClose={() => setActionSheetVisible(false)}>
+  //       <EmojiButtons
+  //         message={selectedMessage}
+  //         setActionSheetVisible={setActionSheetVisible}
+  //         setSelectedMessage={setSelectedMessage}
+  //       />
+  //       <Pressable
+  //         onPress={editMessage}
+  //         style={({pressed}) => ({
+  //           backgroundColor: pressed ? 'lightgray' : '#fff',
+  //           padding: 12,
+  //           borderRadius: 8,
+  //         })}>
+  //         <Text style={{color: 'dodgerblue', fontWeight: 'bold', fontSize: 16}}>
+  //           Edit Message
+  //         </Text>
+  //       </Pressable>
+  //     </ActionSheet>
+  //   </>
+  // );
 }

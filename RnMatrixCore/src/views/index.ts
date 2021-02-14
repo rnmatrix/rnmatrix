@@ -1,5 +1,7 @@
 import MessageList from './MessageList'
+import RoomList from './RoomList'
 
 export {
-  MessageList
+  MessageList,
+  RoomList
 } 

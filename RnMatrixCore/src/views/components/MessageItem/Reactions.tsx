@@ -14,7 +14,7 @@ export default function Reactions({ room, event, isMe }) {
       console.log(JSON.stringify(this.props.mxEvent, null, 4));
       console.trace('Stacktrace for https://github.com/vector-im/element-web/issues/11120');
     }
-    const newReactions = room._matrixRoom
+    const newReactions = room
       .getUnfilteredTimelineSet()
       .getRelationsForEvent(eventId, 'm.annotation', 'm.reaction');
     if (reactions !== newReactions) {
