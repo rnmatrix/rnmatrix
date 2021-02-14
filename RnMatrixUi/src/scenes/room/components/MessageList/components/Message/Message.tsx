@@ -53,10 +53,11 @@ export default function Message({
 
   const message = matrix.getMessageById(messageId, roomId);
 
-  const messageType = useObservableState<any>(message.type$);
   if (!message.type$) {
     return null;
   }
+  const messageType = useObservableState<any>(message.type$);
+
 
   const prevMessage =
     prevMessageId && prevMessageId !== 'loading'

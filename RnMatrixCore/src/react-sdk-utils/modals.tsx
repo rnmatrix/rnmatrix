@@ -13,10 +13,7 @@ type Question = {
   description?: string | JSX.Element;
   button?: string;
   danger?: boolean;
-};
-
-export const showError = async (question: Question): Promise<boolean> => {
-  return false;
+  onFinished?: any;
 };
 
 export const ask = async (question: Question): Promise<boolean> => {

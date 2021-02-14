@@ -3,14 +3,7 @@ import { matrix } from '@rn-matrix/core';
 import chatService from '@rn-matrix/core/src/services/chat';
 import { useObservableState } from 'observable-hooks';
 import React, { useCallback, useEffect, useState } from 'react';
-import {
-  Pressable,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Pressable, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Navbar from '../../common/Navbar';
 import ThemedStyles from '../../styles/ThemedStyles';
@@ -24,7 +17,7 @@ import RoomContext from './RoomContext';
 
 export default function RoomScreen({ route, navigation, customMessageRenderers }) {
   const [room, setRoom] = useState(
-    route.params.room || chatService.getChatById(route.params.roomId),
+    route.params.room || chatService.getChatById(route.params.roomId)
   );
 
   const headerHeight = useHeaderHeight();
@@ -68,7 +61,7 @@ export default function RoomScreen({ route, navigation, customMessageRenderers }
 
   const onRoomInfoPress = useCallback(
     () => navigation.navigate('MessengerRoomInfoScreen', { room }),
-    [navigation, room],
+    [navigation, room]
   );
 
   return (
@@ -79,21 +72,12 @@ export default function RoomScreen({ route, navigation, customMessageRenderers }
           paddingTop: 15,
         }}
         titleElement={
-          <View
-            style={[
-              theme.rowJustifyStart,
-              theme.flexContainer,
-              theme.alignCenter,
-            ]}>
-            <RoomAvatar
-              size={40}
-              room={room}
-              style={membersCount > 2 ? { top: -4 } : null}
-            />
+          <View style={[theme.rowJustifyStart, theme.flexContainer, theme.alignCenter]}>
+            <RoomAvatar size={40} room={room} style={membersCount > 2 ? { top: -4 } : null} />
             <Text
               numberOfLines={1}
               textBreakStrategy={'highQuality'}
-              style={[theme.fontXXL, theme.bold, { width: width * 0.65 }]}>
+              style={[theme.colorPrimaryText, theme.fontXXL, theme.bold, { width: width * 0.65 }]}>
               {name}
             </Text>
           </View>
@@ -162,6 +146,8 @@ export default function RoomScreen({ route, navigation, customMessageRenderers }
     </RoomContext.Provider>
   );
 }
+
+RoomScreen.route = 'MessengerRoom';
 
 const styles = StyleSheet.create({
   editMessage: { color: 'dodgerblue', fontWeight: 'bold', fontSize: 16 },

@@ -19,21 +19,23 @@ limitations under the License.
 
 import { useDimensions } from '@react-native-community/hooks';
 import { matrix } from '@rn-matrix/core';
+// import i18n from '../../utilities/i18n';
+// import {
+//   AppStackParamList,
+//   RootStackParamList,
+// } from '../../../../navigation/NavigationTypes';
+// import colors from '../../../../styles/Colors';
+// import MatrixClientContext from '../../contexts/MatrixClientContext';
+import { useAsyncMemo, useEventEmitter, useIsEncrypted } from '@rn-matrix/core/hooks';
 import createRoom, {
   findDMForUser,
   privateShouldBeEncrypted,
 } from '@rn-matrix/core/src/react-sdk-utils/createRoom';
 import DMRoomMap from '@rn-matrix/core/src/react-sdk-utils/DMRoomMap';
-import { EventType, EventTimeline } from '@rn-matrix/core/src/types/event';
-import {
-  ask,
-  confirm,
-  showError,
-  showInfo,
-  warnSelfDemote,
-} from '@rn-matrix/core/src/react-sdk-utils/modals';
+import { ask, confirm, showInfo, warnSelfDemote } from '@rn-matrix/core/src/react-sdk-utils/modals';
 import MultiInviter from '@rn-matrix/core/src/react-sdk-utils/MultiInviter';
 import { E2EStatus } from '@rn-matrix/core/src/react-sdk-utils/ShieldUtils';
+import { EventTimeline, EventType } from '@rn-matrix/core/src/types/event';
 // import { RouteProp, useNavigation } from '@react-navigation/native';
 // import { StackNavigationProp } from '@react-navigation/stack';
 // import { EventType } from 'matrix-js-sdk/src/@types/event';
@@ -44,26 +46,19 @@ import { E2EStatus } from '@rn-matrix/core/src/react-sdk-utils/ShieldUtils';
 // import { User } from 'matrix-js-sdk/src/models/user';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
+// import EncryptionPanel from './EncryptionPanel';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Avatar from '../../common/Avatar';
 import Button from '../../common/Button';
+import { showError } from '../../common/Modal';
 import Navbar from '../../common/Navbar';
 import Spinner from '../../common/Spinner';
-// import i18n from '../../utilities/i18n';
-// import {
-//   AppStackParamList,
-//   RootStackParamList,
-// } from '../../../../navigation/NavigationTypes';
-// import colors from '../../../../styles/Colors';
-// import MatrixClientContext from '../../contexts/MatrixClientContext';
-import { useAsyncMemo, useEventEmitter, useIsEncrypted } from '@rn-matrix/core/hooks';
 import useNavigation from '../../hooks/useNavigation';
 import ThemedStyles from '../../styles/ThemedStyles';
 import PresenceLabel from '../../utilities/PresenceLabel';
 import RoomContext, { useRoom } from '../room/RoomContext';
 import PowerSelector from '../roomInfo/components/PowerSelector';
 import { textualPowerLevel } from '../roomInfo/components/Roles';
-// import EncryptionPanel from './EncryptionPanel';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 type MatrixClient = any;
 type Room = any;
@@ -1688,5 +1683,7 @@ const UserInfo: React.FC<{
     </RoomContext.Provider>
   );
 };
+
+UserInfo.route = 'MessengerUserInfo';
 
 export default UserInfo;

@@ -16,10 +16,10 @@ limitations under the License.
 
 import { matrix } from '@rn-matrix/core';
 import DeviceListener from '@rn-matrix/core/src/react-sdk-utils/DeviceListener';
-import { showMessage} from 'react-native-flash-message';
-import NewSessionReviewDialog from '../components/NewSessionReviewDialog';
-import ThemedStyles from '../styles/ThemedStyles';
+import ToastStore from '@rn-matrix/core/src/react-sdk-utils/stores/ToastStore';
+import NewSessionReviewDialog from '../scenes/NewSessionReviewDialog';
 import Navigation from '../utilities/navigation';
+import GenericToast from './GenericToast';
 
 function toastKey(deviceId: string) {
   return 'unverified_session_' + deviceId;
@@ -36,7 +36,7 @@ export const showToast = (deviceId: string) => {
   const cli = matrix.getClient();
 
   const onAccept = () => {
-    Navigation.instance?.navigate('NewSessionReviewDialog', {
+    Navigation.instance?.navigate(NewSessionReviewDialog.route, {
       userId: cli.getUserId(),
       device: cli.getStoredDevice(cli.getUserId(), deviceId),
       onFinished: (r) => {
@@ -73,36 +73,36 @@ export const showToast = (deviceId: string) => {
 
   const device = cli.getStoredDevice(cli.getUserId(), deviceId);
 
-  showMessage({
-    message: _t('New login. Was this you?'),
-    description: _t('Verify the new login accessing your account: %(name)s', {
-      name: device?.getDisplayName(),
-    }),
-    floating: true,
-    autoHide: false,
-    onPress: onAccept,
-    onHide: onReject,
-    backgroundColor: ThemedStyles.getColor('link'),
-  });
-
-  // ToastStore.sharedInstance().addOrReplaceToast({
-  //   key: toastKey(deviceId),
-  //   title: _t('New login. Was this you?'),
-  //   icon: 'verification_warning',
-  //   props: {
-  //     description: _t('Verify the new login accessing your account: %(name)s', {
-  //       name: device.getDisplayName(),
-  //     }),
-  //     acceptLabel: _t('Verify'),
-  //     onAccept,
-  //     rejectLabel: _t('Later'),
-  //     onReject,
-  //   },
-  //   component: GenericToast,
-  //   priority: 80,
+  // showMessage({
+  //   message: _t('New login. Was this you?'),
+  //   description: _t('Verify the new login accessing your account: %(name)s', {
+  //     name: device?.getDisplayName(),
+  //   }),
+  //   floating: true,
+  //   autoHide: false,
+  //   onPress: onAccept,
+  //   onHide: onReject,
+  //   backgroundColor: ThemedStyles.getColor('link'),
   // });
+
+  ToastStore.sharedInstance().addOrReplaceToast({
+    key: toastKey(deviceId),
+    title: _t('New login. Was this you?'),
+    icon: 'verification_warning',
+    props: {
+      description: _t('Verify the new login accessing your account: {{name}}', {
+        name: device.getDisplayName(),
+      }),
+      acceptLabel: _t('Verify'),
+      onAccept,
+      rejectLabel: _t('Later'),
+      onReject,
+    },
+    component: GenericToast,
+    priority: 80,
+  });
 };
 
 export const hideToast = (deviceId: string) => {
-  // ToastStore.sharedInstance().dismissToast(toastKey(deviceId));
+  ToastStore.sharedInstance().dismissToast(toastKey(deviceId));
 };

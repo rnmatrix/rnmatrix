@@ -16,10 +16,10 @@ limitations under the License.
 
 import DeviceListener from '@rn-matrix/core/src/react-sdk-utils/DeviceListener';
 import { accessSecretStorage } from '@rn-matrix/core/src/react-sdk-utils/SecurityManager';
-import { showMessage } from 'react-native-flash-message';
-import SetupEncryptionDialog from '../components/SetupEncryption/SetupEncryptionDialog';
-import ThemedStyles from '../styles/ThemedStyles';
+import ToastStore from '@rn-matrix/core/src/react-sdk-utils/stores/ToastStore';
+import SetupEncryptionDialog from '../scenes/SetupEncryption/SetupEncryptionDialog';
 import Navigation from '../utilities/navigation';
+import GenericToast from './GenericToast';
 
 const TOAST_KEY = 'setupencryption';
 
@@ -85,9 +85,7 @@ const onReject = () => {
 export const showToast = (kind: Kind) => {
   const onAccept = async () => {
     if (kind === Kind.VERIFY_THIS_SESSION) {
-      Navigation.instance?.navigate('SetupEncryptionDialog');
-      // Modal.createTrackedDialog("Verify session", "Verify session", SetupEncryptionDialog,
-      //     {}, null, /* priority = */ false, /* static = */ true);
+      Navigation.instance?.navigate(SetupEncryptionDialog.route);
     } else {
       // FIXME show spinner modal
       // const modal = Modal.createDialog(
@@ -101,32 +99,32 @@ export const showToast = (kind: Kind) => {
     }
   };
 
-  showMessage({
-    message: getTitle(kind),
-    description: getDescription(kind),
-    floating: true,
-    autoHide: false,
-    onPress: onAccept,
-    onHide: onReject,
-    backgroundColor: ThemedStyles.getColor('link'),
-  });
-
-  // ToastStore.sharedInstance().addOrReplaceToast({
-  //     key: TOAST_KEY,
-  //     title: getTitle(kind),
-  //     icon: getIcon(kind),
-  //     props: {
-  //         description: getDescription(kind),
-  //         acceptLabel: getSetupCaption(kind),
-  //         onAccept,
-  //         rejectLabel: _t("Later"),
-  //         onReject,
-  //     },
-  //     component: GenericToast,
-  //     priority: kind === Kind.VERIFY_THIS_SESSION ? 95 : 40,
+  // showMessage({
+  //   message: getTitle(kind),
+  //   description: getDescription(kind),
+  //   floating: true,
+  //   autoHide: false,
+  //   onPress: onAccept,
+  //   onHide: onReject,
+  //   backgroundColor: ThemedStyles.getColor('link'),
   // });
+
+  ToastStore.sharedInstance().addOrReplaceToast({
+    key: TOAST_KEY,
+    title: getTitle(kind),
+    icon: getIcon(kind),
+    props: {
+      description: getDescription(kind),
+      acceptLabel: getSetupCaption(kind),
+      onAccept,
+      rejectLabel: _t('Later'),
+      onReject,
+    },
+    component: GenericToast,
+    priority: kind === Kind.VERIFY_THIS_SESSION ? 95 : 40,
+  });
 };
 
 export const hideToast = () => {
-  // ToastStore.sharedInstance().dismissToast(TOAST_KEY);
+  ToastStore.sharedInstance().dismissToast(TOAST_KEY);
 };

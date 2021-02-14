@@ -16,9 +16,10 @@ limitations under the License.
 
 import { matrix } from '@rn-matrix/core';
 import DeviceListener from '@rn-matrix/core/src/react-sdk-utils/DeviceListener';
-import { showMessage } from 'react-native-flash-message';
-import ThemedStyles from '../styles/ThemedStyles';
+import ToastStore from '@rn-matrix/core/src/react-sdk-utils/stores/ToastStore';
+import UserInfo from '../scenes/userInfo/UserInfo';
 import Navigation from '../utilities/navigation';
+import GenericToast from './GenericToast';
 
 const TOAST_KEY = 'reviewsessions';
 
@@ -33,10 +34,8 @@ export const showToast = (deviceIds: Set<string>) => {
   const onAccept = () => {
     DeviceListener.sharedInstance.dismissUnverifiedSessions(deviceIds);
 
-    console.log('matrix.getClient().getUserId()', matrix.getClient().getUserId())
-    console.log('matrix.getClient().getUser(matrix.getClient().getUserId())', matrix.getClient().getUser(matrix.getClient().getUserId()))
     // TODO: navigate to user info
-    Navigation.instance?.navigate('MessengerUserInfo', {
+    Navigation.instance?.navigate(UserInfo.route, {
       user: matrix.getClient().getUser(matrix.getClient().getUserId()),
     });
     // dis.dispatch({
@@ -49,32 +48,31 @@ export const showToast = (deviceIds: Set<string>) => {
     DeviceListener.sharedInstance.dismissUnverifiedSessions(deviceIds);
   };
 
-  showMessage({
-    message: _t('Review where you’re logged in'),
-    description: _t('Verify all your sessions to ensure your account & messages are safe'),
-    floating: true,
-    autoHide: false,
-    onPress: onAccept,
-    onHide: onReject,
-    backgroundColor: ThemedStyles.getColor('link'),
-
-  });
-  // ToastStore.sharedInstance().addOrReplaceToast({
-  //     key: TOAST_KEY,
-  //     // title: _t("Review where you’re logged in"),
-  //     // icon: "verification_warning",
-  //     props: {
-  //         description: _t("Verify all your sessions to ensure your account & messages are safe"),
-  //         acceptLabel: _t("Review"),
-  //         onAccept,
-  //         rejectLabel: _t("Later"),
-  //         onReject,
-  //     },
-  //     component: GenericToast,
-  //     priority: 50,
+  // showMessage({
+  //   message: _t('Review where you’re logged in'),
+  //   description: _t('Verify all your sessions to ensure your account & messages are safe'),
+  //   floating: true,
+  //   autoHide: false,
+  //   onPress: onAccept,
+  //   onHide: onReject,
+  //   backgroundColor: ThemedStyles.getColor('link'),
   // });
+  return ToastStore.sharedInstance().addOrReplaceToast({
+    key: TOAST_KEY,
+    title: _t("Review where you’re logged in"),
+    icon: "verification_warning",
+    props: {
+      description: _t('Verify all your sessions to ensure your account & messages are safe'),
+      acceptLabel: _t('Review'),
+      onAccept,
+      rejectLabel: _t('Later'),
+      onReject,
+    },
+    component: GenericToast,
+    priority: 50,
+  });
 };
 
 export const hideToast = () => {
-  // ToastStore.sharedInstance().dismissToast(TOAST_KEY);
+  ToastStore.sharedInstance().dismissToast(TOAST_KEY);
 };

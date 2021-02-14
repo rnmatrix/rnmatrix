@@ -17,7 +17,7 @@ limitations under the License.
 import { Room } from 'matrix-js-sdk/src/models/room';
 import React from 'react';
 import matrix from '../services/matrix';
-import { showError } from './modals';
+import { showError } from '@rn-matrix/ui/src/common/Modal';
 
 // TODO: translate
 const _t = (s, obj?) => {

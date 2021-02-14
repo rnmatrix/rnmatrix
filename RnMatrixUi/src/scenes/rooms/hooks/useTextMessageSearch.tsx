@@ -1,6 +1,7 @@
 import { matrix } from '@rn-matrix/core';
 import React, { useCallback, useState } from 'react';
 import useNavigation from '../../../hooks/useNavigation';
+import RoomScreen from '../../room/RoomScreen';
 import RoomListItem from '../components/RoomListItem';
 
 const useTextMessageSearch = () => {
@@ -35,7 +36,7 @@ const useTextMessageSearch = () => {
   }, []);
   const onSearchResultPress = useCallback(
     (room) => {
-      navigation.navigate('MessengerRoom', { room });
+      navigation.navigate(RoomScreen.route, { room });
     },
     [navigation],
   );

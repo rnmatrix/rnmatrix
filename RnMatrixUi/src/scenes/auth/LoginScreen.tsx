@@ -2,6 +2,8 @@ import { matrix } from '@rn-matrix/core';
 import React, { useCallback } from 'react';
 import { Platform, SafeAreaView, ScrollView } from 'react-native';
 import LoginForm from '../../components/LoginForm';
+import Config from '../../Config';
+import ThemedStyles from '../../styles/ThemedStyles';
 
 export default function LoginScreen() {
   const onLogin = useCallback(
@@ -11,7 +13,7 @@ export default function LoginScreen() {
         password,
         homeserver,
         initCrypto,
-        `Minds ${Platform.select({
+        `${Config.brand} ${Platform.select({
           ios: '(iOS)',
           android: '(Android)',
         })}`
@@ -20,7 +22,7 @@ export default function LoginScreen() {
   );
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={[ThemedStyles.style.flexContainer, ThemedStyles.style.backgroundPrimary]}>
       <ScrollView
         contentContainerStyle={{ flex: 1, alignItems: 'center' }}
         keyboardShouldPersistTaps="handled">
@@ -29,3 +31,5 @@ export default function LoginScreen() {
     </SafeAreaView>
   );
 }
+
+LoginScreen.route = 'LoginScreen';

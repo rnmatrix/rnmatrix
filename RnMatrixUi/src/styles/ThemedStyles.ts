@@ -104,7 +104,7 @@ class ThemedStylesStore {
       // ...baseTheme,
       colors: {
         // ...baseTheme.colors,
-        background: 'transparent',
+        background: theme.primary_background,
         // card: theme.backgroundSecondary, // generates an error on ios
         text: theme.primary_text,
         primary: theme.icon,

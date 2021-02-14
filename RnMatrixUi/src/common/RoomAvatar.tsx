@@ -63,6 +63,7 @@ const MembersStackedAvatar = ({ members, membersCount, roomName, size }) => {
 
           return members.length > 4 && index === reducedMembers.length - 1 ? (
             <View
+              key='membersCountText'
               style={[
                 {
                   position: 'absolute',
@@ -90,6 +91,7 @@ const MembersStackedAvatar = ({ members, membersCount, roomName, size }) => {
             </View>
           ) : (
             <Avatar
+              key={member.id}
               name={member.name$.getValue() || member.id}
               avatarURI={userService.getAvatarUrl(member.avatar$.getValue())}
               size={avatarSize}

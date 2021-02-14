@@ -645,7 +645,7 @@ export const buildStyle = (theme) => ({
   // others
   listItemTitle: {
     color: theme.primary_text,
-    paddingVertical: 15,
+    // paddingVertical: 15,
     fontSize: 17,
   },
 });

@@ -19,7 +19,7 @@ import { MatrixClient } from 'matrix-js-sdk/src/client';
 import { Room } from 'matrix-js-sdk/src/models/room';
 import matrix from '../services/matrix';
 import DMRoomMap from './DMRoomMap';
-import { showError } from './modals';
+import { showError } from '@rn-matrix/ui/src/common/Modal';
 import * as Rooms from './Rooms';
 import GroupStore from './stores/GroupStore';
 import { getAddressType } from './UserAddress';

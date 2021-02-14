@@ -20,8 +20,8 @@ import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import DialogButtons from '../common/DialogButtons';
 import Spinner from '../common/Spinner';
-import Header from '../scenes/newRoom/components/Header';
-import { NewRoomScreens } from '../scenes/newRoom/NewRoomScreen';
+import Header from './newRoom/components/Header';
+import { NewRoomScreens } from './newRoom/NewRoomScreen';
 import ThemedStyles from '../styles/ThemedStyles';
 
 const IS_IOS = Platform.OS === 'ios';
@@ -131,6 +131,8 @@ const NewSessionReviewDialog = ({ device }) => {
     </View>
   );
 };
+
+NewSessionReviewDialog.route = 'NewSessionReviewDialog';
 
 export default NewSessionReviewDialog;
 

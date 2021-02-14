@@ -16,7 +16,6 @@ limitations under the License.
 
 import { ICryptoCallbacks, IDeviceTrustLevel, ISecretStorageKeyInfo } from 'matrix-js-sdk/src/matrix';
 import { MatrixClient } from 'matrix-js-sdk/src/client';
-import { AccessSecretStorageDialog } from '@rn-matrix/ui/components';
 import { showModal } from '@rn-matrix/ui/src/common/Modal';
 import matrix from '../services/matrix';
 import { deriveKey } from 'matrix-js-sdk/src/crypto/key_passphrase';
@@ -291,15 +290,16 @@ export async function accessSecretStorage(func = async () => { }, forceReset = f
         if (!await cli.hasSecretStorageKey() || forceReset) {
             // This dialog calls bootstrap itself after guiding the user through
             // passphrase creation.
-            const [confirmed] = await showModal(
-              'CreateSecretStorageDialog', // CreateSecretStorageDialog,
-              {
-                  forceReset,
-              }
-            )
-            if (!confirmed) {
-                throw new Error("Secret storage creation canceled");
-            }
+            // TODO: CreateSecretStorageDialog
+            // const [confirmed] = await showModal(
+            //   'CreateSecretStorageDialog', // CreateSecretStorageDialog,
+            //   {
+            //       forceReset,
+            //   }
+            // )
+            // if (!confirmed) {
+            //     throw new Error("Secret storage creation canceled");
+            // }
         } else {
             await cli.bootstrapCrossSigning({
                 authUploadDeviceSigningKeys: async (makeRequest) => {
@@ -341,8 +341,6 @@ export async function accessSecretStorage(func = async () => { }, forceReset = f
         // `return await` needed here to ensure `finally` block runs after the
         // inner operation completes.
         return await func();
-    } catch (e) {
-        console.error(e);
     } finally {
         // Clear secret storage key cache now that work is complete
         secretStorageBeingAccessed = false;

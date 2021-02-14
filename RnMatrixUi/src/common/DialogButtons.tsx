@@ -82,9 +82,9 @@ export default class DialogButtons extends React.Component {
     if (this.props.cancelButton || this.props.hasCancel) {
       cancelButton = (
         <Button
+          raised
           // important: the default type is 'submit' and this button comes before the
           // primary in the DOM so will get form submissions unless we make it not a submit.
-          type="button"
           label={this.props.cancelButton || _t('Cancel')}
           onPress={this._onCancelClick}
           // className={this.props.cancelButtonClass}
@@ -104,6 +104,7 @@ export default class DialogButtons extends React.Component {
         {cancelButton}
         {this.props.children}
         <Button
+          raised
           type={this.props.primaryIsSubmit ? 'submit' : 'button'}
           label={this.props.primaryButton}
           onPress={this.props.onPrimaryButtonClick}

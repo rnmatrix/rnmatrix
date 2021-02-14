@@ -9,16 +9,13 @@ export default function ReadReceipts({ receipts, isMe = false }) {
   const user = matrix.getMyUser();
   return (
     <View
-      style={[
-        styles.wrapper,
-        theme.margin,
-        { justifyContent: isMe ? 'flex-end' : 'flex-start' },
-      ]}>
+      style={[styles.wrapper, theme.margin, { justifyContent: isMe ? 'flex-end' : 'flex-start' }]}>
       {receipts
         .slice(0, 5)
         .filter((r) => r.userId !== user.id)
         .map((r) => (
           <Avatar
+            key={r.userId}
             name={r.name}
             avatarURI={r.avatar}
             size={20}
@@ -26,9 +23,7 @@ export default function ReadReceipts({ receipts, isMe = false }) {
           />
         ))}
 
-      {receipts.length > 5 && (
-        <Text style={isMeStyle(isMe)}>+{receipts.length - 5}</Text>
-      )}
+      {receipts.length > 5 && <Text style={isMeStyle(isMe)}>+{receipts.length - 5}</Text>}
     </View>
   );
 }

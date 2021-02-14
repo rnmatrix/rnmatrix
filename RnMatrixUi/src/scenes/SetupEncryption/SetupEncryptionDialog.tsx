@@ -16,6 +16,7 @@ limitations under the License.
 
 import {
   PHASE_DONE,
+  PHASE_FINISHED,
   SetupEncryptionStore,
 } from '@rn-matrix/core/src/react-sdk-utils/stores/SetupEncryptionStore';
 import PropTypes from 'prop-types';
@@ -39,7 +40,9 @@ const _t = (s, obj?) => {
 //   }
 // }
 
-export default class SetupEncryptionDialog extends React.Component {
+export default class SetupEncryptionDialog extends React.Component<any> {
+  static route = 'SetupEncryptionDialog';
+
   static propTypes = {
     onFinished: PropTypes.func.isRequired,
   };
@@ -59,6 +62,10 @@ export default class SetupEncryptionDialog extends React.Component {
 
   componentWillUnmount() {
     this.store.removeListener('update', this._onStoreUpdate);
+
+    if (this.store.phase !== PHASE_DONE && this.store.phase !== PHASE_FINISHED) {
+      this.store.returnAfterSkip();
+    }
   }
 
   _onStoreUpdate = () => {
@@ -67,12 +74,15 @@ export default class SetupEncryptionDialog extends React.Component {
 
   onClose = () => {
     this.props.navigation.goBack();
-  }
+  };
+
+  onSkipBackClick = () => {
+    this.store.returnAfterSkip();
+  };
 
   render() {
     return (
-      <BaseDialog title={_t('Verify this session')}>
-        <Text>{this.state.phase}</Text>
+      <BaseDialog onBack={this.onSkipBackClick} title={_t('Verify this session')}>
         <SetupEncryptionBody onFinished={this.onClose} />
       </BaseDialog>
     );

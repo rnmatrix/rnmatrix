@@ -6,6 +6,7 @@ import ThemedStyles from '../styles/ThemedStyles';
 export type MenuItemItem = {
   onPress?: () => void;
   title: string | JSX.Element;
+  description?: string | JSX.Element;
   icon?:
     | {
         name: string;
@@ -21,6 +22,8 @@ export type MenuItemPropsType = {
   component?: any;
   containerItemStyle?: {} | [];
   titleStyle?: TextStyle | Array<TextStyle>;
+  chevronStyle?: TextStyle | Array<TextStyle>;
+  disabled?: boolean;
   testID?: string;
 };
 
@@ -30,6 +33,8 @@ export default function ({
   containerItemStyle,
   testID,
   titleStyle,
+  chevronStyle,
+  disabled,
 }: MenuItemPropsType) {
   const theme = ThemedStyles.style;
 
@@ -48,17 +53,18 @@ export default function ({
   const isIconElement = item.icon && !('name' in item.icon);
 
   // ListItem Chevron Style
-  let chevronStyle: undefined | object;
+  let _chevronStyle: undefined | object;
   if (!item.noIcon && !isIconElement) {
-    chevronStyle = {
+    _chevronStyle = {
       ...theme.colorIcon,
       size: 24,
       type: 'ionicon',
       name: 'chevron-forward',
+      ...chevronStyle,
     };
 
     if (item.icon && !isIconElement) {
-      chevronStyle = { ...chevronStyle, ...item.icon };
+      _chevronStyle = { ..._chevronStyle, ...item.icon };
     }
   }
 
@@ -67,11 +73,15 @@ export default function ({
       Component={component}
       onPress={item.onPress}
       containerStyle={containerStyle}
+      disabled={disabled}
       testID={testID}>
-      <ListItem.Content>
+      <ListItem.Content style={{ height: 70 }}>
         <ListItem.Title style={[theme.listItemTitle, titleStyle]}>{item.title}</ListItem.Title>
+        {Boolean(item.description) && (
+          <ListItem.Subtitle style={theme.colorTertiaryText}>{item.description}</ListItem.Subtitle>
+        )}
       </ListItem.Content>
-      {chevronStyle && <ListItem.Chevron {...chevronStyle} />}
+      {_chevronStyle && <ListItem.Chevron {..._chevronStyle} />}
       {isIconElement && item.icon}
     </ListItem>
   );

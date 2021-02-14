@@ -36,8 +36,8 @@ export default function LoginForm({ onLogin }) {
   }, [onLogin, username, password, homeserver]);
 
   const inputStyles = useMemo(() => [
-    styles.input,
     theme.input,
+    styles.input,
   ], [theme])
 
   return (
@@ -99,8 +99,8 @@ export default function LoginForm({ onLogin }) {
 
 const styles = StyleSheet.create({
   label: {
-    fontSize: 14,
-    fontWeight: '600',
+    fontSize: 16,
+    fontWeight: '800',
     opacity: 0.8,
     color: 'dodgerblue',
     marginTop: 24,
@@ -114,8 +114,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 18,
     width: '90%',
     borderRadius: 8,
-    borderWidth: 2,
-    borderColor: 'dodgerblue',
     fontSize: 16,
   },
   button: {

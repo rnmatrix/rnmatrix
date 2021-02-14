@@ -1,22 +1,23 @@
-import '../utilities/poly';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import loglevel from 'loglevel';
-import matrixSdk, { EventTimeline, MemoryStore, AutoDiscovery } from 'matrix-js-sdk';
-import { crossSigningCallbacks } from '../react-sdk-utils/SecurityManager'
-import DeviceListener from '../react-sdk-utils/DeviceListener'
+import matrixSdk, { AutoDiscovery, MemoryStore } from 'matrix-js-sdk';
+import { verificationMethods } from 'matrix-js-sdk/src/crypto';
+import Olm from 'olm/olm_legacy';
 import { BehaviorSubject } from 'rxjs';
 import request from 'xmlhttp-request';
-import AsyncStorage from '@react-native-community/async-storage';
+import DeviceListener from '../react-sdk-utils/DeviceListener';
+import { crossSigningCallbacks } from '../react-sdk-utils/SecurityManager';
 import AsyncCryptoStore from '../storage/AsyncCryptoStore';
-import Olm from 'olm/olm_legacy';
-import { toImageBuffer } from '../utilities/misc';
 import i18n from '../utilities/i18n';
+import { toImageBuffer } from '../utilities/misc';
+import '../utilities/poly';
 
 const debug = require('debug')('rnm:matrix.js');
 // We need to put matrix logs to silent otherwise it throws exceptions we can't
 // catch
-const logger = loglevel.getLogger('matrix');
-logger.setLevel('silent');
+// const logger = loglevel.getLogger('matrix');
+// logger.setLevel('silent');
 
 /**
  * FIXME: this is temporary until we find a better place to call this.
@@ -40,7 +41,8 @@ const MATRIX_CLIENT_START_OPTIONS = {
     getLocalTrustedBackupPubKey: () => null,
     setLocalTrustedBackupPubKey: () => null,
   }, // js-sdk complains if this isn't supplied but it's only used for remembering a local trusted backup key
-  cryptoCallbacks: crossSigningCallbacks
+  cryptoCallbacks: crossSigningCallbacks,
+  verificationMethods: [verificationMethods.SAS],
 };
 
 class MatrixService {
@@ -129,6 +131,7 @@ class MatrixService {
     }
 
     DeviceListener.makeShared().start();
+    SetupEncryptionStore.makeShared().start();
 
     this._started = true;
     debug('Matrix client started');

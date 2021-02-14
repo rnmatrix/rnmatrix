@@ -100,7 +100,7 @@ const RoomListItem: React.FC<RoomListItemProps> = ({
               ellipsizeMode="tail"
               highlightStyle={[styles.highlightStyle, theme.colorPrimaryText]}
               searchWords={highlights}
-              textToHighlight={body || snippet?.content}
+              textToHighlight={body || snippet?.content || ''}
             />
           </View>
         </View>

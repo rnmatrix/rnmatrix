@@ -144,7 +144,7 @@ export default function MessageList({
     /**
      * Todo handle loading from both sides
      * */
-    if (true) {
+    if (isLoading) {
       timeline[timeline.length - 1]?.data.push('loading');
     }
 

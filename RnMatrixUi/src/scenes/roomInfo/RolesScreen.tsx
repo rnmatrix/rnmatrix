@@ -145,6 +145,8 @@ type RolesScreenProps = {
 };
 
 export default class RolesScreen extends React.Component<RolesScreenProps> {
+  static route = 'MessengerRolesScreen'
+
   componentDidMount(): void {
     matrix.getClient().on('RoomState.members', this._onRoomMembership);
   }

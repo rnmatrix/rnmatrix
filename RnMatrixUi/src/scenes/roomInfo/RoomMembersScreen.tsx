@@ -144,4 +144,6 @@ const RoomMembersScreen = ({ route, navigation }: RoomMembersScreenProps) => {
   );
 };
 
+RoomMembersScreen.route = 'MessengerRoomMembersScreen';
+
 export default RoomMembersScreen;

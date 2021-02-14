@@ -34,11 +34,7 @@ const RoomInfoScreen = ({ route, navigation }: RoomInfoScreenProps) => {
   const theme = ThemedStyles.style;
   const name = useObservableState<string>(room.name$);
   const cli = useMemo(() => matrix.getClient(), []);
-  const { canEdit } = useRoomPermissions(
-    cli,
-    room._matrixRoom,
-    matrix.getMyUser()._matrixUser,
-  );
+  const { canEdit } = useRoomPermissions(cli, room._matrixRoom, matrix.getMyUser()._matrixUser);
 
   return (
     <>
@@ -54,8 +50,7 @@ const RoomInfoScreen = ({ route, navigation }: RoomInfoScreenProps) => {
         <MenuItem
           item={{
             title: 'Roles and Permissions', // TODO: translate
-            onPress: () =>
-              navigation.navigate('MessengerRolesScreen', { roomId: room.id }),
+            onPress: () => navigation.navigate('MessengerRolesScreen', { roomId: room.id }),
           }}
         />
 
@@ -66,5 +61,7 @@ const RoomInfoScreen = ({ route, navigation }: RoomInfoScreenProps) => {
     </>
   );
 };
+
+RoomInfoScreen.route = 'MessengerRoomInfoScreen';
 
 export default RoomInfoScreen;

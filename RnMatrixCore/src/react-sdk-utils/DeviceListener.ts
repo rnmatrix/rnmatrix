@@ -271,10 +271,6 @@ export default class DeviceListener {
         if (device.deviceId === cli.deviceId) continue;
 
         const deviceTrust = await cli.checkDeviceTrust(cli.getUserId(), device.deviceId);
-        console.log('deviceTrust.isCrossSigningVerified()', deviceTrust.isCrossSigningVerified())
-        console.log('this.dismissed', this.dismissed)
-        console.log('device.deviceId', device.deviceId)
-        console.log('this.dismissed.has(device.deviceId)', this.dismissed.has(device.deviceId))
         if (!deviceTrust.isCrossSigningVerified() && !this.dismissed.has(device.deviceId)) {
           if (this.ourDeviceIdsAtStart!.has(device.deviceId)) {
             oldUnverifiedDeviceIds.add(device.deviceId);

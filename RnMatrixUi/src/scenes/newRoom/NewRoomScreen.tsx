@@ -447,6 +447,8 @@ const NewRoomScreen = ({ navigation, route }: NewRoomScreenSheetProps) => {
   );
 };
 
+NewRoomScreen.route = 'MessengerNewRoom';
+
 export default NewRoomScreen;
 
 const styles = StyleSheet.create({

@@ -15,10 +15,11 @@ const _t = (s, obj?) => {
 };
 
 interface BaseDialogProps {
-  title: string,
+  title: string;
+  onBack: any;
 }
 
-const BaseDialog: FC<BaseDialogProps> = ({ children }) => {
+const BaseDialog: FC<BaseDialogProps> = ({ children, onBack, title }) => {
   const theme = ThemedStyles.style;
 
   const insets = useSafeAreaInsets();
@@ -29,9 +30,9 @@ const BaseDialog: FC<BaseDialogProps> = ({ children }) => {
     []
   );
 
-  const onBack = useCallback(() => {
-    // go back please
-  }, []);
+  // const onBack = useCallback(() => {
+  //   // go back please
+  // }, []);
 
   return (
     <View style={[cleanTop, styles.container, theme.backgroundPrimary]}>
@@ -41,7 +42,7 @@ const BaseDialog: FC<BaseDialogProps> = ({ children }) => {
             <Text style={[theme.fontL, theme.bold]}>Close</Text>
           </Pressable>
         }
-        title={_t('New session')}
+        title={title}
         // rightIcon={
         //   loading ? (
         //     <View style={styles.headerRightIconWrapper}>
@@ -55,9 +56,7 @@ const BaseDialog: FC<BaseDialogProps> = ({ children }) => {
         // }
       />
 
-      <View style={{ padding: 16 }}>
-        {children}
-      </View>
+      {children}
     </View>
   );
 };

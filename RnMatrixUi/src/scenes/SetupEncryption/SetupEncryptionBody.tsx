@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import { matrix } from '@rn-matrix/core';
 import {
   PHASE_BUSY,
   PHASE_CONFIRM_SKIP,
@@ -25,8 +26,14 @@ import {
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Text, View } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import Button from '../../common/Button';
+import MenuItem from '../../common/MenuItem';
 import Spinner from '../../common/Spinner';
+import Config from '../../Config';
+import ThemedStyles from '../../styles/ThemedStyles';
+import E2EIcon from '../../utilities/E2EIcon';
+import EncryptionPanel from '../../components/EncryptionPanel';
 
 // TODO: translate
 const _t = (s, obj?) => {
@@ -93,9 +100,7 @@ export default class SetupEncryptionBody extends React.Component<
   }
 
   _onUsePassphraseClick = async () => {
-    console.log('_onUsePassphraseClick')
     const store = SetupEncryptionStore.sharedInstance();
-    console.log('store', store)
     store.usePassPhrase();
   };
 
@@ -120,19 +125,18 @@ export default class SetupEncryptionBody extends React.Component<
   };
 
   render() {
+    const theme = ThemedStyles.style;
     const { phase } = this.state;
 
     if (this.state.verificationRequest) {
-      return <Text>Verification request</Text>;
-      // FIXME
-      // return (
-      //   <EncryptionPanel
-      //     layout="dialog"
-      //     verificationRequest={this.state.verificationRequest}
-      //     onClose={this.props.onFinished}
-      //     member={matrix.getClient().getUser(this.state.verificationRequest.otherUserId)}
-      //   />
-      // );
+      return (
+        <EncryptionPanel
+          layout="dialog"
+          verificationRequest={this.state.verificationRequest}
+          onClose={this.onSkipBackClick}
+          member={matrix.getClient().getUser(this.state.verificationRequest.otherUserId)}
+        />
+      );
     } else if (phase === PHASE_INTRO) {
       const store = SetupEncryptionStore.sharedInstance();
       let recoveryKeyPrompt;
@@ -145,80 +149,122 @@ export default class SetupEncryptionBody extends React.Component<
       let useRecoveryKeyButton;
       if (recoveryKeyPrompt) {
         useRecoveryKeyButton = (
-          <Button kind="link" onPress={this._onUsePassphraseClick} label={recoveryKeyPrompt}/>
+          <MenuItem
+            containerItemStyle={theme.backgroundPrimary}
+            item={{
+              title: recoveryKeyPrompt, // TODO: translate
+              description: "If you can't access an existing session", // TODO: translate
+              onPress: this._onUsePassphraseClick,
+            }}
+          />
         );
       }
 
       // FIXMe
-      const brand = 'Minds';
+      const brand = Config.brand;
 
       return (
-        <View>
-          <Text>
-            {_t(
-              'Confirm your identity by verifying this login from one of your other sessions, ' +
-                'granting it access to encrypted messages.'
-            )}
-          </Text>
-          <Text>{_t('This requires the latest {{brand}}s on your other devices:', { brand })}</Text>
+        <>
+          <View style={theme.padding4x}>
+            <Text>
+              {_t(
+                'Confirm your identity by verifying this login from one of your other sessions, ' +
+                  'granting it access to encrypted messages.'
+              )}
+            </Text>
+            <Text style={theme.marginTop2x}>
+              {_t('This requires the latest {{brand}} version on your other devices:', { brand })}
+            </Text>
+          </View>
 
-          <View>
-            <View>
-              <Text>{_t('{{brand}}s Web', { brand })}</Text>
-              <Text>{_t('{{brand}}s Desktop', { brand })}</Text>
+          <View style={[theme.rowJustifyStart, theme.marginVertical4x, theme.marginHorizontal8x]}>
+            <View style={[theme.flexContainer, theme.alignCenter]}>
+              <Icon
+                name={'desktop-mac'}
+                size={49}
+                color={theme.colorPrimaryText.color}
+                style={theme.marginBottom}
+              />
+              <Text>Minds.com</Text>
             </View>
-            <View>
-              <Text>{_t('{{brand}}s iOS', { brand })}</Text>
-              <Text>{_t('{{brand}}s Android', { brand })}</Text>
+            <View style={[theme.flexContainer, theme.alignCenter]}>
+              <Icon
+                name={'phone-iphone'}
+                size={49}
+                color={theme.colorPrimaryText.color}
+                style={theme.marginBottom}
+              />
+              <Text>{_t('{{brand}} iOS', { brand })}</Text>
+              <Text>{_t('{{brand}} Android', { brand })}</Text>
             </View>
-            <Text>{_t('or another cross-signing capable Matrix client')}</Text>
           </View>
 
           <View>
             {useRecoveryKeyButton}
-            <Button kind="danger" onPress={this.onSkipClick} label={_t('Skip')} />
+            <MenuItem
+              containerItemStyle={[theme.backgroundPrimary, { borderTopWidth: 0 }]}
+              titleStyle={{ color: theme.backgroundDanger.backgroundColor }}
+              chevronStyle={{ color: theme.backgroundDanger.backgroundColor }}
+              item={{
+                title: _t('Skip'), // TODO: translate
+                onPress: this.onSkipClick,
+              }}
+            />
           </View>
-        </View>
+        </>
       );
     } else if (phase === PHASE_DONE) {
       let message;
       if (this.state.backupInfo) {
-        message = (
-          <Text>
-            {_t(
-              'Your new session is now verified. It has access to your ' +
-                'encrypted messages, and other users will see it as trusted.'
-            )}
-          </Text>
+        message = _t(
+          'Your new session is now verified. It has access to your ' +
+            'encrypted messages, and other users will see it as trusted.'
         );
       } else {
-        message = (
-          <Text>{_t('Your new session is now verified. Other users will see it as trusted.')}</Text>
-        );
+        message = _t('Your new session is now verified. Other users will see it as trusted.');
       }
       return (
-        <View>
-          <View />
-          {message}
-          <View>
-            <Button kind="primary" onPress={this.onDoneClick} label={_t('Done')} />
+        <View style={ThemedStyles.style.padding2x}>
+          <Text style={[ThemedStyles.style.fontXXL, ThemedStyles.style.marginBottom]}>
+            {_t('Verified')}
+          </Text>
+          <Text>{message}</Text>
+          <View style={[ThemedStyles.style.centered, ThemedStyles.style.marginBottom2x]}>
+            <E2EIcon isUser={true} status="verified" size={128} hideTooltip={true} />
           </View>
+          <Button raised type="success" onPress={this.onDoneClick} label={_t('Got it')} />
         </View>
       );
     } else if (phase === PHASE_CONFIRM_SKIP) {
       return (
-        <View>
-          <Text>
+        <>
+          <Text style={theme.padding4x}>
             {_t(
               'Without completing security on this session, it won’t have ' +
                 'access to encrypted messages.'
             )}
           </Text>
           <View>
-            <Button kind="secondary" onPress={this.onSkipConfirmClick} label={_t('Skip')} />
-            <Button kind="danger" onPress={this.onSkipBackClick} label={_t('Go Back')} />
+            <MenuItem
+              containerItemStyle={theme.backgroundPrimary}
+              titleStyle={{ color: theme.backgroundDanger.backgroundColor }}
+              chevronStyle={{ color: theme.backgroundDanger.backgroundColor }}
+              item={{
+                title: _t('Skip'), // TODO: translate
+                onPress: this.onSkipConfirmClick,
+              }}
+            />
+            <MenuItem
+              containerItemStyle={[theme.backgroundPrimary, { borderTopWidth: 0 }]}
+              titleStyle={theme.colorLink}
+              chevronStyle={theme.colorLink}
+              item={{
+                title: _t('Go Back'), // TODO: translate
+                onPress: this.onSkipBackClick,
+              }}
+            />
           </View>
-        </View>
+        </>
       );
     } else if (phase === PHASE_BUSY) {
       return <Spinner />;

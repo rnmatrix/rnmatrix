@@ -15,10 +15,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import PropTypes from 'prop-types';
 import React from 'react';
-import { View } from 'react-native';
-import Button from '../common/Button';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import ThemedStyles from '../styles/ThemedStyles';
 
 // TODO: translate
 const _t = (s, obj) => s;
@@ -36,7 +35,7 @@ const crossSigningUserTitles = {
   [E2E_STATE.WARNING]: _td('This user has not verified all of their sessions.'),
   [E2E_STATE.NORMAL]: _td('You have not verified this user.'),
   [E2E_STATE.VERIFIED]: _td(
-    'You have verified this user. This user has verified all of their sessions.',
+    'You have verified this user. This user has verified all of their sessions.'
   ),
 };
 const crossSigningRoomTitles = {
@@ -45,8 +44,7 @@ const crossSigningRoomTitles = {
   [E2E_STATE.VERIFIED]: _td('Everyone in this room is verified'),
 };
 
-const E2EIcon = ({ isUser, status, className, size, onPress, bordered }) => {
-    return null;
+const E2EIcon = ({ isUser, status, className, size, onPress, bordered, hideTooltip }: any) => {
   // const classes = classNames(
   //   {
   //     mx_E2EIcon: true,
@@ -58,24 +56,44 @@ const E2EIcon = ({ isUser, status, className, size, onPress, bordered }) => {
   //   className,
   // );
 
-  let style;
-  if (size) {
-    style = { width: `${size}px`, height: `${size}px` };
+  // let style;
+  // if (size) {
+  //   style = { width: `${size}px`, height: `${size}px` };
+  // }
+  //
+  // if (onPress) {
+  //   return <Button onPress={onPress} style={style} />;
+  // }
+
+  let icon: any = null;
+
+  switch (status) {
+    case E2E_STATE.WARNING:
+      icon = (
+        <Icon
+          name={'shield-alert'}
+          size={size}
+          color={ThemedStyles.getColor('danger_background')}
+        />
+      );
+      break;
+    case E2E_STATE.NORMAL:
+      icon = <Icon name={'shield'} size={size} color={ThemedStyles.getColor('icon')} />;
+      break;
+    case E2E_STATE.VERIFIED:
+      icon = <Icon name={'shield-check'} size={size} color={ThemedStyles.getColor('adminBadge')} />;
+      break;
   }
 
-  if (onPress) {
-    return <Button onPress={onPress} style={style} />;
-  }
-
-  return <View style={style} />;
+  return icon;
 };
 
-E2EIcon.propTypes = {
-  isUser: PropTypes.bool,
-  status: PropTypes.oneOf(Object.values(E2E_STATE)),
-  className: PropTypes.string,
-  size: PropTypes.number,
-  onPress: PropTypes.func,
-};
+// E2EIcon.propTypes = {
+//   isUser: PropTypes.bool,
+//   status: PropTypes.oneOf(Object.values(E2E_STATE)),
+//   className: PropTypes.string,
+//   size: PropTypes.number,
+//   onPress: PropTypes.func,
+// };
 
 export default E2EIcon;
