@@ -1,12 +1,10 @@
 import React from 'react';
 import { Text } from 'react-native';
-import EventTypes from '../../../types/EventTypes';
-import MatrixEvent from '../../../types/MatrixEvent';
 import EventMessage from './EventMessage';
 import MessageWrapper from './MessageWrapper';
 import TextMessage from './TextMessage';
-import { matrix } from '../../../../index';
 import ImageMessage from './ImageMessage';
+import rnm, {EventTypes, MatrixEvent} from '@rn-matrix/core'
 
 type Props = {
   item: MatrixEvent;
@@ -26,7 +24,7 @@ export default function MessageItem({
   const content = event.getContent();
   if (!content || event.isRedacted()) return null;
 
-  const isMe = matrix.getClient().getUserId() === event.getSender();
+  const isMe = rnm.getClient().getUserId() === event.getSender();
 
   const renderMessageType = () => {
     const messageProps = { event, isMe };

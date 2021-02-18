@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dimensions, Text, Image } from 'react-native';
-import { matrix } from '../../../../index';
+import rnm from '@rn-matrix/core'
 
 export default function ImageMessage({ event }) {
   const content = event.getContent();
@@ -21,7 +21,7 @@ export default function ImageMessage({ event }) {
     <Image
       style={imageStyles}
       source={{
-        uri: matrix.getHttpUrl(content.url),
+        uri: rnm.getHttpUrl(content.url),
       }}
     />
   );

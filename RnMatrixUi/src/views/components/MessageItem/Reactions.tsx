@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
-import { matrix } from '../../../../index';
+import rnm from '@rn-matrix/core';
 
 export default function Reactions({ room, event, isMe }) {
   const [reactions, setReactions] = useState(undefined);
@@ -31,7 +31,7 @@ export default function Reactions({ room, event, isMe }) {
         if (!count) {
           return null;
         }
-        const userId = matrix.getClient().getUserId();
+        const userId = rnm.getClient().getUserId();
         const myReactions = reactions.getAnnotationsBySender()[userId];
         const myReactionEvent =
           myReactions &&

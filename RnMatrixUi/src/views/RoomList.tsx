@@ -1,12 +1,12 @@
 import React, { useCallback } from 'react';
-import { ActivityIndicator, FlatList, View } from 'react-native';
-import { useMatrix, useRoomList } from '../hooks';
-// import RoomInviteItem from './components/RoomInviteItem';
+import { ActivityIndicator, FlatList, View, Text } from 'react-native';
+import { useMatrix, useRoomList } from '@rn-matrix/core';
+import RoomInviteItem from './components/RoomInviteItem';
 import RoomListItem from './components/RoomListItem';
 
-export default function RoomList({ onRowPress, renderListItem = undefined }) {
+export default function RoomList({ onRowPress, renderListItem = undefined, renderInvite = undefined }) {
   const { isReady, isSynced } = useMatrix();
-  const { roomList } = useRoomList();
+  const { roomList, inviteList, updateLists } = useRoomList();
 
   const renderRow = ({ item }) => {
     // We define the snippet out here so that the memoized RoomListItem will
@@ -18,9 +18,9 @@ export default function RoomList({ onRowPress, renderListItem = undefined }) {
     return <RoomListItem key={item.id} room={item} snippet={snippet} onPress={onRowPress} />;
   };
 
-  // const renderInviteRow = ({ item }) => {
-  //   return <RoomInviteItem key={item.id} room={item} />;
-  // };
+  const renderInviteRow = ({ item }) => {
+    return <RoomInviteItem key={item.id} room={item} updateLists={updateLists} />;
+  };
 
   if (!isReady || !isSynced) {
     return (
@@ -30,20 +30,20 @@ export default function RoomList({ onRowPress, renderListItem = undefined }) {
     );
   }
 
-  // const InviteList = () => (
-  //   <>
-  //     {inviteList.map((item) =>
-  //       renderInvite ? renderInvite({ item }) : renderInviteRow({ item })
-  //     )}
-  //   </>
-  // );
+  const InviteList = () => (
+    <>
+      {inviteList.map((item) =>
+        renderInvite ? renderInvite({ item }) : renderInviteRow({ item })
+      )}
+    </>
+  );
 
   return (
     <FlatList
       data={roomList}
       renderItem={renderListItem ? renderListItem : renderRow}
       keyExtractor={(item) => item.id}
-      // ListHeaderComponent={InviteList}
+      ListHeaderComponent={InviteList}
     />
   );
 }

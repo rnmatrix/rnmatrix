@@ -9,15 +9,15 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
-import MessageItem from './components/MessageItem';
-import Composer from './Composer';
-import { colors } from '../constants';
+// import Composer from './Composer';
+// import { colors } from '../constants';
 import { useTimeline } from '@rn-matrix/core';
-import { Room } from 'matrix-js-sdk/src/models/room';
-import Icon from './components/Icon';
+// import { Room } from 'matrix-js-sdk/src/models/room';
+// import Icon from './components/Icon';
+import MessageItem from './components/MessageItem';
 
 type Props = {
-  room: Room;
+  room: any;
   keyboardOffset?: number;
   showReactions?: boolean;
   enableComposer?: boolean;
@@ -57,7 +57,8 @@ export default function MessageList({
   renderScrollToBottom = undefined,
 }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { timeline, usersTyping, fetchPreviousMessages } = useTimeline(room);
+  const { timeline, updates, usersTyping, fetchPreviousMessages } = useTimeline(room);
+  console.log({ updates });
 
   const listRef = useRef();
 
@@ -68,7 +69,6 @@ export default function MessageList({
    * const start = !this._matrixRoom.getLiveTimeline().getPaginationToken(EventTimeline.BACKWARDS);
    */
   const handleEndReached = async () => {
-    console.log('handle end reached');
     if (!isLoading) {
       setIsLoading(true);
       await fetchPreviousMessages();
@@ -77,27 +77,17 @@ export default function MessageList({
   };
 
   const renderMessageItem = ({ item, index }) => {
-    const content = item.getContent();
-    // console.log({key: typeof item.getId()})
-    if (!content) return null;
-    return <Text style={{ height: 50 }}>{content?.body}</Text>;
-    // return (
-    //   <MessageItem
-    //     roomId={room.id}
-    //     messageId={messageId}
-    //     prevMessageId={messageList[index + 1] ? messageList[index + 1] : null}
-    //     nextMessageId={messageList[index - 1] ? messageList[index - 1] : null}
-    //     onPress={onPress}
-    //     onLongPress={onLongPress}
-    //     onSwipe={onSwipe}
-    //     renderTypingIndicator={renderTypingIndicator}
-    //     showReactions={showReactions}
-    //     styles={styles}
-    //     myBubbleStyle={myBubbleStyle}
-    //     otherBubbleStyle={otherBubbleStyle}
-    //     accentColor={accentColor}
-    //   />
-    // );
+    const handleOnPress = () => onPress ? onPress(item) : undefined
+    const handleOnLongPress = () => onLongPress ? onLongPress(item) : undefined
+    return (
+      <MessageItem
+        item={item}
+        room={room}
+        shouldUpdate={updates.includes(item.getId())}
+        onPress={handleOnPress}
+        onLongPress={handleOnLongPress}
+      />
+    );
   };
 
   const messageItem = (args) => (renderMessage ? renderMessage(args) : renderMessageItem(args));
@@ -118,10 +108,10 @@ export default function MessageList({
         keyExtractor={(item) => item.getId()}
         ListHeaderComponent={typingIndicator}
         ListFooterComponent={loader}
-        style={{ paddingTop: 6 }}
+        style={{ paddingHorizontal: 12 }}
         {...flatListProps}
       />
-      {renderScrollToBottom ? (
+      {/* {renderScrollToBottom ? (
         renderScrollToBottom()
       ) : (
         <View style={{ position: 'absolute', bottom: 50, right: 50 }}>
@@ -131,20 +121,6 @@ export default function MessageList({
             <Text>V</Text>
           </TouchableOpacity>
         </View>
-      )}
-
-      {/* {enableComposer && (
-        <Composer
-          room={room}
-          isEditing={isEditing}
-          isReplying={isReplying}
-          selectedMessage={selectedMessage}
-          onEndEdit={onEndEdit}
-          onCancelReply={onCancelReply}
-          enableReplies={enableReplies}
-          composerStyle={composerStyle}
-          accentColor={accentColor}
-        />
       )} */}
     </Wrapper>
   );

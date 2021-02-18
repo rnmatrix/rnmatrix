@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import { textForEvent } from '../../../matrix-react/TextForEvent';
+import { textForEvent } from '@rn-matrix/core/src/matrix-react/TextForEvent';
 
 export default function EventMessage({ event }) {
   return event ? (

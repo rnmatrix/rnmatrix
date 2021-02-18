@@ -2,8 +2,8 @@ import { Room } from 'matrix-js-sdk/src/models/room';
 import React from 'react';
 // import { useObservableState } from 'observable-hooks';
 import { StyleSheet, TouchableHighlight, Image, View, Text } from 'react-native';
-import { textForEvent } from '../../matrix-react/TextForEvent';
-import rnm from '../../services/main';
+import { textForEvent } from '@rn-matrix/core/src/matrix-react/TextForEvent';
+import rnm from '@rn-matrix/core';
 // import moment from 'moment';
 // import Icon from './Icon';
 

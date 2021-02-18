@@ -1,25 +1,26 @@
 import React from 'react';
-// import {useObservableState} from 'observable-hooks';
-import {StyleSheet, TouchableHighlight, Image, View, Text} from 'react-native';
-import rnm from '../../services/main';
-// import Icon from './Icon';
-// import {matrix} from '@rn-matrix/core';
+import { StyleSheet, TouchableHighlight, Image, View, Text } from 'react-native';
+import rnm from '@rn-matrix/core';
 
 const avatarSize = 50;
 
-export default function RoomInviteItem({room}) {
-  // const name = useObservableState(room.name$);
-  // const avatar = useObservableState(room.avatar$);
+const RoomInviteItem = React.memo(({ room, updateLists }) => {
+  const name = room.name || room.getDefaultRoomName(rnm.getClient().getUserId());
 
-  const name = ''
-  const avatar = ''
+  const avatar = room.getAvatarUrl(
+    rnm.getClient().getHomeserverUrl(),
+    avatarSize,
+    avatarSize,
+    'crop',
+    false
+  );
 
   const joinRoom = () => {
-    rnm.joinRoom(room.id);
+    rnm.getClient().joinRoom(room.roomId).then(updateLists);
   };
 
   const rejectInvite = () => {
-    rnm.leaveRoom(room.id);
+    rnm.getClient().leaveRoom(room.roomId).then(updateLists);
   };
 
   return (
@@ -27,23 +28,19 @@ export default function RoomInviteItem({room}) {
       <View style={styles.rowWrapper}>
         {avatar ? (
           <Image
-            source={
-              room.getAvatarUrl(avatarSize)
-                ? {uri: room.getAvatarUrl(avatarSize)}
-                : {}
-            }
+            source={room.getAvatarUrl(avatarSize) ? { uri: room.getAvatarUrl(avatarSize) } : {}}
             style={styles.avatar}
           />
         ) : (
           <DefaultImage letter={name?.charAt(0)} />
         )}
 
-        <View style={{flex: 1, marginRight: 12, justifyContent: 'center'}}>
+        <View style={{ flex: 1, marginRight: 12, justifyContent: 'center' }}>
           <View style={styles.textWrapper}>
             <Text style={styles.title} numberOfLines={1}>
               {name}
             </Text>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <ResponseButton onPress={rejectInvite} />
               <ResponseButton accept onPress={joinRoom} />
             </View>
@@ -52,12 +49,13 @@ export default function RoomInviteItem({room}) {
       </View>
     </TouchableHighlight>
   );
-}
+})
+export default RoomInviteItem
 
-const ResponseButton = ({accept = false, onPress}) => (
+const ResponseButton = ({ accept = false, onPress }) => (
   <TouchableHighlight
     onPress={onPress}
-    style={{borderRadius: 30, marginRight: accept ? 0 : 12}}
+    style={{ borderRadius: 30, marginRight: accept ? 0 : 12 }}
     underlayColor="#222">
     <View
       style={{
@@ -68,20 +66,26 @@ const ResponseButton = ({accept = false, onPress}) => (
         alignItems: 'center',
         borderRadius: 30,
       }}>
-      <Icon
-        name={accept ? 'check' : 'close'}
-        size={accept ? 28 : 22}
-        color={accept ? 'darkgreen' : 'darkred'}
-      />
+      <Text
+        style={{
+          fontWeight: 'bold',
+          fontSize: accept ? 25 : 30,
+          color: '#00000075',
+          height: accept ? 30 : 40,
+          width: 40,
+          textAlign: 'center',
+        }}>
+        {accept ? '✓' : '×'}
+      </Text>
     </View>
   </TouchableHighlight>
 );
 
-const DefaultImage = ({letter}) => (
+const DefaultImage = ({ letter }) => (
   <View
     style={[
       styles.avatar,
-      {backgroundColor: '#666', justifyContent: 'center', alignItems: 'center'},
+      { backgroundColor: '#666', justifyContent: 'center', alignItems: 'center' },
     ]}>
     <Text style={styles.defaultAvatarLetter}>{letter?.toUpperCase()}</Text>
   </View>
@@ -93,6 +97,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderBottomColor: '#ccc',
     borderBottomWidth: 0.5,
+    height: 85,
   },
   avatar: {
     width: 50,

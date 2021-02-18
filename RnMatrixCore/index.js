@@ -16,6 +16,6 @@ import main from './src/services/main';
 export { matrix, matrixSdk, Chat, Message };
 
 export * from './src/hooks';
-export * from './src/views';
+export * from './src/types';
 
 export default main;
