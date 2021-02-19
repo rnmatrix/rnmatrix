@@ -123,7 +123,8 @@ export default function useTimeline(room) {
   };
 
   const sendReadReceipt = async () => {
-    const latestMessage = timeline.getEvents()[timeline.getEvents().length - 1];
+    const tl = room.getLiveTimeline()
+    const latestMessage = tl.getEvents()[tl.getEvents().length - 1];
     const readState = getReadState();
     if (readState === 'unread') {
       const matrixEvent = room.findEventById(latestMessage);

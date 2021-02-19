@@ -20,6 +20,8 @@ export default function MessageItem({
   shouldUpdate,
   onPress,
   onLongPress,
+  nextSame,
+  prevSame
 }: Props) {
   const content = event.getContent();
   if (!content || event.isRedacted()) return null;
@@ -33,6 +35,8 @@ export default function MessageItem({
         return <TextMessage {...messageProps} />;
       case 'm.image':
         return <ImageMessage {...messageProps} />;
+      case 'm.bad.encrypted':
+        return <Text>Unable to decrypt message.</Text>
       default:
         return <Text>msgtype {event.getContent().msgtype}</Text>;
     }
@@ -44,6 +48,8 @@ export default function MessageItem({
     isMe,
     onPress,
     onLongPress,
+    nextSame, 
+    prevSame
   };
 
   switch (event.getType()) {
@@ -60,6 +66,7 @@ export default function MessageItem({
       return <MessageWrapper {...roomMessageProps}>{renderMessageType()}</MessageWrapper>;
     case EventTypes.reaction:
     case EventTypes.roomRedaction:
+    case EventTypes.roomRelatedGroups:
       return null;
     default:
       return <Text>{event.getType()}</Text>;

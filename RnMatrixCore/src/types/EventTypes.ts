@@ -8,9 +8,9 @@ const EventTypes = {
   roomRedaction: 'm.room.redaction',
   roomName: 'm.room.name',
   reaction: 'm.reaction',
-  roomCreate: 'm.room.create',
   roomJoinRules: 'm.room.join_rules',
-  roomGuestAccess: 'm.room.guest_access'
+  roomGuestAccess: 'm.room.guest_access',
+  roomRelatedGroups: 'm.room.related_groups',
 };
 
 export default EventTypes;

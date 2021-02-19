@@ -11,7 +11,8 @@ import ActionSheet from '../../components/ActionSheet';
 import {useHeaderHeight} from '@react-navigation/stack';
 import EmojiButtons from './components/EmojiButtons';
 
-import rnm, {MessageList} from '@rn-matrix/core';
+import rnm from '@rn-matrix/core';
+import {MessageList} from '@rn-matrix/ui'
 
 export default function ChatScreen({navigation, route}) {
   const {roomId} = route.params;

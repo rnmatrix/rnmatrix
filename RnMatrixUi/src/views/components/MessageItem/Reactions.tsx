@@ -65,8 +65,8 @@ export default function Reactions({ room, event, isMe }) {
       style={{
         flexDirection: `row${isMe ? '-reverse' : ''}`,
         alignItems: 'center',
-        marginTop: 4,
-        marginBottom: 12,
+        // marginTop: 4,
+        marginBottom: 6,
       }}>
       {renderReactions()}
     </View>

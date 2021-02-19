@@ -19,7 +19,6 @@ import MessageItem from './components/MessageItem';
 type Props = {
   room: any;
   keyboardOffset?: number;
-  showReactions?: boolean;
   enableComposer?: boolean;
   isEditing?: Boolean;
   isReplying?: Boolean;
@@ -41,7 +40,6 @@ export default function MessageList({
   room,
   flatListProps,
   keyboardOffset = 0,
-  showReactions = true,
   enableComposer = false,
   isEditing = false,
   isReplying = false,
@@ -86,6 +84,8 @@ export default function MessageList({
         shouldUpdate={updates.includes(item.getId())}
         onPress={handleOnPress}
         onLongPress={handleOnLongPress}
+        nextSame={item.sender.userId === timeline[index + 1]?.sender?.userId}
+        prevSame={item.sender.userId === timeline[index - 1]?.sender?.userId}
       />
     );
   };

@@ -3,7 +3,8 @@ import { Text, View } from 'react-native';
 import { textForEvent } from '@rn-matrix/core/src/matrix-react/TextForEvent';
 
 export default function EventMessage({ event }) {
-  return event ? (
+  const message = textForEvent(event)
+  return event && message.length > 0 ? (
     <View
       style={{
         maxWidth: '75%',
@@ -15,7 +16,7 @@ export default function EventMessage({ event }) {
         marginVertical: 10,
       }}>
       <Text style={{ textAlign: 'center', fontWeight: '600', color: '#fff' }}>
-        {textForEvent(event)}
+        {message}
       </Text>
     </View>
   ) : null;
