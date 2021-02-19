@@ -3,6 +3,7 @@ import {SafeAreaView, Text} from 'react-native';
 import {RoomList} from '@rn-matrix/ui';
 
 export default function ChatListScreen({navigation}) {
+
   const onRowPress = (room) => {
     navigation.navigate('Chat', {roomId: room.roomId});
   };

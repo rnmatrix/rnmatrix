@@ -44,26 +44,6 @@ class RnMatrix {
   }
 
   /*************************************************
-   * VALUES
-   *************************************************/
-
-  // isReady$() {
-  //   return matrix.isReady$();
-  // }
-
-  // isSynced$() {
-  //   return matrix.isSynced$();
-  // }
-
-  // authIsLoaded$() {
-  //   return auth.isLoaded$();
-  // }
-
-  // isLoggedIn$() {
-  //   return auth.isLoggedIn$();
-  // }
-
-  /*************************************************
    * USER METHODS
    *************************************************/
 
@@ -77,12 +57,12 @@ class RnMatrix {
    *************************************************/
 
   async createRoom(options = {}) {
-    // const defaults = {
-    //   visibility: 'private',
-    //   invite: [], // list of user IDs
-    //   room_topic: '',
-    // };
-    // return chats.createChat({ ...defaults, ...options });
+    const defaults = {
+      visibility: 'private',
+      invite: [], // list of user IDs
+      room_topic: '',
+    };
+    return chats.createChat({ ...defaults, ...options });
   }
 
   async createEncryptedRoom(usersToInvite) {
@@ -157,7 +137,7 @@ class RnMatrix {
   }
 
   editMessage(roomId, messageId, newMessageContent) {
-    // messages.send(newMessageContent, 'm.edit', roomId, messageId);
+    messages.send(newMessageContent, 'm.edit', roomId, messageId);
   }
 
   /*************************************************
