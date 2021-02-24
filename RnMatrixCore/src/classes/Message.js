@@ -274,8 +274,13 @@ export default class Message {
         break;
       // Supported
       case 'm.room.encrypted':
+        // TODO: wait and update after it was decrypted
+        content.text = i18n.t('messages:content.encrypted');
+        content.html = i18n.t('messages:content.encrypted');
+        break;
       case 'm.bad.encrypted':
-        content.text = i18n.t('messages:content.badEncryption');
+        content.text = content.raw.body;
+        content.html = content.raw.body;
         break;
       case 'm.emote':
         content.text = `${sender} ${content.raw.body}`;
@@ -533,6 +538,8 @@ export default class Message {
 
   static isTextMessage(type) {
     if (type === 'm.text') return true;
+    if (type === 'm.room.encrypted') return true;
+    if (type === 'm.bad.encrypted') return true;
     return false;
   }
 }

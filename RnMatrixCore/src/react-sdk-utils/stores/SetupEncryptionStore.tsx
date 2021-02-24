@@ -26,9 +26,11 @@ export const PHASE_CONFIRM_SKIP = 3;
 export const PHASE_FINISHED = 4; //UX can be closed
 
 export class SetupEncryptionStore extends EventEmitter {
-    static sharedInstance() {
-        if (!global.mx_SetupEncryptionStore) global.mx_SetupEncryptionStore = new SetupEncryptionStore();
-        return global.mx_SetupEncryptionStore;
+    public static sharedInstance: SetupEncryptionStore;
+
+    static makeShared() {
+        SetupEncryptionStore.sharedInstance = new SetupEncryptionStore();
+        return SetupEncryptionStore.sharedInstance;
     }
 
     start() {

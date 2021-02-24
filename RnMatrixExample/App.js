@@ -12,7 +12,7 @@ debug.enable('rnm:*');
 matrix.initAuth();
 initUI({
   theme: 'dark',
-  brand: 'RnMatrix',
+  brand: 'RnMatrixExample',
 });
 
 let oldRender = Text.render;

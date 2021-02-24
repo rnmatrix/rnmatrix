@@ -56,7 +56,7 @@ export default function Button(props) {
             ...raisedStyle,
             backgroundColor: Color(ThemedStyles.style.backgroundSuccess.backgroundColor)
               .lighten(ThemedStyles.theme ? 1 : 0.8)
-              .darken(ThemedStyles.theme ? 0.8 : 1)
+              .darken(ThemedStyles.theme ? 0.8 : 0)
               .hex(),
           },
         ];
@@ -68,7 +68,7 @@ export default function Button(props) {
             ...raisedStyle,
             backgroundColor: Color(ThemedStyles.style.backgroundDanger.backgroundColor)
               .lighten(ThemedStyles.theme ? 1 : 0.8)
-              .darken(ThemedStyles.theme ? 0.8 : 1)
+              .darken(ThemedStyles.theme ? 0.8 : 0)
               .hex(),
           },
         ];
@@ -80,7 +80,7 @@ export default function Button(props) {
             ...raisedStyle,
             backgroundColor: Color(ThemedStyles.style.backgroundLink.backgroundColor)
               .lighten(ThemedStyles.theme ? 1 : 0.8)
-              .darken(ThemedStyles.theme ? 0.8 : 1)
+              .darken(ThemedStyles.theme ? 0.8 : 0)
               .hex(),
           },
         ];

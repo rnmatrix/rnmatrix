@@ -8,10 +8,14 @@ import { BehaviorSubject } from 'rxjs';
 import request from 'xmlhttp-request';
 import DeviceListener from '../react-sdk-utils/DeviceListener';
 import { crossSigningCallbacks } from '../react-sdk-utils/SecurityManager';
+import { SetupEncryptionStore } from '../react-sdk-utils/stores/SetupEncryptionStore';
 import AsyncCryptoStore from '../storage/AsyncCryptoStore';
 import i18n from '../utilities/i18n';
 import { toImageBuffer } from '../utilities/misc';
 import '../utilities/poly';
+
+const E2E_PREFIX = 'crypto.';
+const KEY_END_TO_END_TRUSTED_BACKUP_PUBKEY = E2E_PREFIX + "trusted_backup_pubkey";
 
 const debug = require('debug')('rnm:matrix.js');
 // We need to put matrix logs to silent otherwise it throws exceptions we can't
@@ -38,8 +42,12 @@ const MATRIX_CLIENT_START_OPTIONS = {
   }),
   cryptoStore: new AsyncCryptoStore(AsyncStorage),
   sessionStore: {
-    getLocalTrustedBackupPubKey: () => null,
-    setLocalTrustedBackupPubKey: () => null,
+    setLocalTrustedBackupPubKey: function (pubkey) {
+      return AsyncStorage.setItem(KEY_END_TO_END_TRUSTED_BACKUP_PUBKEY, pubkey);
+    },
+    getLocalTrustedBackupPubKey: function () {
+      return AsyncStorage.getItem(KEY_END_TO_END_TRUSTED_BACKUP_PUBKEY);
+    },
   }, // js-sdk complains if this isn't supplied but it's only used for remembering a local trusted backup key
   cryptoCallbacks: crossSigningCallbacks,
   verificationMethods: [verificationMethods.SAS],
@@ -121,7 +129,7 @@ class MatrixService {
 
     this._client.on('sync', this._onSyncEvent.bind(this));
     if (useCrypto) {
-      await Olm.init();
+      // await Olm.init();
       await this._client.initCrypto();
     }
     await this._client.startClient(MATRIX_CLIENT_START_OPTIONS);

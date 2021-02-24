@@ -93,29 +93,6 @@ export default function MessageList({
     }
   }, []);
 
-  const renderMessage: SectionListRenderItem<any> = useCallback(
-    ({ item: messageId, index }: SectionListRenderItemInfo<any>) => (
-      <Message
-        roomId={room.id}
-        messageId={messageId}
-        prevMessageId={messageList[index + 1] ? messageList[index + 1] : null}
-        nextMessageId={messageList[index - 1] ? messageList[index - 1] : null}
-        onPress={onPress}
-        onLongPress={onLongPress}
-        onSwipe={onSwipe}
-        renderTypingIndicator={renderTypingIndicator}
-        showReactions={showReactions}
-        styles={styles}
-        myBubbleStyle={myBubbleStyle}
-        otherBubbleStyle={otherBubbleStyle}
-        accentColor={accentColor}
-        customMessageRenderers={customMessageRenderers}
-        showSender={room._matrixRoom.getInvitedAndJoinedMemberCount() > 1} // FIXME
-      />
-    ),
-    [messageList, renderTypingIndicator, room, customMessageRenderers]
-  );
-
   useEffect(() => {
     // mark as read
     room.sendReadReceipt();
@@ -150,6 +127,31 @@ export default function MessageList({
 
     return timeline;
   }, [messageList, room, typing, isLoading]);
+
+  const renderMessage: SectionListRenderItem<any> = useCallback(
+    ({ item: messageId }: SectionListRenderItemInfo<any>) => {
+      const index = messageList?.findIndex(p => p === messageId)
+      return (
+        <Message
+          roomId={room.id}
+          messageId={messageId}
+          prevMessageId={messageList[index + 1] ? messageList[index + 1] : null}
+          nextMessageId={messageList[index - 1] ? messageList[index - 1] : null}
+          onPress={onPress}
+          onLongPress={onLongPress}
+          onSwipe={onSwipe}
+          renderTypingIndicator={renderTypingIndicator}
+          showReactions={showReactions}
+          styles={styles}
+          myBubbleStyle={myBubbleStyle}
+          otherBubbleStyle={otherBubbleStyle}
+          accentColor={accentColor}
+          customMessageRenderers={customMessageRenderers}
+          showSender={room._matrixRoom.getInvitedAndJoinedMemberCount() > 1} // FIXME
+        />
+      )    },
+    [messageList, renderTypingIndicator, room, customMessageRenderers]
+  );
 
   const [currentDate, setCurrentDate] = useState();
 

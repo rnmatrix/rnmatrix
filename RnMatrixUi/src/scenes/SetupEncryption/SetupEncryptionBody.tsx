@@ -67,7 +67,7 @@ export default class SetupEncryptionBody extends React.Component<
   constructor(props) {
     super(props);
 
-    const store = SetupEncryptionStore.sharedInstance();
+    const store = SetupEncryptionStore.sharedInstance;
     store.on('update', this._onStoreUpdate);
     store.start();
     this.state = {
@@ -81,7 +81,7 @@ export default class SetupEncryptionBody extends React.Component<
   }
 
   _onStoreUpdate = () => {
-    const store = SetupEncryptionStore.sharedInstance();
+    const store = SetupEncryptionStore.sharedInstance;
     if (store.phase === PHASE_FINISHED) {
       this.props.onFinished();
       return;
@@ -94,33 +94,33 @@ export default class SetupEncryptionBody extends React.Component<
   };
 
   componentWillUnmount() {
-    const store = SetupEncryptionStore.sharedInstance();
+    const store = SetupEncryptionStore.sharedInstance;
     store.off('update', this._onStoreUpdate);
     store.stop();
   }
 
   _onUsePassphraseClick = async () => {
-    const store = SetupEncryptionStore.sharedInstance();
+    const store = SetupEncryptionStore.sharedInstance;
     store.usePassPhrase();
   };
 
   onSkipClick = () => {
-    const store = SetupEncryptionStore.sharedInstance();
+    const store = SetupEncryptionStore.sharedInstance;
     store.skip();
   };
 
   onSkipConfirmClick = () => {
-    const store = SetupEncryptionStore.sharedInstance();
+    const store = SetupEncryptionStore.sharedInstance;
     store.skipConfirm();
   };
 
   onSkipBackClick = () => {
-    const store = SetupEncryptionStore.sharedInstance();
+    const store = SetupEncryptionStore.sharedInstance;
     store.returnAfterSkip();
   };
 
   onDoneClick = () => {
-    const store = SetupEncryptionStore.sharedInstance();
+    const store = SetupEncryptionStore.sharedInstance;
     store.done();
   };
 
@@ -138,7 +138,7 @@ export default class SetupEncryptionBody extends React.Component<
         />
       );
     } else if (phase === PHASE_INTRO) {
-      const store = SetupEncryptionStore.sharedInstance();
+      const store = SetupEncryptionStore.sharedInstance;
       let recoveryKeyPrompt;
       if (store.keyInfo && keyHasPassphrase(store.keyInfo)) {
         recoveryKeyPrompt = _t('Use Recovery Key or Passphrase');

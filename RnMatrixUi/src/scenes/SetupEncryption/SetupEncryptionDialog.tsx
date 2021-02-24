@@ -52,7 +52,7 @@ export default class SetupEncryptionDialog extends React.Component<any> {
   constructor(props) {
     super(props);
 
-    this.store = SetupEncryptionStore.sharedInstance();
+    this.store = SetupEncryptionStore.sharedInstance;
     this.state = { phase: this.store.phase };
   }
 

@@ -145,7 +145,7 @@ class AsyncCryptoStore {
     txn.wrap(async () => {
       const allKeys = await this.asyncStorage.getAllKeys();
 
-      const count = allKeys.filter(k => k.startsWith(E2E_PREFIX + 'sessions/')).length;
+      const count = allKeys.filter((k) => k.startsWith(E2E_PREFIX + 'sessions/')).length;
       func(count);
     });
   }
@@ -161,7 +161,7 @@ class AsyncCryptoStore {
     txn.wrap(async () => {
       const allKeys = await this.asyncStorage.getAllKeys();
       const sessions = {};
-      for (const k of allKeys.filter(k => k.startsWith(keyPrefixEndToEndSession(deviceKey)))) {
+      for (const k of allKeys.filter((k) => k.startsWith(keyPrefixEndToEndSession(deviceKey)))) {
         const sessionId = decodeURIComponent(k.split('/')[2]);
         sessions[sessionId] = await this._getJsonItem(keyEndToEndSession(deviceKey, sessionId));
       }
@@ -173,7 +173,7 @@ class AsyncCryptoStore {
   getAllEndToEndSessions(txn, func) {
     txn.wrap(async () => {
       const allKeys = this.asyncStorage.getAllKeys();
-      for (const k of allKeys.filter(x => x.startsWith(E2E_PREFIX + 'sessions/'))) {
+      for (const k of allKeys.filter((x) => x.startsWith(E2E_PREFIX + 'sessions/'))) {
         const deviceKey = k.split('/')[1];
         const sessionId = k.split('/')[2];
         const sessionInfo = await this._getJsonItem(keyEndToEndSession(deviceKey, sessionId));
@@ -260,7 +260,7 @@ class AsyncCryptoStore {
 
   getAllEndToEndInboundGroupSessions(txn, func) {
     txn.wrap(async () => {
-      const inboundGroupSessionKeys = (await this.asyncStorage.getAllKeys()).filter(k =>
+      const inboundGroupSessionKeys = (await this.asyncStorage.getAllKeys()).filter((k) =>
         k.startsWith(KEY_INBOUND_SESSION_PREFIX)
       );
 
@@ -297,6 +297,7 @@ class AsyncCryptoStore {
   }
 
   storeEndToEndInboundGroupSession(senderCurve25519Key, sessionId, sessionData, txn) {
+    debugger;
     txn.wrap(() => {
       return this._setJsonItem(
         keyEndToEndInboundGroupSession(senderCurve25519Key, sessionId),
@@ -340,7 +341,9 @@ class AsyncCryptoStore {
     txn.wrap(async () => {
       const prefix = keyEndToEndRoomsPrefix('');
 
-      const e2eRoomsKeys = (await this.asyncStorage.getAllKeys()).filter(k => k.startsWith(prefix));
+      const e2eRoomsKeys = (await this.asyncStorage.getAllKeys()).filter((k) =>
+        k.startsWith(prefix)
+      );
 
       const result = {};
       for (const k of e2eRoomsKeys) {
@@ -405,7 +408,7 @@ class AsyncCryptoStore {
    * @returns {Promise} Promise which resolves when the store has been cleared.
    */
   async deleteAllData() {
-    const allE2eStorageKeys = (await this.asyncStorage.getAllKeys()).filter(k =>
+    const allE2eStorageKeys = (await this.asyncStorage.getAllKeys()).filter((k) =>
       k.startsWith(E2E_PREFIX)
     );
 
@@ -489,13 +492,13 @@ class AsyncCryptoStore {
     return null;
   }
 
-  async getAllOutgoingRoomKeyRequestsByState(wantedStates) {
+  async getAllOutgoingRoomKeyRequestsByState(wantedState) {
     const reqs = [];
 
     const allRequestIds = await this._allOutgoingKeyRequestKeys();
     for (const reqId of allRequestIds) {
       const req = await this._getJsonItem(reqId);
-      if (wantedStates.includes(req.state)) {
+      if (wantedState === req.state) {
         reqs.push(req);
       }
     }
@@ -540,7 +543,7 @@ class AsyncCryptoStore {
 
   async _allOutgoingKeyRequestKeys() {
     const allKeys = await this.asyncStorage.getAllKeys();
-    return allKeys.filter(k => k.startsWith(KEY_OUTGOING_KEY_REQUEST));
+    return allKeys.filter((k) => k.startsWith(KEY_OUTGOING_KEY_REQUEST));
   }
 
   async _getJsonItem(key) {

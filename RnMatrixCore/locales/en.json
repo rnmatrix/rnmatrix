@@ -52,6 +52,7 @@
       "chatDescriptionChanged": "{{sender}} changed the chat description",
       "chatSettingsChanged": "{{sender}} changed the chat settings",
       "encryptNotSupport": "This app does not support encrypted messages yet",
+      "encrypted": "** Encrypted message **",
       "badEncryption": "** Unable to decrypt **",
       "locationSharingNotSupport": "This app does not support location sharing yet",
       "fileSharingNotSupport": "This app does not support file sharing yet",

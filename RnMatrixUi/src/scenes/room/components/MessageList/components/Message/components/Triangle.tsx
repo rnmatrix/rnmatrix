@@ -20,7 +20,7 @@ const Triangle = ({ isMe, color }: TriangleProps) => {
   return (
     <View
       style={{
-        width: 5,
+        width: 13,
         height: 10,
         position: 'absolute',
         bottom: 0,

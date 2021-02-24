@@ -44,7 +44,7 @@ export default class DMRoomMap {
         // see onAccountData
         this.hasSentOutPatchDirectAccountDataPatch = false;
 
-        const mDirectEvent = matrixClient.getAccountData('m.direct');
+        const mDirectEvent = matrixClient?.getAccountData('m.direct');
         this.mDirectEvent = mDirectEvent ? mDirectEvent.getContent() : {};
     }
 

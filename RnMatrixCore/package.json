@@ -43,7 +43,7 @@
     "lodash": "^4.17.20",
     "matrix-js-sdk": "^9.6.0",
     "observable-hooks": "^3.1.0",
-    "olm": "https://packages.matrix.org/npm/olm/olm-3.1.4.tgz",
+    "olm": "https://packages.matrix.org/npm/olm/olm-3.2.1.tgz",
     "react-i18next": "^11.7.0",
     "react-native-crypto": "^2.1.0",
     "react-native-level-fs": "^3.0.0",
