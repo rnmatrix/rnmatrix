@@ -25,6 +25,7 @@
     "fbemitter": "^2.1.1",
     "hermes-engine": "^0.7.2",
     "metro-config": "^0.65.0",
+    "mobx": "^5.15.4",
     "node-libs-react-native": "^1.2.0",
     "observable-hooks": "^3.1.0",
     "react": "17.0.1",
@@ -43,6 +44,7 @@
     "react-native-screens": "^2.10.1",
     "react-native-svg": "^12.1.0",
     "react-native-svg-transformer": "^0.14.3",
+    "react-native-threads": "^0.0.19",
     "react-native-video": "^5.1.0-alpha8",
     "react-native-webview": "^10.7.0",
     "vm-browserify": "^1.1.2"
