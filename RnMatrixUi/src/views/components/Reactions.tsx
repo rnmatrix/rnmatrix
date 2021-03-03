@@ -65,7 +65,6 @@ export default function Reactions({ room, event, isMe }) {
       style={{
         flexDirection: `row${isMe ? '-reverse' : ''}`,
         alignItems: 'center',
-        // marginTop: 4,
         marginBottom: 6,
       }}>
       {renderReactions()}
@@ -108,8 +107,8 @@ function ReactionBubble({ content, count, isMe, isMyReaction }) {
         marginLeft: isMe ? 6 : 0,
         marginRight: isMe ? 0 : 6,
       }}>
-      <Text style={{ fontSize: 22, marginRight: 4 }}>{content}</Text>
-      <Text style={{ fontSize: 18, fontWeight: '600' }}>{count}</Text>
+      <Text style={{ fontSize: 20, marginRight: 5 }}>{content}</Text>
+      <Text style={{ fontSize: 16, fontWeight: '600' }}>{count}</Text>
     </View>
   );
 }

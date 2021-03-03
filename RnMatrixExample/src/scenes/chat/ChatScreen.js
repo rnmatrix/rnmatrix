@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -28,9 +28,23 @@ export default function ChatScreen({navigation, route}) {
     setActionSheetVisible(true);
   };
 
+  const renderTypingIndicator = (typing) => {
+    return typing.list.length !== 0 ? (
+      <Text style={{marginLeft: 60, fontStyle: 'italic'}}>{typing.string}</Text>
+    ) : null;
+  };
+
+  useEffect(() => {
+    rnm.markAsRead(room)
+  }, [])
+
   return (
     <>
-      <MessageList room={room} onLongPress={handleLongMessagePress} />
+      <MessageList
+        room={room}
+        onLongPress={handleLongMessagePress}
+        renderTypingIndicator={renderTypingIndicator}
+      />
       <ActionSheet
         visible={actionSheetVisible}
         gestureEnabled={false}

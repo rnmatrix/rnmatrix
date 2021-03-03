@@ -3,10 +3,16 @@ import { ActivityIndicator, FlatList, View, Text } from 'react-native';
 import { useMatrix, useRoomList } from '@rn-matrix/core';
 import RoomInviteItem from './components/RoomInviteItem';
 import RoomListItem from './components/RoomListItem';
+import { textForEvent } from '@rn-matrix/core/src/matrix-react/TextForEvent';
 
 export default function RoomList({ onRowPress, renderListItem = undefined, renderInvite = undefined }) {
   const { isReady, isSynced } = useMatrix();
-  const { roomList, inviteList, updateLists } = useRoomList();
+  const { roomList, inviteList, updateLists, removeListeners } = useRoomList();
+
+  const handlePress = (item) => {
+    removeListeners()
+    onRowPress(item)
+  }
 
   const renderRow = ({ item }) => {
     // We define the snippet out here so that the memoized RoomListItem will
@@ -15,7 +21,7 @@ export default function RoomList({ onRowPress, renderListItem = undefined, rende
     try {
       snippet = item.timeline[item.timeline.length - 1];
     } catch {}
-    return <RoomListItem key={item.id} room={item} snippet={snippet} onPress={onRowPress} />;
+    return <RoomListItem key={item.id} room={item} snippet={snippet} onPress={handlePress} />;
   };
 
   const renderInviteRow = ({ item }) => {

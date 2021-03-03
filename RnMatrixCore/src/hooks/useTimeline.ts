@@ -32,8 +32,9 @@ export default function useTimeline(room) {
   //   this.context.on("event", this.onEvent);
 
   useEffect(() => {
-    sendReadReceipt()
+    // sendReadReceipt()
     initMessages();
+    
   }, []);
 
   useEffect(() => {
@@ -57,8 +58,6 @@ export default function useTimeline(room) {
     setTimeline(messageList);
   }
 
-  console.log({timeline})
-
   const startListeners = () => {
     removeListeners();
     matrix.getClient().on('Room.timeline', onRoomTimeline);
@@ -73,9 +72,8 @@ export default function useTimeline(room) {
   };
 
   const onRoomTimeline = (event: MatrixEvent, matrixRoom) => {
-    // console.log('onRoomTimeline', { event, matrixRoom });
-    if (room.id !== matrixRoom.roomId || isLoading) return;
-    // console.log({ timeline });
+    // console.log('useTimeline: onRoomTimeline', { event, matrixRoom });
+    if (room.roomId !== matrixRoom.roomId || isLoading) return;
     const newTimeline = [...timeline]
     const newUpdates = []
 
@@ -123,30 +121,30 @@ export default function useTimeline(room) {
   };
 
   const sendReadReceipt = async () => {
-    const tl = room.getLiveTimeline()
-    const latestMessage = tl.getEvents()[tl.getEvents().length - 1];
-    const readState = getReadState();
-    if (readState === 'unread') {
-      const matrixEvent = room.findEventById(latestMessage);
-      await matrix.getClient().sendReadReceipt(matrixEvent);
-    }
+    // const tl = room.getLiveTimeline()
+    // const latestMessage = tl.getEvents()[tl.getEvents().length - 1];
+    // const readState = getReadState();
+    // if (readState === 'unread') {
+    //   const matrixEvent = room.findEventById(latestMessage);
+    //   await matrix.getClient().sendReadReceipt(matrixEvent);
+    // }
   }
 
-  const getReadState = () => {
-    const latestMessage = timeline.getEvents()[timeline.getEvents().length - 1];
+  // const getReadState = () => {
+  //   const latestMessage = timeline.getEvents()[timeline.getEvents().length - 1];
 
-    if (!room.hasUserReadEvent(matrix.getClient().getUserId(), latestMessage)) {
-      return 'unread';
-    }
+  //   if (!room.hasUserReadEvent(matrix.getClient().getUserId(), latestMessage)) {
+  //     return 'unread';
+  //   }
 
-    for (const member of room.getJoinedMembers()) {
-      if (!room.hasUserReadEvent(member.userId, latestMessage)) {
-        return 'readByMe';
-      }
-    }
+  //   for (const member of room.getJoinedMembers()) {
+  //     if (!room.hasUserReadEvent(member.userId, latestMessage)) {
+  //       return 'readByMe';
+  //     }
+  //   }
 
-    return 'readByAll';
-  }
+  //   return 'readByAll';
+  // }
 
   
 

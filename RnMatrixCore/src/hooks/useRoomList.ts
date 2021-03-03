@@ -97,6 +97,7 @@ export default function useRoomList() {
   return {
     roomList,
     inviteList,
-    updateLists
+    updateLists,
+    removeListeners
   };
 }

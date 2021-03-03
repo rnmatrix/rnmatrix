@@ -56,7 +56,7 @@ export default function MessageList({
 }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { timeline, updates, usersTyping, fetchPreviousMessages } = useTimeline(room);
-  console.log({ updates });
+  console.log({ updates, timeline });
 
   const listRef = useRef();
 

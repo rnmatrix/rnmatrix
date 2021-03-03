@@ -16,7 +16,7 @@ limitations under the License.
 
 import {Room} from "matrix-js-sdk/src/models/room";
 import {RoomMember} from "matrix-js-sdk/src/models/room-member";
-import {matrix} from '../../index'
+import matrix from '../../index'
 
 export function usersTypingApartFromMeAndIgnored(room: Room): RoomMember[] {
     return usersTyping(room, [matrix.getClient().getUserId()].concat(matrix.getClient().getIgnoredUsers()));

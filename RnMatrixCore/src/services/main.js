@@ -112,6 +112,10 @@ class RnMatrix {
     // chat.setName(name);
   }
 
+  async markAsRead(room) {
+    await chats.markAsRead(room)
+  }
+
   /*************************************************
    * MESSAGE METHODS
    *************************************************/
@@ -139,6 +143,7 @@ class RnMatrix {
   editMessage(roomId, messageId, newMessageContent) {
     messages.send(newMessageContent, 'm.edit', roomId, messageId);
   }
+  
 
   /*************************************************
    * User Methods

@@ -5,6 +5,7 @@ import MessageWrapper from './MessageWrapper';
 import TextMessage from './TextMessage';
 import ImageMessage from './ImageMessage';
 import rnm, {EventTypes, MatrixEvent} from '@rn-matrix/core'
+import FileMessage from './FileMessage';
 
 type Props = {
   item: MatrixEvent;
@@ -35,6 +36,8 @@ export default function MessageItem({
         return <TextMessage {...messageProps} />;
       case 'm.image':
         return <ImageMessage {...messageProps} />;
+      case 'm.file':
+        return <FileMessage {...messageProps} />
       case 'm.bad.encrypted':
         return <Text>Unable to decrypt message.</Text>
       default:

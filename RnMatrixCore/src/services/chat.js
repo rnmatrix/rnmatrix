@@ -405,6 +405,33 @@ class ChatService {
     }
     return true;
   }
+
+  async markAsRead(room) {
+    const latestMessageId = room.timeline[room.timeline.length - 1].getId();
+    const readState = this.getReadState(room);
+    if (readState === 'unread') {
+      const matrixEvent = room.findEventById(latestMessageId);
+      await matrix.getClient().sendReadReceipt(matrixEvent);
+    }
+  }
+
+  getReadState(room) {
+    if (!room) return 'readByAll'
+
+    const latestMessageId = room.timeline[room.timeline.length - 1].getId();
+
+    if (!room.hasUserReadEvent(matrix.getClient().getUserId(), latestMessageId)) {
+      return 'unread';
+    }
+
+    for (const member of room.getJoinedMembers()) {
+      if (!room.hasUserReadEvent(member.userId, latestMessageId)) {
+        return 'readByMe';
+      }
+    }
+
+    return 'readByAll';
+  }
 }
 
 const chatService = new ChatService();
