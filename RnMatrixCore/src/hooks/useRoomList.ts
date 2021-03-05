@@ -12,14 +12,8 @@ export default function useRoomList() {
     updateLists()
   }, []);
 
-  useEffect(() => {
-    startListeners();
-    return () => {
-      removeListeners();
-    };
-  }, [roomList]);
-
   const startListeners = () => {
+    console.log('start')
     removeListeners();
     matrix.getClient().on('Room', onRoom);
     matrix.getClient().on('Room.timeline', onRoomTimeline);
@@ -98,6 +92,7 @@ export default function useRoomList() {
     roomList,
     inviteList,
     updateLists,
+    startListeners,
     removeListeners
   };
 }

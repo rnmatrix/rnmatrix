@@ -1,13 +1,19 @@
-import React, { useCallback } from 'react';
+import React, { useEffect } from 'react';
 import { ActivityIndicator, FlatList, View, Text } from 'react-native';
 import { useMatrix, useRoomList } from '@rn-matrix/core';
 import RoomInviteItem from './components/RoomInviteItem';
 import RoomListItem from './components/RoomListItem';
-import { textForEvent } from '@rn-matrix/core/src/matrix-react/TextForEvent';
 
-export default function RoomList({ onRowPress, renderListItem = undefined, renderInvite = undefined }) {
+interface RoomListProps {
+  onRowPress?: Function;
+  renderListItem?: Function;
+  renderInvite?: Function;
+  isFocused: boolean;
+}
+
+export default function RoomList({ onRowPress, renderListItem = undefined, renderInvite = undefined, isFocused }) {
   const { isReady, isSynced } = useMatrix();
-  const { roomList, inviteList, updateLists, removeListeners } = useRoomList();
+  const { roomList, inviteList, updateLists, startListeners, removeListeners } = useRoomList();
 
   const handlePress = (item) => {
     removeListeners()
@@ -21,11 +27,11 @@ export default function RoomList({ onRowPress, renderListItem = undefined, rende
     try {
       snippet = item.timeline[item.timeline.length - 1];
     } catch {}
-    return <RoomListItem key={item.id} room={item} snippet={snippet} onPress={handlePress} />;
+    return <RoomListItem room={item} snippet={snippet} onPress={handlePress} />;
   };
 
   const renderInviteRow = ({ item }) => {
-    return <RoomInviteItem key={item.id} room={item} updateLists={updateLists} />;
+    return <RoomInviteItem room={item} updateLists={updateLists} />;
   };
 
   if (!isReady || !isSynced) {
@@ -43,6 +49,15 @@ export default function RoomList({ onRowPress, renderListItem = undefined, rende
       )}
     </>
   );
+
+  useEffect(() => {
+    console.log({isFocused})
+    if (isFocused) {
+      startListeners()
+    } else {
+      removeListeners()
+    }
+  }, [isFocused])
 
   return (
     <FlatList
