@@ -2,6 +2,7 @@ import showdown from 'showdown';
 
 import matrix from './matrix';
 import Message from '../classes/Message';
+import { MessageStatus } from '../types/MessageStatus';
 
 const debug = require('debug')('rnm:scenes:chat:message:messageService');
 const mdConverter = new showdown.Converter({ simplifiedAutoLink: true });
@@ -135,22 +136,28 @@ class MessageService {
           });
         }
         case 'm.in_reply_to': {
-          // let htmlWithoutPreviousReply = content.relatedMessage.content$.getValue().html;
-          // const indexOf = htmlWithoutPreviousReply.lastIndexOf('</mx-reply>');
-          // if (indexOf >= 0) {
-          //   htmlWithoutPreviousReply = htmlWithoutPreviousReply.slice(indexOf + 11);
-          // }
-          // return matrix.getClient().sendEvent(roomId, 'm.room.message', {
-          //   'm.relates_to': {
-          //     'm.in_reply_to': {
-          //       event_id: eventId,
-          //     },
-          //   },
-          //   msgtype: 'm.text',
-          //   body: `> <${content.relatedMessage.sender.id}> ${htmlWithoutPreviousReply}\n\n${content.text}`,
-          //   format: 'org.matrix.custom.html',
-          //   formatted_body: `<mx-reply><blockquote><a href=\"https://matrix.to/#/${roomId}/${eventId}\">In reply to</a><a href=\"https://matrix.to/#/${content.relatedMessage.sender.id}\">${content.relatedMessage.sender.id}</a><br />${htmlWithoutPreviousReply}</blockquote></mx-reply>${content.text}`,
-          // });
+          let htmlWithoutPreviousReply = content.relatedMessage.getContent().formatted_body;
+          const indexOf = htmlWithoutPreviousReply.lastIndexOf('</mx-reply>');
+          if (indexOf >= 0) {
+            htmlWithoutPreviousReply = htmlWithoutPreviousReply.slice(indexOf + 11);
+          }
+          return matrix.getClient().sendEvent(roomId, 'm.room.message', {
+            'm.relates_to': {
+              'm.in_reply_to': {
+                event_id: eventId,
+              },
+            },
+            msgtype: 'm.text',
+            body: `> <${
+              content.relatedMessage.getSender().userId
+            }> ${htmlWithoutPreviousReply}\n\n${content.text}`,
+            format: 'org.matrix.custom.html',
+            formatted_body: `<mx-reply><blockquote><a href=\"https://matrix.to/#/${roomId}/${eventId}\">In reply to</a><a href=\"https://matrix.to/#/${
+              content.relatedMessage.getSender().userId
+            }\">${
+              content.relatedMessage.getSender().userId
+            }</a><br />${htmlWithoutPreviousReply}</blockquote></mx-reply>${content.text}`,
+          });
         }
         default:
           debug('Unhandled message type to send %s:', type, content);
@@ -162,11 +169,93 @@ class MessageService {
   }
 
   sendReply(roomId, relatedMessage, message) {
-    this.send({ relatedMessage, text: message }, 'm.in_reply_to', roomId, relatedMessage.id);
+    this.send({ relatedMessage, text: message }, 'm.in_reply_to', roomId, relatedMessage.getId());
   }
 
-  sendImageMessage(roomId, url, width, height, type, fileSize, fileName) {
-    this.send({ width, height, type, fileSize, fileName, url }, 'm.image', roomId);
+  async sendMediaMessage(roomId, content, type) {
+    // this.send({ width, height, type, fileSize, fileName, url }, 'm.image', roomId);
+
+    // async sendMessage(content, type) {
+    switch (type) {
+      case 'm.video':
+      case 'm.image': {
+        // Add or get pending message
+        const event = {
+          type,
+          timestamp: Date.now(),
+          status: MessageStatus.UPLOADING,
+          content: content,
+        };
+
+        // TODO - figure out how to show pending messages
+
+        // const pendingMessageId = type === 'm.video' ? `~~${this.id}:video` : `~~${this.id}:image`;
+        // const pendingMessage = this.getMessageById(pendingMessageId, this.id, event, true);
+        // If it's already pending, we update the status, otherwise we add it
+        // if (this._pending.includes(pendingMessage.id)) {
+        //   debug('Pending message already existed');
+        //   pendingMessage.update({ status: MessageStatus.UPLOADING });
+        // } else {
+        //   debug('Pending message created');
+        //   this._pending.push(pendingMessage.id);
+        //   this.update({ timeline: true });
+        // }
+
+        // Upload image
+        const response = await matrix.uploadContent(content);
+        debug('uploadImage response', response);
+
+        if (!response) {
+          // TODO: handle upload error
+          // pendingMessage.update({ status: MessageStatus.NOT_UPLOADED });
+          // const txt = i18n.t('messages:content.contentNotUploadedNotice');
+          return {
+            error: 'CONTENT_NOT_UPLOADED',
+            // message: txt,
+          };
+        } else content.url = response;
+        break;
+      }
+      // case 'm.file': {
+      //   // Add or get pending message
+      //   const event = {
+      //     type,
+      //     timestamp: Date.now(),
+      //     status: MessageStatus.UPLOADING,
+      //     content: content,
+      //   };
+      //   const pendingMessage = messages.getMessageById(`~~${this.id}:file`, this.id, event, true);
+      //   // If it's already pending, we update the status, otherwise we add it
+      //   if (this._pending.includes(pendingMessage.id)) {
+      //     debug('Pending message already existed');
+      //     pendingMessage.update({ status: MessageStatus.UPLOADING });
+      //   } else {
+      //     debug('Pending message created');
+      //     this._pending.push(pendingMessage.id);
+      //     this.update({ timeline: true });
+      //   }
+
+      //   // Upload image
+      //   const mxcUrl = await matrix.uploadContent(content);
+
+      //   if (!mxcUrl) {
+      //     // TODO: handle upload error
+      //     pendingMessage.update({ status: MessageStatus.NOT_UPLOADED });
+      //     const txt = i18n.t('messages:content.contentNotUploadedNotice');
+      //     return {
+      //       error: 'CONTENT_NOT_UPLOADED',
+      //       message: txt,
+      //     };
+      //   } else content.url = mxcUrl;
+      //   break;
+      // }
+      default:
+    }
+    return this.send(content, type, roomId);
+  }
+
+  sendTextMessage(roomId, content) {
+    this.send(content, 'm.text', roomId);
   }
 
   sortByLastSent(messages) {

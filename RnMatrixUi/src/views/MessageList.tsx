@@ -15,6 +15,7 @@ import { useTimeline } from '@rn-matrix/core';
 // import { Room } from 'matrix-js-sdk/src/models/room';
 // import Icon from './components/Icon';
 import MessageItem from './components/MessageItem';
+import { messageIsRendered } from '@rn-matrix/ui/src/utilities/misc';
 
 type Props = {
   room: any;
@@ -56,7 +57,7 @@ export default function MessageList({
 }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { timeline, updates, usersTyping, fetchPreviousMessages } = useTimeline(room);
-  // console.log({ updates, timeline });
+  console.log({ updates, timeline });
 
   const listRef = useRef();
 
@@ -84,11 +85,31 @@ export default function MessageList({
         shouldUpdate={updates.includes(item.getId())}
         onPress={handleOnPress}
         onLongPress={handleOnLongPress}
-        nextSame={item.sender.userId === timeline[index + 1]?.sender?.userId}
-        prevSame={item.sender.userId === timeline[index - 1]?.sender?.userId}
+        nextSame={getNextSame(item, index)}
+        prevSame={getPrevSame(item, index)}
       />
     );
   };
+
+  const getNextSame = (item, index): boolean => {
+    let ndx = index - 1
+    if (!timeline[ndx]) return undefined
+    if (messageIsRendered(timeline[ndx])) {
+      return item.sender.userId === timeline[ndx]?.sender?.userId
+    } else {
+      return getNextSame(item, ndx)
+    }
+  }
+
+  const getPrevSame = (item, index): boolean => {
+    let ndx = index + 1
+    if (!timeline[ndx]) return undefined
+    if (messageIsRendered(timeline[ndx])) {
+      return item.sender.userId === timeline[ndx]?.sender?.userId
+    } else {
+      return getPrevSame(item, ndx)
+    }
+  }
 
   const messageItem = (args) => (renderMessage ? renderMessage(args) : renderMessageItem(args));
   const typingIndicator = () => (renderTypingIndicator ? renderTypingIndicator(usersTyping) : null);

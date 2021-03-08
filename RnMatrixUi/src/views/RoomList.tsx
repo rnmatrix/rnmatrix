@@ -11,14 +11,27 @@ interface RoomListProps {
   isFocused: boolean;
 }
 
-export default function RoomList({ onRowPress, renderListItem = undefined, renderInvite = undefined, isFocused }) {
+export default function RoomList({
+  onRowPress = (item) => {},
+  renderListItem = undefined,
+  renderInvite = undefined,
+  isFocused,
+}: RoomListProps) {
   const { isReady, isSynced } = useMatrix();
   const { roomList, inviteList, updateLists, startListeners, removeListeners } = useRoomList();
 
+  useEffect(() => {
+    if (isFocused) {
+      startListeners();
+    } else {
+      removeListeners();
+    }
+  }, [isFocused]);
+
   const handlePress = (item) => {
-    removeListeners()
-    onRowPress(item)
-  }
+    removeListeners();
+    onRowPress(item);
+  };
 
   const renderRow = ({ item }) => {
     // We define the snippet out here so that the memoized RoomListItem will
@@ -50,20 +63,11 @@ export default function RoomList({ onRowPress, renderListItem = undefined, rende
     </>
   );
 
-  useEffect(() => {
-    console.log({isFocused})
-    if (isFocused) {
-      startListeners()
-    } else {
-      removeListeners()
-    }
-  }, [isFocused])
-
   return (
     <FlatList
       data={roomList}
       renderItem={renderListItem ? renderListItem : renderRow}
-      keyExtractor={(item) => item.id}
+      keyExtractor={(item) => item.roomId}
       ListHeaderComponent={InviteList}
     />
   );

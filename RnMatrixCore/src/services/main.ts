@@ -49,51 +49,50 @@ class RnMatrix {
 
   getMyUser() {
     return matrix.getClient().getUser(matrix.getClient().getUserId());
-    // return users.getMyUser();
   }
 
   /*************************************************
    * ROOM METHODS
    *************************************************/
 
-  async createRoom(options = {}) {
-    const defaults = {
-      visibility: 'private',
-      invite: [], // list of user IDs
-      room_topic: '',
-    };
-    return chats.createChat({ ...defaults, ...options });
-  }
+  // async createRoom(options = {}) {
+  //   const defaults = {
+  //     visibility: 'private',
+  //     invite: [], // list of user IDs
+  //     room_topic: '',
+  //   };
+  //   return chats.createChat({ ...defaults, ...options });
+  // }
 
-  async createEncryptedRoom(usersToInvite) {
+  // async createEncryptedRoom(usersToInvite) {
     // return chats.createEncryptedChat(usersToInvite);
-  }
+  // }
 
-  getRooms$(slim = false) {
+  // getRooms$(slim = false) {
     // return chats.getChats(slim);
-  }
+  // }
 
-  getRoomsByType$(type) {
+  // getRoomsByType$(type) {
     // return chats.getListByType$(type);
-  }
+  // }
 
-  getRoomById(roomId) {
+  // getRoomById(roomId) {
     // return chats.getChatById(roomId);
-  }
+  // }
 
-  joinRoom(roomIdOrAlias) {
+  // joinRoom(roomIdOrAlias) {
     // chats.joinRoom(roomIdOrAlias);
-  }
+  // }
 
-  leaveRoom(roomId) {
+  // leaveRoom(roomId) {
     // chats.leaveRoom(roomId);
-  }
+  // }
 
-  rejectInvite(roomId) {
+  // rejectInvite(roomId) {
     // chats.leaveRoom(roomId);
-  }
+  // }
 
-  getDirectChat(userId) {
+  // getDirectChat(userId) {
     // let directMessage = null;
     // const joinedChats = chats.getChats(false).getValue();
     // for (let i = 0; i < joinedChats.length && !directMessage; i++) {
@@ -105,12 +104,12 @@ class RnMatrix {
     //   }
     // }
     // return directMessage;
-  }
+  // }
 
-  setRoomName(roomId, name) {
+  // setRoomName(roomId, name) {
     // const chat = chats.getChatById(roomId);
     // chat.setName(name);
-  }
+  // }
 
   async markAsRead(room) {
     await chats.markAsRead(room)
@@ -120,30 +119,35 @@ class RnMatrix {
    * MESSAGE METHODS
    *************************************************/
 
-  send(content, type, roomId, eventId = null) {
-    // messages.send(content, type, roomId, eventId);
+  send(content, type: string, roomId: string, eventId = null) {
+    messages.send(content, type, roomId, eventId);
+  }
+
+  sendTextMessage(roomId: string, content: string) {
+    messages.sendTextMessage(roomId, content)
+  }
+
+  sendMediaMessage(roomId: string, content, type: 'm.image' | 'm.video') {
+    messages.sendMediaMessage(roomId, content, type)
   }
 
   sendReply(roomId, relatedMessage, messageText) {
-    // messages.sendReply(roomId, relatedMessage, messageText);
+    messages.sendReply(roomId, relatedMessage, messageText);
   }
 
-  getMessageById(eventId, roomId, event = null) {
+  // getMessageById(eventId, roomId, event = null) {
     // return messages.getMessageById(eventId, roomId, event);
-  }
+  // }
 
-  deleteMessage(message) {
-    // const { event } = message.getMatrixEvent();
-    // const eventId = event.event_id;
-    // const roomId = event.room_id;
-    // matrix.getClient().redactEvent(roomId, eventId);
-    // message.update();
+  deleteMessage(event) {
+    const eventId = event.getId();
+    const roomId = event.getRoomId();
+    matrix.getClient().redactEvent(roomId, eventId);
   }
 
   editMessage(roomId, messageId, newMessageContent) {
     messages.send(newMessageContent, 'm.edit', roomId, messageId);
   }
-  
 
   /*************************************************
    * User Methods

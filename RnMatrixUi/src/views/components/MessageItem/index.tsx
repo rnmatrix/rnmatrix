@@ -33,6 +33,7 @@ export default function MessageItem({
     const messageProps = { event, isMe };
     switch (event.getContent().msgtype) {
       case 'm.text':
+        if (event.getContent()['m.relates_to']) return null;
         return <TextMessage {...messageProps} />;
       case 'm.image':
         return <ImageMessage {...messageProps} />;
