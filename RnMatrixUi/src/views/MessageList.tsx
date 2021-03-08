@@ -15,7 +15,7 @@ import { useTimeline } from '@rn-matrix/core';
 // import { Room } from 'matrix-js-sdk/src/models/room';
 // import Icon from './components/Icon';
 import MessageItem from './components/MessageItem';
-import { messageIsRendered } from '@rn-matrix/ui/src/utilities/misc';
+import { messageIsRendered } from '../utilities/misc';
 
 type Props = {
   room: any;
