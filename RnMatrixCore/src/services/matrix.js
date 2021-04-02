@@ -1,21 +1,21 @@
 import AsyncStorage from '@react-native-community/async-storage';
 
-import loglevel from 'loglevel';
-import matrixSdk, { AutoDiscovery, MemoryStore } from 'matrix-js-sdk';
 import { verificationMethods } from 'matrix-js-sdk/src/crypto';
 import Olm from 'olm/olm_legacy';
+import DeviceListener from '../react-sdk-utils/DeviceListener';
+import { SetupEncryptionStore } from '../react-sdk-utils/stores/SetupEncryptionStore';
 import { BehaviorSubject } from 'rxjs';
 import request from 'xmlhttp-request';
-import DeviceListener from '../react-sdk-utils/DeviceListener';
 import { crossSigningCallbacks } from '../react-sdk-utils/SecurityManager';
-import { SetupEncryptionStore } from '../react-sdk-utils/stores/SetupEncryptionStore';
 import AsyncCryptoStore from '../storage/AsyncCryptoStore';
 import i18n from '../utilities/i18n';
 import { toImageBuffer } from '../utilities/misc';
 import '../utilities/poly';
+import matrixSdk, { AutoDiscovery, MemoryStore } from 'matrix-js-sdk';
+import { setCrypto } from 'matrix-js-sdk/lib/utils';
 
 const E2E_PREFIX = 'crypto.';
-const KEY_END_TO_END_TRUSTED_BACKUP_PUBKEY = E2E_PREFIX + "trusted_backup_pubkey";
+const KEY_END_TO_END_TRUSTED_BACKUP_PUBKEY = E2E_PREFIX + 'trusted_backup_pubkey';
 
 const debug = require('debug')('rnm:matrix.js');
 // We need to put matrix logs to silent otherwise it throws exceptions we can't
@@ -23,12 +23,16 @@ const debug = require('debug')('rnm:matrix.js');
 // const logger = loglevel.getLogger('matrix');
 // logger.setLevel('silent');
 
+import OlmNative from 'react-native-olm';
+
+global.Olm = OlmNative;
 /**
  * FIXME: this is temporary until we find a better place to call this.
  * Set request object of matrix js sdk before anything else.
  *
  * */
 matrixSdk.request(request);
+setCrypto(require('react-native-crypto'))
 
 const MATRIX_CLIENT_START_OPTIONS = {
   initialSyncLimit: 6,
@@ -129,7 +133,7 @@ class MatrixService {
 
     this._client.on('sync', this._onSyncEvent.bind(this));
     if (useCrypto) {
-      // await Olm.init();
+      await Olm.init();
       await this._client.initCrypto();
     }
     await this._client.startClient(MATRIX_CLIENT_START_OPTIONS);
