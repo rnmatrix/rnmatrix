@@ -362,8 +362,8 @@ class AsyncCryptoStore {
 
     for (const k of Object.keys(sessionsNeedingBackup)) {
       const keyParts = k.split('/');
-      const senderKey = keyParts[0];
-      const sessionId = keyParts[1];
+      const senderKey = decodeURIComponent(keyParts[0]);
+      const sessionId = decodeURIComponent(keyParts[1]);
 
       const sessionData = await this._getJsonItem(
         keyEndToEndInboundGroupSession(senderKey, sessionId)
@@ -389,7 +389,7 @@ class AsyncCryptoStore {
   async unmarkSessionsNeedingBackup(sessions) {
     const sessionsNeedingBackup = (await this._getJsonItem(KEY_SESSIONS_NEEDING_BACKUP)) || {};
     for (const session of sessions) {
-      delete sessionsNeedingBackup[session.senderKey + '/' + session.sessionId];
+      delete sessionsNeedingBackup[encodeURIComponent(session.senderKey) + '/' + encodeURIComponent(session.sessionId)];
     }
     await this._setJsonItem(KEY_SESSIONS_NEEDING_BACKUP, sessionsNeedingBackup);
   }
@@ -397,7 +397,7 @@ class AsyncCryptoStore {
   async markSessionsNeedingBackup(sessions) {
     const sessionsNeedingBackup = (await this._getJsonItem(KEY_SESSIONS_NEEDING_BACKUP)) || {};
     for (const session of sessions) {
-      sessionsNeedingBackup[session.senderKey + '/' + session.sessionId] = true;
+      sessionsNeedingBackup[encodeURIComponent(session.senderKey) + '/' + encodeURIComponent(session.sessionId)] = true;
     }
     await this._setJsonItem(KEY_SESSIONS_NEEDING_BACKUP, sessionsNeedingBackup);
   }
