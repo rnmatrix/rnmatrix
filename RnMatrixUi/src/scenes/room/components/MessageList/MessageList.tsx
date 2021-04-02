@@ -77,6 +77,7 @@ export default function MessageList({
   const typing = useObservableState<any>(room.typing$);
   const atStart = useObservableState<any>(room.atStart$);
   // const [timeline, setTimeline] = useState(messageList);
+  const myUser = useMemo(() => matrix.getMyUser(), []);
 
   const styles = {
     myTextColor,
@@ -130,27 +131,31 @@ export default function MessageList({
 
   const renderMessage: SectionListRenderItem<any> = useCallback(
     ({ item: messageId }: SectionListRenderItemInfo<any>) => {
-      const index = messageList?.findIndex(p => p === messageId)
+      const index = messageList?.findIndex((p) => p === messageId);
       return (
-        <Message
-          roomId={room.id}
-          messageId={messageId}
-          prevMessageId={messageList[index + 1] ? messageList[index + 1] : null}
-          nextMessageId={messageList[index - 1] ? messageList[index - 1] : null}
-          onPress={onPress}
-          onLongPress={onLongPress}
-          onSwipe={onSwipe}
-          renderTypingIndicator={renderTypingIndicator}
-          showReactions={showReactions}
-          styles={styles}
-          myBubbleStyle={myBubbleStyle}
-          otherBubbleStyle={otherBubbleStyle}
-          accentColor={accentColor}
-          customMessageRenderers={customMessageRenderers}
-          showSender={room._matrixRoom.getInvitedAndJoinedMemberCount() > 1} // FIXME
-        />
-      )    },
-    [messageList, renderTypingIndicator, room, customMessageRenderers]
+        <View style={{ scaleY: -1 }}>
+          <Message
+            roomId={room.id}
+            messageId={messageId}
+            prevMessageId={messageList[index + 1] ? messageList[index + 1] : null}
+            nextMessageId={messageList[index - 1] ? messageList[index - 1] : null}
+            onPress={onPress}
+            onLongPress={onLongPress}
+            onSwipe={onSwipe}
+            renderTypingIndicator={renderTypingIndicator}
+            showReactions={showReactions}
+            myUser={myUser}
+            styles={styles}
+            myBubbleStyle={myBubbleStyle}
+            otherBubbleStyle={otherBubbleStyle}
+            accentColor={accentColor}
+            customMessageRenderers={customMessageRenderers}
+            showSender={room._matrixRoom.getInvitedAndJoinedMemberCount() > 1} // FIXME
+          />
+        </View>
+      );
+    },
+    [messageList, renderTypingIndicator, room, customMessageRenderers, myUser]
   );
 
   const [currentDate, setCurrentDate] = useState();
@@ -192,7 +197,8 @@ export default function MessageList({
       <SectionList
         keyboardDismissMode={isIos() ? 'interactive' : 'on-drag'}
         keyboardShouldPersistTaps="handled"
-        inverted
+        // FIXME: on iOS USE inverted, on android dont!
+        // inverted
         // stickySectionHeadersEnabled
         // invertStickyHeaders
         sections={sections}
@@ -204,7 +210,10 @@ export default function MessageList({
         onEndReachedThreshold={0.5}
         keyExtractor={keyExtractor}
         ListHeaderComponent={<View style={{ height: 12 }} />}
-        style={useMemo(() => [theme.paddingHorizontal, theme.backgroundSecondary], [])}
+        style={useMemo(
+          () => [theme.paddingHorizontal, theme.backgroundSecondary, { scaleY: -1 }],
+          []
+        )}
       />
 
       {/*{currentDate && (

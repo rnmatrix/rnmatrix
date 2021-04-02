@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 8,
+    scaleY: -1
   },
   dateContainer: {
     borderRadius: 100,
