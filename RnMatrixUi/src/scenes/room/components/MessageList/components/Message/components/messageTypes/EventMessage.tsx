@@ -1,16 +1,19 @@
 import { useObservableState } from 'observable-hooks';
-import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import React, { useMemo } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import ThemedStyles from '../../../../../../../../styles/ThemedStyles';
-import Color from 'color';
 
 export default function EventMessage({ message }) {
   const content = useObservableState<any>(message.content$);
   const theme = ThemedStyles.style;
+  const colorStyle = useMemo(() => ({
+    color: theme.colorTertiaryText.color
+  }), [theme.colorTertiaryText.color])
+
   return (
     <Text
       style={[
-        { color: Color(theme.colorTertiaryText.color).lighten(0.1).hex() },
+        colorStyle,
         theme.marginVertical,
         styles.text,
       ]}>

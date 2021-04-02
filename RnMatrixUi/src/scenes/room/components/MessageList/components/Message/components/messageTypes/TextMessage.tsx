@@ -20,6 +20,7 @@ export default function TextMessage({
   nextSame,
   onPress,
   onLongPress,
+  myUser,
   onSwipe,
   showReactions,
   myBubbleStyle,
@@ -32,7 +33,6 @@ export default function TextMessage({
   hideContent,
   timeStyle,
 }) {
-  const myUser = matrix.getMyUser();
   const content = useObservableState<any>(message.content$);
   const status = useObservableState<any>(message.status$);
   const isMe = myUser?.id === message.sender.id;
