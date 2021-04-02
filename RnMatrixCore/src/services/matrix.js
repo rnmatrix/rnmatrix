@@ -1,7 +1,6 @@
 import AsyncStorage from '@react-native-community/async-storage';
 
 import { verificationMethods } from 'matrix-js-sdk/src/crypto';
-import Olm from 'olm/olm_legacy';
 import DeviceListener from '../react-sdk-utils/DeviceListener';
 import { SetupEncryptionStore } from '../react-sdk-utils/stores/SetupEncryptionStore';
 import { BehaviorSubject } from 'rxjs';
@@ -133,7 +132,7 @@ class MatrixService {
 
     this._client.on('sync', this._onSyncEvent.bind(this));
     if (useCrypto) {
-      await Olm.init();
+      await OlmNative.init();
       await this._client.initCrypto();
     }
     await this._client.startClient(MATRIX_CLIENT_START_OPTIONS);
