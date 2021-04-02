@@ -297,7 +297,6 @@ class AsyncCryptoStore {
   }
 
   storeEndToEndInboundGroupSession(senderCurve25519Key, sessionId, sessionData, txn) {
-    debugger;
     txn.wrap(() => {
       return this._setJsonItem(
         keyEndToEndInboundGroupSession(senderCurve25519Key, sessionId),

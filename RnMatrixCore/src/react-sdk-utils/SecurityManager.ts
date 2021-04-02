@@ -283,7 +283,6 @@ export async function promptForBackupPassphrase(): Promise<Uint8Array> {
  * @param {bool} [forceReset] Reset secret storage even if it's already set up
  */
 export async function accessSecretStorage(func = async () => { }, forceReset = false) {
-    debugger;
     const cli = matrix.getClient();
     secretStorageBeingAccessed = true;
     try {
