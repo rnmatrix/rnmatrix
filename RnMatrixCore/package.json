@@ -48,7 +48,6 @@
     "react-native-crypto": "^2.1.0",
     "react-native-level-fs": "^3.0.0",
     "react-native-localize": "^1.4.1",
-    "react-native-olm": "^0.2.0",
     "react-native-randombytes": "^3.5.3",
     "rxjs": "^6.6.2",
     "showdown": "^1.9.1",
@@ -60,7 +59,8 @@
   "peerDependencies": {
     "@rn-matrix/ui": "npm:@manishoo/rn-matrix-ui",
     "react": "17.0.1",
-    "react-native": "0.64.0-rc.2"
+    "react-native": "0.64.0-rc.2",
+    "react-native-olm": "^0.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.11.1",

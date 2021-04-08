@@ -4563,11 +4563,6 @@ react-native-localize@^1.4.1:
   resolved "https://registry.yarnpkg.com/react-native-localize/-/react-native-localize-1.4.1.tgz#031bd2089f09cc16ee7daee03019684dda60c275"
   integrity sha512-g1L1au6GtCd0Ci6lQ8JVPYgl7uvEtKY2jeVghJcV6qQEN9+qACyqjOIR8pskUyI+qcSj1z4/nZh3IFxDVu1drw==
 
-react-native-olm@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/react-native-olm/-/react-native-olm-0.2.0.tgz#3e2424420d2f9b9199caa6c5925ac02c1b28986d"
-  integrity sha512-W7NARuUKU3HS56xLboZ22YgMjK2cTSMM8c0a6FC1WX3P4DmhkfKLBrM3EINv1H/fXJ+6eP5n/vQvQX2QT99TIQ==
-
 react-native-randombytes@^3.5.3:
   version "3.5.3"
   resolved "https://registry.yarnpkg.com/react-native-randombytes/-/react-native-randombytes-3.5.3.tgz#b3bdcd11473cce106551a586244b98855e443cd1"
