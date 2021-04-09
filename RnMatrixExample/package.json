@@ -40,7 +40,8 @@
     "react-native-localize": "^1.4.1",
     "react-native-olm": "^0.2.0",
     "react-native-randombytes": "^3.5.3",
-    "react-native-reanimated": "^1.13.0",
+    "react-native-reanimated": "^2.0.0",
+    "react-native-redash": "^14.2.3",
     "react-native-safe-area-context": "^3.1.9",
     "react-native-screens": "^2.10.1",
     "react-native-svg": "^12.1.0",
@@ -48,7 +49,8 @@
     "react-native-threads": "^0.0.19",
     "react-native-video": "^5.1.0-alpha8",
     "react-native-webview": "^10.7.0",
-    "vm-browserify": "^1.1.2"
+    "vm-browserify": "^1.1.2",
+    "whatwg-url": "8.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
