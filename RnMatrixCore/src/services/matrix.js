@@ -21,10 +21,10 @@ const debug = require('debug')('rnm:matrix.js');
 // catch
 // const logger = loglevel.getLogger('matrix');
 // logger.setLevel('silent');
+// import Olm from 'olm/olm_legacy'
+import Olm from 'react-native-olm';
 
-import OlmNative from 'react-native-olm';
-
-global.Olm = OlmNative;
+global.Olm = Olm;
 /**
  * FIXME: this is temporary until we find a better place to call this.
  * Set request object of matrix js sdk before anything else.
@@ -132,7 +132,7 @@ class MatrixService {
 
     this._client.on('sync', this._onSyncEvent.bind(this));
     if (useCrypto) {
-      await OlmNative.init();
+      await global.Olm.init();
       await this._client.initCrypto();
     }
     await this._client.startClient(MATRIX_CLIENT_START_OPTIONS);
