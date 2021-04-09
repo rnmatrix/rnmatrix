@@ -1,5 +1,6 @@
 import NetInfo from '@react-native-community/netinfo'
 import { randomBytes } from 'react-native-randombytes';
+import { polyfillGlobal } from 'react-native/Libraries/Utilities/PolyfillFunctions';
 
 let unsubscribeNetInfoListener
 
@@ -45,3 +46,6 @@ global.location = {
   protocol: 'file:',
   href: '',
 };
+
+// TODO: is it ok to put this here?
+polyfillGlobal('URL', () => require('whatwg-url').URL);
