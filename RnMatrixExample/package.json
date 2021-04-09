@@ -17,7 +17,7 @@
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/native": "^5.7.3",
     "@react-navigation/stack": "^5.9.0",
-    "@rn-matrix/core": "npm:@manishoo/rn-matrix-core@0.2.2",
+    "@rn-matrix/core": "npm:@manishoo/rn-matrix-core@0.2.5",
     "@rn-matrix/ui": "npm:@manishoo/rn-matrix-ui@0.2.0",
     "color": "^3.1.2",
     "debug": "^4.1.1",
