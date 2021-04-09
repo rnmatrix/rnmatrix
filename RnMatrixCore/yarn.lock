@@ -875,6 +875,11 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/eslint-plugin/-/eslint-plugin-1.1.0.tgz#e42b1bef12d2415411519fd528e64b593b1363dc"
   integrity sha512-W/J0fNYVO01tioHjvYWQ9m6RgndVtbElzYozBq1ZPrHO/iCzlqoySHl4gO/fpCl9QEFjvJfjPgtPMTMlsoq5DQ==
 
+"@react-native-community/netinfo@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-6.0.0.tgz#2a4d7190b508dd0c2293656c9c1aa068f6f60a71"
+  integrity sha512-Z9M8VGcF2IZVOo2x+oUStvpCW/8HjIRi4+iQCu5n+PhC7OqCQX58KYAzdBr///alIfRXiu6oMb+lK+rXQH1FvQ==
+
 "@sinonjs/commons@^1.7.0":
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/@sinonjs/commons/-/commons-1.8.1.tgz#e7df00f98a203324f6dc7cc606cad9d4a8ab2217"
@@ -3824,10 +3829,10 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
-"matrix-js-sdk@npm:@manishoo/matrix-js-sdk":
-  version "9.7.0"
-  resolved "https://registry.yarnpkg.com/@manishoo/matrix-js-sdk/-/matrix-js-sdk-9.7.0.tgz#91e23e10701a966cafdaf84334c24b94a13eb2fb"
-  integrity sha512-OsDBbanpHlM4T8WFrNmmvTgzq/qgHAgbUpdC7jBq9STWXdNco1z+wUepB8t4GqQDQkUgwALJ/tpwfQ77ejXhRg==
+matrix-js-sdk@9.10.0:
+  version "9.10.0"
+  resolved "https://registry.yarnpkg.com/matrix-js-sdk/-/matrix-js-sdk-9.10.0.tgz#ba32981391168778b301c01362a503a8469d3844"
+  integrity sha512-xvpgvTmCbS8dRTVvVULKbSwyES0y2F17TPukLIIXZMTqqeEBhfycVIjCV6LuACc0WBoRsZbi1/BIlgeWY7J03A==
   dependencies:
     "@babel/runtime" "^7.12.5"
     another-json "^0.2.0"
@@ -3836,7 +3841,6 @@ map-visit@^1.0.0:
     content-type "^1.0.4"
     loglevel "^1.7.1"
     qs "^6.9.6"
-    react-native-threads "^0.0.19"
     request "^2.88.2"
     unhomoglyph "^1.0.6"
 
@@ -4570,11 +4574,6 @@ react-native-randombytes@^3.5.3:
   dependencies:
     buffer "^4.9.1"
     sjcl "^1.0.3"
-
-react-native-threads@^0.0.19:
-  version "0.0.19"
-  resolved "https://registry.yarnpkg.com/react-native-threads/-/react-native-threads-0.0.19.tgz#17464b60715d774ab60e1ca6a97e31d706aa6125"
-  integrity sha512-VAQB06D+qxGDm3XwNUaDtEh1pKEuRLx4w3/E81z+pK1luMyJhK1W0G+eA0xygcM74dShXCgG10ZNvN+LHfyCLg==
 
 react-refresh@^0.4.0:
   version "0.4.3"
