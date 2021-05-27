@@ -1,0 +1,34 @@
+{
+  "composer": {
+    "placeholder": "Type a Message...",
+    "noRoomSpecified": "No room specified.",
+    "editing": "Editing",
+    "replyingTo": "Replying to {{user}}",
+    "message": "Message...",
+    "attachmentAction": {
+      "document": "Document",
+      "image": "Image"
+    }
+  },
+  "newRoom": {
+    "title": "New Chat",
+    "userSearch": {
+      "usersInputPlaceholder": "Search minds",
+      "userInvalidNotice": "Please enter a valid user",
+      "usersExcessiveNotice": "Sorry, you can enter a maximum of 10 users"
+    },
+    "details": {
+      "title": "Chat Details",
+      "roomTitle": "Room Name (Optional)",
+      "topicTitle": "Topic (Optional)",
+      "roomNameInputPlaceholder": "Ex. My Awesome Room",
+      "topicInputPlaceholder": "",
+      "privateTitle": "Private",
+      "privateDescription": "A private chat is only open to those you invite.",
+      "createChatButtonLabel": "Create Chat"
+    },
+    "shareToRoom": {
+      "message": "Message (optional)"
+    }
+  }
+}

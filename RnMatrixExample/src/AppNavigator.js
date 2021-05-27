@@ -1,19 +1,46 @@
 import {createStackNavigator} from '@react-navigation/stack';
-import {useObservableState} from 'observable-hooks';
-import React, {useState, useEffect} from 'react';
-import {View, Text, Pressable, ActivityIndicator} from 'react-native';
-
-import ChatListScreen from './scenes/chatList/ChatListScreen';
-import ChatScreen from './scenes/chat/ChatScreen';
-import LoginScreen from './scenes/auth/LoginScreen';
 
 import rnm, {useMatrix} from '@rn-matrix/core';
 import NewChatScreen from './scenes/newChat/NewChatScreen';
 import ChatMenuScreen from './scenes/chatMenu/ChatMenuScreen';
+// import {matrix} from '@rn-matrix/core';
+import {ThemedStyles} from '@rn-matrix/ui';
+import {
+  AccessSecretStorageDialog,
+  LoginScreen,
+  NewRoomScreen,
+  NewSessionReviewDialog,
+  RolesScreen,
+  RoomInfoScreen,
+  RoomMembersScreen,
+  RoomScreen,
+  RoomsScreen,
+  SetupEncryptionDialog,
+  UserInfo,
+  withNavigation,
+} from '@rn-matrix/ui/scenes';
+import {useObservableState} from 'observable-hooks';
+import React, {useEffect, useState} from 'react';
+import {ActivityIndicator, Pressable, Text, View} from 'react-native';
+import ModalTransition from './ModalTransition';
 
 // const debug = require('debug')('ditto:services:navigation:RootNavigator')
 
 const Stack = createStackNavigator();
+
+const withoutHeader = {
+  headerShown: false,
+};
+
+const modalOptions = {
+  headerShown: false,
+  cardStyle: {backgroundColor: 'transparent'},
+  // gestureEnabled: false,
+  ...ModalTransition,
+  gestureResponseDistance: {vertical: 240},
+  gestureEnabled: true,
+  cardOverlayEnabled: true,
+};
 
 export default function AppNavigator() {
   const {isLoaded, isLoggedIn, isReady} = useMatrix()
@@ -67,94 +94,89 @@ export default function AppNavigator() {
     );
   } else if (isLoggedIn) {
     return (
-      <Stack.Navigator>
-        <Stack.Screen
-          name="ChatList"
-          component={ChatListScreen}
-          options={({navigation}) => ({
-            title: 'Chats',
-            headerLeft: () => (
-              <Pressable
-                onPress={rnm.logout}
-                style={({pressed}) => ({
-                  marginLeft: 6,
-                  padding: 12,
-                  borderRadius: 8,
-                  backgroundColor: pressed ? 'lightgray' : '#fff',
-                })}>
-                <Text style={{fontWeight: 'bold', color: 'dodgerblue'}}>
-                  LOGOUT
-                </Text>
-              </Pressable>
-            ),
-            headerRight: () => {
-              return (
+      <>
+        <Stack.Navigator>
+          <Stack.Screen
+            name={RoomsScreen.route}
+            component={withNavigation(RoomsScreen)}
+            options={{
+              title: '',
+              headerLeft: () => (
                 <Pressable
-                  onPress={() => navigation.navigate('NewChat')}
-                  style={({pressed}) => ({
-                    marginRight: 6,
-                    padding: 12,
-                    borderRadius: 8,
-                    backgroundColor: pressed ? 'lightgray' : '#fff',
-                  })}>
-                  <Text style={{fontWeight: 'bold', color: 'dodgerblue'}}>
-                    NEW
+                  onPress={matrix.logout}
+                  style={({pressed}) => [
+                    {
+                      marginLeft: 6,
+                      padding: 12,
+                      borderRadius: 8,
+                    },
+                    ThemedStyles.style.backgroundSecondary,
+                  ]}>
+                  <Text style={{fontWeight: 'bold', color: 'darkred'}}>
+                    LOGOUT
                   </Text>
                 </Pressable>
-              );
-            },
-          })}
-        />
-        <Stack.Screen
-          name="Chat"
-          component={ChatScreen}
-          options={({navigation, route}) => ({
-            headerBackTitle: 'Back',
-            title: 'Chat',
-            headerRight: () => {
-              return (
-                <Pressable
-                  onPress={() => navigation.navigate('ChatMenu')}
-                  style={({pressed}) => ({
-                    marginRight: 6,
-                    padding: 12,
-                    borderRadius: 8,
-                    backgroundColor: pressed ? 'lightgray' : '#fff',
-                  })}>
-                  <Text style={{fontWeight: 'bold', color: 'dodgerblue'}}>
-                    MENU
-                  </Text>
-                </Pressable>
-              );
-            },
-          })}
-        />
-        <Stack.Screen
-          name="NewChat"
-          component={NewChatScreen}
-          options={({route}) => ({
-            headerBackTitle: 'Back',
-            title: 'New Chat',
-          })}
-        />
-        <Stack.Screen
-          name="ChatMenu"
-          component={ChatMenuScreen}
-          options={({route}) => ({
-            headerBackTitle: 'Back',
-            title: 'Chat Settings',
-          })}
-        />
-        {/* <Stack.Screen name="Main" component={MainScreens} />
-        <Stack.Screen name="Settings" component={SettingsScreen} />
-        <Stack.Screen name="NewChat" component={NewChatScreens} /> */}
-      </Stack.Navigator>
+              ),
+            }}
+          />
+          <Stack.Screen
+            name={RolesScreen.route}
+            component={withNavigation(RolesScreen)}
+            options={withoutHeader}
+          />
+          <Stack.Screen
+            name={RoomInfoScreen.route}
+            component={withNavigation(RoomInfoScreen)}
+            options={withoutHeader}
+          />
+          <Stack.Screen
+            name={RoomMembersScreen.route}
+            component={withNavigation(RoomMembersScreen)}
+            options={withoutHeader}
+          />
+          <Stack.Screen
+            name={RoomScreen.route}
+            component={withNavigation(RoomScreen)}
+            options={withoutHeader}
+          />
+          <Stack.Screen
+            name={UserInfo.route}
+            component={withNavigation(UserInfo)}
+            options={withoutHeader}
+          />
+
+          <Stack.Screen
+            name={NewRoomScreen.route}
+            component={withNavigation(NewRoomScreen)}
+            options={modalOptions}
+          />
+          <Stack.Screen
+            name={NewSessionReviewDialog.route}
+            component={withNavigation(NewSessionReviewDialog)}
+            options={modalOptions}
+          />
+          <Stack.Screen
+            name={SetupEncryptionDialog.route}
+            component={withNavigation(SetupEncryptionDialog)}
+            options={modalOptions}
+          />
+          <Stack.Screen
+            name={AccessSecretStorageDialog.route}
+            component={withNavigation(AccessSecretStorageDialog)}
+            options={modalOptions}
+          />
+        </Stack.Navigator>
+      </>
     );
   } else {
     return (
       <Stack.Navigator headerMode="none">
         {/* <Stack.Screen name='Landing' component={LandingScreen} /> */}
-        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen
+          name={LoginScreen.route}
+          component={withNavigation(LoginScreen)}
+          options={withoutHeader}
+        />
       </Stack.Navigator>
     );
   }

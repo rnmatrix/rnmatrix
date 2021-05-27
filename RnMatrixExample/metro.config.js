@@ -4,23 +4,40 @@
  *
  * @format
  */
-const {getDefaultConfig} = require('metro-config');
+const exclusionList = require('metro-config/src/defaults/exclusionList');
+const defaultSourceExts = require('metro-config/src/defaults/defaults')
+  .sourceExts;
+const { getDefaultConfig } = require('metro-config');
+const nodelibs = require('node-libs-react-native');
+nodelibs.vm = require.resolve('vm-browserify');
 
 module.exports = (async () => {
   const {
-    resolver: {sourceExts, assetExts},
+    resolver: { assetExts },
   } = await getDefaultConfig();
 
   return {
-    transformer: {
-      experimentalImportSupport: false,
-      inlineRequires: false,
-      babelTransformerPath: require.resolve('react-native-svg-transformer'),
-    },
     resolver: {
-      extraNodeModules: require('node-libs-react-native'),
       assetExts: assetExts.filter((ext) => ext !== 'svg'),
-      sourceExts: [...sourceExts, 'svg'],
+      extraNodeModules: nodelibs,
+      blacklistRE: exclusionList([
+        /ios\/Pods\/JitsiMeetSDK\/Frameworks\/JitsiMeet.framework\/assets\/node_modules\/react-native\/.*/,
+      ]),
+      sourceExts: [
+        ...(process.env.RN_SRC_EXT
+          ? process.env.RN_SRC_EXT.split(',').concat(defaultSourceExts)
+          : defaultSourceExts),
+        'svg',
+      ],
+    },
+    transformer: {
+      babelTransformerPath: require.resolve('react-native-svg-transformer'),
+      getTransformOptions: async () => ({
+        transform: {
+          experimentalImportSupport: true,
+          inlineRequires: true,
+        },
+      }),
     },
   };
 })();

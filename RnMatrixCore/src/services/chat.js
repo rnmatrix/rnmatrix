@@ -352,15 +352,16 @@ class ChatService {
   async createChat(options) {
     try {
       debug('Creating chat...');
-      const response = await matrix.getClient().createRoom(options);
-      const matrixRoom = matrix.getClient().getRoom(response.room_id);
+      const client = matrix.getClient();
+      const response = await client.createRoom(options);
+      const matrixRoom = client.getRoom(response.room_id);
 
       return {
         id: matrixRoom.roomId,
         name: matrixRoom.name,
       };
     } catch (e) {
-      console.warn('Error creating chat: ', e);
+      console.error('Error creating chat: ', e);
       return { error: true };
     }
   }

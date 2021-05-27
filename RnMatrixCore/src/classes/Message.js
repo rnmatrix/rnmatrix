@@ -1,5 +1,6 @@
 import { isEqual } from 'lodash';
 import { EventStatus } from 'matrix-js-sdk';
+import { isEmoji } from '../utilities/is-emoji';
 import { BehaviorSubject } from 'rxjs';
 
 const THUMBNAIL_MAX_SIZE = 250;
@@ -65,6 +66,7 @@ export default class Message {
       this.redacted$ = new BehaviorSubject(null);
       this.content$ = new BehaviorSubject(this._getContent());
       this.reactions$ = new BehaviorSubject(null);
+      this.receipts$ = new BehaviorSubject(null);
     }
   }
 
@@ -123,7 +125,7 @@ export default class Message {
       if (this.redacted$.getValue() !== newRedacted) this.redacted$.next(newRedacted);
 
       const newStatus = this._matrixEvent.getAssociatedStatus();
-      if (this.status$.getValue() !== newStatus) {
+      if (newStatus && this.status$.getValue() !== newStatus) {
         this.status$.next(newStatus);
       }
 
@@ -272,8 +274,13 @@ export default class Message {
         break;
       // Supported
       case 'm.room.encrypted':
+        // TODO: wait and update after it was decrypted
+        content.text = i18n.t('messages:content.encrypted');
+        content.html = i18n.t('messages:content.encrypted');
+        break;
       case 'm.bad.encrypted':
-        content.text = i18n.t('messages:content.badEncryption');
+        content.text = content.raw.body;
+        content.html = content.raw.body;
         break;
       case 'm.emote':
         content.text = `${sender} ${content.raw.body}`;
@@ -289,10 +296,26 @@ export default class Message {
               });
               break;
             case 'join':
-              content.text = i18n.t('messages:content.memberJoined', { sender: sender });
+              content.text = i18n.t('messages:content.memberJoined', {
+                sender,
+                user: content.raw.displayname,
+              });
               break;
             case 'leave':
-              content.text = i18n.t('messages:content.memberLeft', { sender: sender });
+              if (sender === content.raw.displayname) {
+                content.text = i18n.t('messages:content.memberLeft', { sender });
+              } else {
+                content.text = i18n.t('messages:content.memberKicked', {
+                  sender,
+                  user: content.raw.displayname,
+                });
+              }
+              break;
+            case 'ban':
+              content.text = i18n.t('messages:content.memberBanned', {
+                sender,
+                user: content.raw.displayname,
+              });
               break;
             default:
               content.text = i18n.t('messages:content.membershipNotSupport', {
@@ -420,7 +443,8 @@ export default class Message {
 
   static isBubbleMessage(message) {
     if (
-      Message.isTextMessage(message.type$?.getValue()) ||
+      (Message.isTextMessage(message.type$?.getValue()) &&
+        !isEmoji(message.content$?.getValue()?.text)) ||
       Message.isImageMessage(message.type$?.getValue()) ||
       Message.isVideoMessage(message.type$?.getValue()) ||
       Message.isFileMessage(message.type$?.getValue()) ||
@@ -514,6 +538,8 @@ export default class Message {
 
   static isTextMessage(type) {
     if (type === 'm.text') return true;
+    if (type === 'm.room.encrypted') return true;
+    if (type === 'm.bad.encrypted') return true;
     return false;
   }
 }

@@ -37,13 +37,16 @@
     "@react-native-community/async-storage": "^1.12.0",
     "@types/react": "^17.0.1",
     "@types/react-native": "^0.63.48",
+    "@react-native-community/netinfo": "^6.0.0",
     "asyncstorage-down": "^4.2.0",
+    "emoji-regex": "^9.2.0",
+    "events": "^3.2.0",
     "fbemitter": "^2.1.1",
     "i18next": "^19.7.0",
     "lodash": "^4.17.20",
-    "matrix-js-sdk": "^8.1.0",
+    "matrix-js-sdk": "9.10.0",
     "observable-hooks": "^3.1.0",
-    "olm": "https://packages.matrix.org/npm/olm/olm-3.1.4.tgz",
+    "olm": "https://packages.matrix.org/npm/olm/olm-3.2.1.tgz",
     "react-i18next": "^11.7.0",
     "react-native-crypto": "^2.1.0",
     "react-native-level-fs": "^3.0.0",
@@ -51,13 +54,16 @@
     "react-native-randombytes": "^3.5.3",
     "rxjs": "^6.6.2",
     "showdown": "^1.9.1",
+    "striptags": "^3.1.1",
     "util": "~0.10.3",
-    "whatwg-url": "^8.1.0",
-    "xmlhttp-request": "^0.4.1"
+    "whatwg-url": "8.1.0",
+    "xmlhttp-request": "github:matthisk/xmlhttp-request"
   },
   "peerDependencies": {
-    "react": "16.13.1",
-    "react-native": "0.63.2"
+    "@rn-matrix/ui": "npm:@manishoo/rn-matrix-ui",
+    "react": "17.0.1",
+    "react-native": "0.64.0-rc.2",
+    "react-native-olm": "^0.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.11.1",

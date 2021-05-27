@@ -51,7 +51,7 @@ class UserService {
 
         // We need to update the avatar manually when the avatar has been removed
         // because somehow the sdk doesn't
-        if (matrixUser.avatarUrl !== newContent.avatar_url) {
+        if (matrixUser?.avatarUrl !== newContent.avatar_url) {
           matrixUser.setAvatarUrl(newContent.avatar_url);
         }
 

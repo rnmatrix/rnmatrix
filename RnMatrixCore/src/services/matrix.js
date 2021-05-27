@@ -1,20 +1,37 @@
-import '../utilities/poly';
+import AsyncStorage from '@react-native-community/async-storage';
 
-import loglevel from 'loglevel';
-import matrixSdk, { EventTimeline, MemoryStore, AutoDiscovery } from 'matrix-js-sdk';
+import { verificationMethods } from 'matrix-js-sdk/src/crypto';
+import DeviceListener from '../react-sdk-utils/DeviceListener';
+import { SetupEncryptionStore } from '../react-sdk-utils/stores/SetupEncryptionStore';
 import { BehaviorSubject } from 'rxjs';
 import request from 'xmlhttp-request';
-import AsyncStorage from '@react-native-community/async-storage';
+import { crossSigningCallbacks } from '../react-sdk-utils/SecurityManager';
 import AsyncCryptoStore from '../storage/AsyncCryptoStore';
-import Olm from 'olm/olm_legacy';
-import { toImageBuffer } from '../utilities/misc';
 import i18n from '../utilities/i18n';
+import { toImageBuffer } from '../utilities/misc';
+import '../utilities/poly';
+import matrixSdk, { AutoDiscovery, MemoryStore } from 'matrix-js-sdk';
+import { setCrypto } from 'matrix-js-sdk/lib/utils';
+
+const E2E_PREFIX = 'crypto.';
+const KEY_END_TO_END_TRUSTED_BACKUP_PUBKEY = E2E_PREFIX + 'trusted_backup_pubkey';
 
 const debug = require('debug')('rnm:matrix.js');
 // We need to put matrix logs to silent otherwise it throws exceptions we can't
 // catch
-const logger = loglevel.getLogger('matrix');
-logger.setLevel('silent');
+// const logger = loglevel.getLogger('matrix');
+// logger.setLevel('silent');
+// import Olm from 'olm/olm_legacy'
+import Olm from 'react-native-olm';
+
+global.Olm = Olm;
+/**
+ * FIXME: this is temporary until we find a better place to call this.
+ * Set request object of matrix js sdk before anything else.
+ *
+ * */
+matrixSdk.request(request);
+setCrypto(require('react-native-crypto'))
 
 const MATRIX_CLIENT_START_OPTIONS = {
   initialSyncLimit: 6,
@@ -28,8 +45,15 @@ const MATRIX_CLIENT_START_OPTIONS = {
   }),
   cryptoStore: new AsyncCryptoStore(AsyncStorage),
   sessionStore: {
-    getLocalTrustedBackupPubKey: () => null,
+    setLocalTrustedBackupPubKey: function (pubkey) {
+      return AsyncStorage.setItem(KEY_END_TO_END_TRUSTED_BACKUP_PUBKEY, pubkey);
+    },
+    getLocalTrustedBackupPubKey: function () {
+      return AsyncStorage.getItem(KEY_END_TO_END_TRUSTED_BACKUP_PUBKEY);
+    },
   }, // js-sdk complains if this isn't supplied but it's only used for remembering a local trusted backup key
+  cryptoCallbacks: crossSigningCallbacks,
+  verificationMethods: [verificationMethods.SAS],
 };
 
 class MatrixService {
@@ -80,11 +104,10 @@ class MatrixService {
     if (this._client && !deviceId) {
       if (this._client.baseUrl === baseUrl && this._client.getAccessToken() === accessToken) {
         debug('Client exists already, ignoring…');
-        return;
+        return this._client;
       }
       this.stop();
     } else {
-      matrixSdk.request(request);
       this._client = matrixSdk.createClient({
         baseUrl,
         accessToken,
@@ -109,7 +132,7 @@ class MatrixService {
 
     this._client.on('sync', this._onSyncEvent.bind(this));
     if (useCrypto) {
-      await Olm.init();
+      await global.Olm.init();
       await this._client.initCrypto();
     }
     await this._client.startClient(MATRIX_CLIENT_START_OPTIONS);
@@ -117,6 +140,10 @@ class MatrixService {
     if (useCrypto) {
       this._client.setGlobalErrorOnUnknownDevices(false);
     }
+
+    DeviceListener.makeShared().start();
+    SetupEncryptionStore.makeShared().start();
+
     this._started = true;
     debug('Matrix client started');
   }
@@ -222,14 +249,14 @@ class MatrixService {
     return false;
   }
 
-  async uploadImage(image) {
+  async uploadImage(image, opts) {
     try {
-      const url = await this._client.uploadContent(toImageBuffer(image.data), {
+      return this._client.uploadContent(toImageBuffer(image.data), {
         onlyContentUri: true,
         name: image.fileName,
         type: image.type,
+        ...opts,
       });
-      return url;
     } catch (e) {
       debug('Error uploading image:', e);
       return null;
