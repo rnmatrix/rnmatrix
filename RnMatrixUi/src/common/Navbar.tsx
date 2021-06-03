@@ -2,7 +2,7 @@ import { useDimensions } from '@react-native-community/hooks';
 import React, { useCallback, useMemo } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Icon from 'react-native-vector-icons/Entypo';
+// import Icon from 'react-native-vector-icons/Entypo';
 import ThemedStyles from '../styles/ThemedStyles';
 import useNavigation from '../hooks/useNavigation';
 
@@ -40,11 +40,11 @@ const Navbar = ({ title, titleElement, rightIcon, style }: NavbarProps) => {
         style,
       ]}>
       <Pressable onPress={onBackPress} hitSlop={50}>
-        <Icon
+        {/* <Icon
           name="chevron-thin-left"
           size={25}
           color={ThemedStyles.getColor('secondary_text')}
-        />
+        /> */}
       </Pressable>
       {titleElement || (
         <Text

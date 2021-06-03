@@ -1,6 +1,6 @@
 import React from 'react';
-import { TextStyle } from 'react-native';
-import { ListItem } from 'react-native-elements';
+import { TextStyle, Pressable, Text } from 'react-native';
+// import { ListItem } from 'react-native-elements';
 import ThemedStyles from '../styles/ThemedStyles';
 
 export type MenuItemItem = {
@@ -69,20 +69,27 @@ export default function ({
   }
 
   return (
-    <ListItem
-      Component={component}
-      onPress={item.onPress}
-      containerStyle={containerStyle}
-      disabled={disabled}
-      testID={testID}>
-      <ListItem.Content style={{ height: 70 }}>
-        <ListItem.Title style={[theme.listItemTitle, titleStyle]}>{item.title}</ListItem.Title>
-        {Boolean(item.description) && (
-          <ListItem.Subtitle style={theme.colorTertiaryText}>{item.description}</ListItem.Subtitle>
-        )}
-      </ListItem.Content>
-      {_chevronStyle && <ListItem.Chevron {..._chevronStyle} />}
-      {isIconElement && item.icon}
-    </ListItem>
-  );
+    <Pressable style={containerStyle}>
+      <Text>{item.title}</Text>
+      <Text>{item.description}</Text>
+    </Pressable>
+  )
+
+  // return (
+  //   <ListItem
+  //     Component={component}
+  //     onPress={item.onPress}
+  //     containerStyle={containerStyle}
+  //     disabled={disabled}
+  //     testID={testID}>
+  //     <ListItem.Content style={{ height: 70 }}>
+  //       <ListItem.Title style={[theme.listItemTitle, titleStyle]}>{item.title}</ListItem.Title>
+  //       {Boolean(item.description) && (
+  //         <ListItem.Subtitle style={theme.colorTertiaryText}>{item.description}</ListItem.Subtitle>
+  //       )}
+  //     </ListItem.Content>
+  //     {_chevronStyle && <ListItem.Chevron {..._chevronStyle} />}
+  //     {isIconElement && item.icon}
+  //   </ListItem>
+  // );
 }

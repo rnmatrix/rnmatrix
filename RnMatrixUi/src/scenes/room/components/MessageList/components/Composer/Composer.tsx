@@ -15,7 +15,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import IonIcons from 'react-native-vector-icons/Ionicons';
+// import IonIcons from 'react-native-vector-icons/Ionicons';
 import i18n from '../../../../../../utilities/i18n';
 import ThemedStyles from '../../../../../../styles/ThemedStyles';
 import Icon from '../../../../../../common/Icon';
@@ -170,7 +170,8 @@ const SendButton = ({ disabled, onPress, isEditing, accentColor }) => {
           Save
         </Text>
       ) : (
-        <IonIcons name="send" size={25} color={ThemedStyles.getColor('link')} />
+        // <IonIcons name="send" size={25} color={ThemedStyles.getColor('link')} />
+        <Text>{'>'}</Text>
       )}
     </TouchableOpacity>
   );

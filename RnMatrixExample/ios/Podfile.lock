@@ -335,8 +335,6 @@ PODS:
     - React
   - RNThread (0.0.19):
     - React
-  - RNVectorIcons (8.1.0):
-    - React-Core
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -388,7 +386,6 @@ DEPENDENCIES:
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNThread (from `../node_modules/react-native-threads/ios`)
-  - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -488,8 +485,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-svg"
   RNThread:
     :path: "../node_modules/react-native-threads/ios"
-  RNVectorIcons:
-    :path: "../node_modules/react-native-vector-icons"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -541,7 +536,6 @@ SPEC CHECKSUMS:
   RNScreens: f7ad633b2e0190b77b6a7aab7f914fad6f198d8d
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   RNThread: dfc202533c6687316c2f026820c791a8bc2a5042
-  RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
   Yoga: 17d4f4db4e2efbaa7c3bc316ce4f762d02c4023d
 
 PODFILE CHECKSUM: 222490b75bf0fb76bfcb6ec85539117243afe7e4

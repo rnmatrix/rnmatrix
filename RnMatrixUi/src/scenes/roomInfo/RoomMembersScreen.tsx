@@ -3,8 +3,8 @@
 import { matrix } from '@rn-matrix/core';
 // import { useObservableState } from 'observable-hooks';
 import React, { useCallback, useMemo, useRef } from 'react';
-import { TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { TouchableOpacity, Text } from 'react-native';
+// import Icon from 'react-native-vector-icons/Ionicons';
 // import i18n from '../../utilities/i18n';
 // import {
 //   AppStackParamList,
@@ -124,12 +124,13 @@ const RoomMembersScreen = ({ route, navigation }: RoomMembersScreenProps) => {
         rightIcon={
           canInvite && (
             <TouchableOpacity activeOpacity={0.7} onPress={onAddMembers}>
-              <Icon
+              <Text>+</Text>
+              {/* <Icon
                 name="add"
                 size={30}
                 color={ThemedStyles.getColor('primary_text')}
                 style={addIconStyle}
-              />
+              /> */}
             </TouchableOpacity>
           )
         }

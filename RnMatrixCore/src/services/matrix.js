@@ -21,8 +21,8 @@ const debug = require('debug')('rnm:matrix.js');
 // catch
 // const logger = loglevel.getLogger('matrix');
 // logger.setLevel('silent');
-import Olm from 'olm/olm_legacy'
-// import Olm from 'react-native-olm';
+// import Olm from 'olm/olm_legacy'
+import Olm from 'react-native-olm';
 
 global.Olm = Olm;
 /**
@@ -31,7 +31,7 @@ global.Olm = Olm;
  *
  * */
 matrixSdk.request(request);
-setCrypto(require('react-native-crypto'))
+setCrypto(require('react-native-crypto'));
 
 const MATRIX_CLIENT_START_OPTIONS = {
   initialSyncLimit: 6,

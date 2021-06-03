@@ -18,9 +18,9 @@ import { matrix } from '@rn-matrix/core';
 import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
 import React, { useCallback, useState } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, TextInput } from 'react-native';
 import DocumentPicker, { DocumentPickerOptions } from 'react-native-document-picker';
-import { Input } from 'react-native-elements';
+// import { Input } from 'react-native-elements';
 import fs from 'react-native-fs';
 // import Icon from 'react-native-vector-icons/MaterialIcons';
 import BaseDialog from '../common/BaseDialog';
@@ -262,13 +262,19 @@ export default class AccessSecretStorageDialog extends React.Component<any, any>
             )}
           </Text>
 
-          <Input
+          <TextInput  onChangeText={this._onPassPhraseChange}
+            value={this.state.passPhrase}
+            autoFocus={true}
+            // autoComplete="new-password"
+            placeholder={_t('Security Phrase')} />
+
+          {/* <Input
             onChangeText={this._onPassPhraseChange}
             value={this.state.passPhrase}
             autoFocus={true}
             // autoComplete="new-password"
             placeholder={_t('Security Phrase')}
-          />
+          /> */}
           {keyStatus}
 
           <Button

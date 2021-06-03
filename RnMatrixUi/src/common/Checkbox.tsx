@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { Pressable, StyleSheet } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+// import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ThemedStyles from '../styles/ThemedStyles';
 
 interface CheckboxProps {
@@ -30,7 +30,7 @@ const Checkbox = ({ value, onChange, size = 26, style }: CheckboxProps) => {
         value ? theme.borderLink : theme.borderPrimary,
         style,
       ]}>
-      {value && <Icon name="check" size={20} color={theme.colorPrimaryText.color} />}
+      {/* {value && <Icon name="check" size={20} color={theme.colorPrimaryText.color} />} */}
     </Pressable>
   );
 };

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { FlatList, StyleSheet, TextStyle, TouchableOpacity, View } from 'react-native';
+import { FlatList, StyleSheet, TextStyle, TouchableOpacity, View, Text } from 'react-native';
 import Modal from 'react-native-modal';
-import { Icon, Text } from 'react-native-elements';
+// import { Icon, Text } from 'react-native-elements';
 import ThemedStyles from '../styles/ThemedStyles';
 
 type PropsType = {
@@ -123,7 +123,8 @@ export default class Selector extends Component<PropsType> {
               }
             />
           </View>
-          <Icon
+          <Text>X</Text>
+          {/* <Icon
             raised
             name="md-close"
             type="ionicon"
@@ -131,7 +132,7 @@ export default class Selector extends Component<PropsType> {
             size={24}
             containerStyle={styles.iconContainer}
             onPress={this.close}
-          />
+          /> */}
         </View>
       </Modal>
     );
