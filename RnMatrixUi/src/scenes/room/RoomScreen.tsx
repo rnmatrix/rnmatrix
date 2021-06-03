@@ -4,7 +4,7 @@ import chatService from '@rn-matrix/core/src/services/chat';
 import { useObservableState } from 'observable-hooks';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Pressable, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+// import Icon from 'react-native-vector-icons/Ionicons';
 import Navbar from '../../common/Navbar';
 import ThemedStyles from '../../styles/ThemedStyles';
 import { useHeaderHeight } from '../../hooks/useHeaderHeight';
@@ -84,11 +84,12 @@ export default function RoomScreen({ route, navigation, customMessageRenderers }
         }
         rightIcon={
           <Pressable hitSlop={50} onPress={onRoomInfoPress}>
-            <Icon
+            <Text>...</Text>
+            {/* <Icon
               name="ellipsis-vertical"
               size={25}
               color={ThemedStyles.getColor('secondary_text')}
-            />
+            /> */}
           </Pressable>
         }
       />

@@ -17,7 +17,7 @@ limitations under the License.
 import * as React from 'react';
 import ToastStore, { IToast } from '@rn-matrix/core/src/react-sdk-utils/stores/ToastStore';
 import { Text, View } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+// import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ThemedStyles from '../styles/ThemedStyles';
 
 interface IState {
@@ -83,12 +83,12 @@ export default class ToastContainer extends React.Component<{}, IState> {
             },
           ]}>
           <View style={ThemedStyles.style.rowJustifyStart}>
-            <Icon
+            {/* <Icon
               name="shield-alert"
               size={21}
               color={ThemedStyles.getColor('alert')}
               style={ThemedStyles.style.marginRight}
-            />
+            /> */}
             <Text style={[ThemedStyles.style.fontXL, ThemedStyles.style.colorPrimaryText]}>
               {title}
             </Text>

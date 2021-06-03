@@ -492,7 +492,7 @@ export const buildStyle = (theme) => ({
   },
   extraBold: {
     // fontWeight: '800'
-    fontFamily: 'Roboto-Black', // workaround android ignoring >= 800
+    // fontFamily: 'Roboto-Black', // workaround android ignoring >= 800
   },
   fontThin: {
     fontWeight: '200',
@@ -556,13 +556,13 @@ export const buildStyle = (theme) => ({
     paddingBottom: 20,
   },
   titleText: {
-    fontFamily: 'Roboto',
+    // fontFamily: 'Roboto',
     fontSize: Platform.select({ ios: 26, android: 24 }),
     fontWeight: '500',
     lineHeight: 44,
   },
   subTitleText: {
-    fontFamily: 'Roboto',
+    // fontFamily: 'Roboto',
     fontSize: Platform.select({ ios: 16, android: 15 }),
     fontWeight: '500',
     lineHeight: 23,
@@ -573,7 +573,7 @@ export const buildStyle = (theme) => ({
     color: theme.primary_text,
     fontSize: 16,
     // padding: 10,
-    fontFamily: 'Roboto',
+    // fontFamily: 'Roboto',
     backgroundColor: 'transparent',
     // height: 50,
     borderRadius: 2,

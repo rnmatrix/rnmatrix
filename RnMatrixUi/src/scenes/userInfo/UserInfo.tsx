@@ -47,7 +47,7 @@ import { EventTimeline, EventType } from '@rn-matrix/core/src/types/event';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 // import EncryptionPanel from './EncryptionPanel';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+// import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Avatar from '../../common/Avatar';
 import Button from '../../common/Button';
 import { showError } from '../../common/Modal';
@@ -224,12 +224,12 @@ function DeviceItem({ userId, device }: { userId: string; device: IDevice }) {
     return (
       <View style={[ThemedStyles.style.rowJustifySpaceBetween]}>
         <View style={[ThemedStyles.style.rowJustifyStart]}>
-          <Icon
+          {/* <Icon
             name={'shield-check'}
             size={20}
             color={ThemedStyles.getColor('success_background')}
             style={ThemedStyles.style.marginRight}
-          />
+          /> */}
           <Text>{deviceName ? deviceName : 'Unknown device'}</Text>
         </View>
         <Text style={[{ color: ThemedStyles.getColor('success_background') }]}>{trustedLabel}</Text>
@@ -239,12 +239,12 @@ function DeviceItem({ userId, device }: { userId: string; device: IDevice }) {
     return (
       <Button style={[ThemedStyles.style.rowJustifySpaceBetween]} onPress={onDeviceClick}>
         <View style={[ThemedStyles.style.rowJustifyStart]}>
-          <Icon
+          {/* <Icon
             name={'shield-alert'}
             size={20}
             color={ThemedStyles.getColor('danger_background')}
             style={ThemedStyles.style.marginRight}
-          />
+          /> */}
           <Text>{deviceName ? deviceName : 'Unknown device'}</Text>
         </View>
         <Text style={[{ color: ThemedStyles.getColor('danger_background') }]}>{trustedLabel}</Text>

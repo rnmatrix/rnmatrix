@@ -24,7 +24,7 @@ import { FlatList, Text, View } from 'react-native';
 // import { CommunityPrototypeStore } from '../../../stores/CommunityPrototypeStore';
 // import BaseCard from '../right_panel/BaseCard';
 // import { RightPanelPhases } from '../../../stores/RightPanelStorePhases';
-import Icon from 'react-native-vector-icons/Ionicons';
+// import Icon from 'react-native-vector-icons/Ionicons';
 import ErrorBoundary from '../../../common/ErrorBoundary';
 import { CenteredSpinner } from '../../../common/Spinner';
 import ThemedStyles from '../../../styles/ThemedStyles';
@@ -537,12 +537,12 @@ export default class MemberList extends React.Component<MemberListProps, MemberL
             user={m}
             icon={
               m.id !== matrix.getClient().credentials.userId && [
-                <Icon
-                  name="ellipsis-vertical"
-                  size={25}
-                  color={ThemedStyles.getColor('secondary_text')}
-                  // onPress={() => actionSheetRef.show()}
-                />,
+                // <Icon
+                //   name="ellipsis-vertical"
+                //   size={25}
+                //   color={ThemedStyles.getColor('secondary_text')}
+                //   // onPress={() => actionSheetRef.show()}
+                // />,
                 // <RoomMemberActionSheet // TODO: Does this hurt performance?
                 //   // onBan={updateMembers}
                 //   // onKick={updateMembers}

@@ -1,4 +1,4 @@
-import { matrix } from '@rn-matrix/core';
+import rnm, { matrix } from '@rn-matrix/core';
 import { useObservableState } from 'observable-hooks';
 import React from 'react';
 import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
@@ -9,15 +9,14 @@ import Icon from '../../../../../common/Icon';
 const avatarSize = 50;
 
 export default function RoomInviteItem({ room }) {
-  const name = useObservableState<any>(room.name$);
   const theme = ThemedStyles.style;
 
   const joinRoom = () => {
-    matrix.joinRoom(room.id);
+    rnm.getClient().joinRoom(room.roomId);
   };
 
   const rejectInvite = () => {
-    matrix.leaveRoom(room.id);
+    rnm.getClient().leaveRoom(room.roomId);
   };
 
   return (

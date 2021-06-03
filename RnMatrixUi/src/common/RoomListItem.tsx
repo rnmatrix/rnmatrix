@@ -14,7 +14,7 @@ interface Props {
 
 const avatarSize = 50;
 
-const RoomListItem = React.memo(({ room, snippet, onPress }: Props) => {
+const RoomListItem = React.memo(({ room, snippet = '', onPress }: Props) => {
   const name = room.name || room.getDefaultRoomName(rnm.getClient().getUserId());
 
   const avatar = room.getAvatarUrl(
@@ -46,12 +46,12 @@ const RoomListItem = React.memo(({ room, snippet, onPress }: Props) => {
               {rnm.getClient().isRoomEncrypted(room) && <Text>🔒&nbsp;</Text>}
               {name}
             </Text>
-            <Text style={{ color: '#444' }}>{new Date(snippet?.getTs()).toDateString()}</Text>
+            {/* <Text style={{ color: '#444' }}>{new Date(snippet?.getTs()).toDateString()}</Text> */}
           </View>
           <View style={styles.textWrapper}>
-            <Text style={styles.snippet} numberOfLines={2} ellipsizeMode="tail">
+            {/* <Text style={styles.snippet} numberOfLines={2} ellipsizeMode="tail">
               {textForEvent(snippet)}
-            </Text>
+            </Text> */}
             {unreadCount > 0 && <UnreadIndicator unreadCount={unreadCount} />}
           </View>
         </View>

@@ -22,7 +22,7 @@ import { Text, View } from 'react-native';
 import DocumentPicker, { DocumentPickerOptions } from 'react-native-document-picker';
 import { Input } from 'react-native-elements';
 import fs from 'react-native-fs';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+// import Icon from 'react-native-vector-icons/MaterialIcons';
 import BaseDialog from '../common/BaseDialog';
 import Button from '../common/Button';
 import MenuItem from '../common/MenuItem';
@@ -307,13 +307,13 @@ export default class AccessSecretStorageDialog extends React.Component<any, any>
                 ]}>
                 {_t('or')}
               </Text>
-              <Button
+              {/* <Button
                 label={_t('Upload')}
                 icon={<Icon name={'upload-file'} size={21} color={ThemedStyles.getColor('link')} />}
                 type="primary"
                 raised
                 onPress={this.openDocPicker}
-              />
+              /> */}
             </View>
 
             {recoveryKeyFeedback}

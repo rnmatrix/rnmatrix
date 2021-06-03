@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { matrix } from '@rn-matrix/core';
+import rnm, { matrix } from '@rn-matrix/core';
 import {
   PHASE_BUSY,
   PHASE_CONFIRM_SKIP,
@@ -26,7 +26,7 @@ import {
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Text, View } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+// import Icon from 'react-native-vector-icons/MaterialIcons';
 import Button from '../../common/Button';
 import MenuItem from '../../common/MenuItem';
 import Spinner from '../../common/Spinner';
@@ -134,7 +134,7 @@ export default class SetupEncryptionBody extends React.Component<
           layout="dialog"
           verificationRequest={this.state.verificationRequest}
           onClose={this.onSkipBackClick}
-          member={matrix.getClient().getUser(this.state.verificationRequest.otherUserId)}
+          member={rnm.getClient().getUser(this.state.verificationRequest.otherUserId)}
         />
       );
     } else if (phase === PHASE_INTRO) {
@@ -179,21 +179,21 @@ export default class SetupEncryptionBody extends React.Component<
 
           <View style={[theme.rowJustifyStart, theme.marginVertical4x, theme.marginHorizontal8x]}>
             <View style={[theme.flexContainer, theme.alignCenter]}>
-              <Icon
+              {/* <Icon
                 name={'desktop-mac'}
                 size={49}
                 color={theme.colorPrimaryText.color}
                 style={theme.marginBottom}
-              />
+              /> */}
               <Text>Minds.com</Text>
             </View>
             <View style={[theme.flexContainer, theme.alignCenter]}>
-              <Icon
+              {/* <Icon
                 name={'phone-iphone'}
                 size={49}
                 color={theme.colorPrimaryText.color}
                 style={theme.marginBottom}
-              />
+              /> */}
               <Text>{_t('{{brand}} iOS', { brand })}</Text>
               <Text>{_t('{{brand}} Android', { brand })}</Text>
             </View>

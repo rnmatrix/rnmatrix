@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, TextInput, TextInputProps, View } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+// import Icon from 'react-native-vector-icons/Ionicons';
 import Spinner from '../common/Spinner';
 import ThemedStyles from '../styles/ThemedStyles';
 
@@ -49,11 +49,12 @@ const SearchBar = ({
         {loading ? (
           <Spinner />
         ) : (
-          <Icon
-            name="md-search"
-            size={24}
-            color={ThemedStyles.getColor('icon')}
-          />
+          null
+          // <Icon
+          //   name="md-search"
+          //   size={24}
+          //   color={ThemedStyles.getColor('icon')}
+          // />
         )}
       </View>
     </View>

@@ -1,8 +1,8 @@
 import {createStackNavigator} from '@react-navigation/stack';
 
 import rnm, {useMatrix} from '@rn-matrix/core';
-import NewChatScreen from './scenes/newChat/NewChatScreen';
-import ChatMenuScreen from './scenes/chatMenu/ChatMenuScreen';
+// import NewChatScreen from './scenes/newChat/NewChatScreen';
+// import ChatMenuScreen from './scenes/chatMenu/ChatMenuScreen';
 // import {matrix} from '@rn-matrix/core';
 import {ThemedStyles} from '@rn-matrix/ui';
 import {
@@ -103,7 +103,7 @@ export default function AppNavigator() {
               title: '',
               headerLeft: () => (
                 <Pressable
-                  onPress={matrix.logout}
+                  onPress={rnm.logout}
                   style={({pressed}) => [
                     {
                       marginLeft: 6,

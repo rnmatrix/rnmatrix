@@ -8,7 +8,7 @@ import Animated, {
   Transitioning,
 } from 'react-native-reanimated';
 import { mix, useTransition } from 'react-native-redash';
-import Icon from 'react-native-vector-icons/Ionicons';
+// import Icon from 'react-native-vector-icons/Ionicons';
 import Avatar from '../../../../../common/Avatar';
 import ThemedStyles from '../../../../../styles/ThemedStyles';
 
@@ -66,12 +66,13 @@ const MemberItem = forwardRef<any, any>(({ member, onMemberPress }, ref) => {
           hitSlop={20}
           onPress={_onPress}
           style={[styles.closeIconWrapper, theme.backgroundTertiary]}>
-          <Icon
+            <Text>X</Text>
+          {/* <Icon
             name={'close'}
             size={15}
             color={theme.colorPrimaryText.color}
             style={styles.closeIcon}
-          />
+          /> */}
         </Pressable>
       )}
       <Text

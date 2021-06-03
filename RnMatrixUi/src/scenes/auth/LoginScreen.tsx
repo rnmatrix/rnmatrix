@@ -1,4 +1,4 @@
-import { matrix } from '@rn-matrix/core';
+import rnm, { matrix } from '@rn-matrix/core';
 import React, { useCallback } from 'react';
 import { Platform, SafeAreaView, ScrollView } from 'react-native';
 import LoginForm from '../../components/LoginForm';
@@ -7,8 +7,8 @@ import ThemedStyles from '../../styles/ThemedStyles';
 
 export default function LoginScreen() {
   const onLogin = useCallback(
-    async ({ username, password, homeserver, initCrypto }) =>
-      matrix.loginWithPassword(
+    async ({ username, password, homeserver, initCrypto }) => 
+    rnm.loginWithPassword(
         username,
         password,
         homeserver,

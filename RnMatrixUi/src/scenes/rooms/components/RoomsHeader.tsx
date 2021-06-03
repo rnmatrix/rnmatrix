@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
-import { Pressable, StyleSheet, TouchableOpacity, View } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { Pressable, StyleSheet, TouchableOpacity, View, Text } from 'react-native';
+// import Icon from 'react-native-vector-icons/Ionicons';
 import ThemedStyles from '../../../styles/ThemedStyles';
 import SearchBar, { SearchBarProps } from '../../../common/SearchBar';
 import useNavigation from '../../../hooks/useNavigation';
@@ -31,11 +31,12 @@ const RoomsHeader = (props: RoomsHeaderProps) => {
         style={styles.addIconWrapper}
         hitSlop={50}
         onPress={onNewRoom}>
-        <Icon
+          <Text>+</Text>
+        {/* <Icon
           name="add"
           size={30}
           color={ThemedStyles.getColor('primary_text')}
-        />
+        /> */}
       </Pressable>
     </View>
   );

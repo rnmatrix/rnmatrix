@@ -1,17 +1,16 @@
-import { useObservableState } from 'observable-hooks';
 import React, { useCallback } from 'react';
-import RoomInviteItem from './components/RoomInviteItem';
-import { matrix } from '@rn-matrix/core';
+// import RoomInviteItem from './components/RoomInviteItem';
+import RoomInviteItem from '../../../../common/RoomInviteItem'
 
-const InvitesList = () => {
-  const inviteList = useObservableState<any[]>(
-    matrix.getRoomsByType$('invites'),
-  );
+const InvitesList = ({invites}) => {
+  // const inviteList = useObservableState<any[]>(
+  //   matrix.getRoomsByType$('invites'),
+  // );
   const renderInviteRow = useCallback(({ item }) => {
-    return <RoomInviteItem key={item.id} room={item} />;
+    return <RoomInviteItem key={item.id} room={item} updateLists={() => {}} />;
   }, []);
 
-  return <>{(inviteList || []).map((item) => renderInviteRow({ item }))}</>;
+  return <>{(invites || []).map((item) => renderInviteRow({ item }))}</>;
 };
 
 export default InvitesList;

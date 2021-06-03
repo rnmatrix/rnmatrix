@@ -16,7 +16,7 @@ limitations under the License.
 */
 
 import React from 'react';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+// import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ThemedStyles from '../styles/ThemedStyles';
 
 // TODO: translate
@@ -67,23 +67,23 @@ const E2EIcon = ({ isUser, status, className, size, onPress, bordered, hideToolt
 
   let icon: any = null;
 
-  switch (status) {
-    case E2E_STATE.WARNING:
-      icon = (
-        <Icon
-          name={'shield-alert'}
-          size={size}
-          color={ThemedStyles.getColor('danger_background')}
-        />
-      );
-      break;
-    case E2E_STATE.NORMAL:
-      icon = <Icon name={'shield'} size={size} color={ThemedStyles.getColor('icon')} />;
-      break;
-    case E2E_STATE.VERIFIED:
-      icon = <Icon name={'shield-check'} size={size} color={ThemedStyles.getColor('adminBadge')} />;
-      break;
-  }
+  // switch (status) {
+  //   case E2E_STATE.WARNING:
+  //     icon = (
+  //       <Icon
+  //         name={'shield-alert'}
+  //         size={size}
+  //         color={ThemedStyles.getColor('danger_background')}
+  //       />
+  //     );
+  //     break;
+  //   case E2E_STATE.NORMAL:
+  //     icon = <Icon name={'shield'} size={size} color={ThemedStyles.getColor('icon')} />;
+  //     break;
+  //   case E2E_STATE.VERIFIED:
+  //     icon = <Icon name={'shield-check'} size={size} color={ThemedStyles.getColor('adminBadge')} />;
+  //     break;
+  // }
 
   return icon;
 };

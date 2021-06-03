@@ -21,8 +21,8 @@ const debug = require('debug')('rnm:matrix.js');
 // catch
 // const logger = loglevel.getLogger('matrix');
 // logger.setLevel('silent');
-// import Olm from 'olm/olm_legacy'
-import Olm from 'react-native-olm';
+import Olm from 'olm/olm_legacy'
+// import Olm from 'react-native-olm';
 
 global.Olm = Olm;
 /**

@@ -4,14 +4,14 @@ import {NavigationContainer} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import AppNavigator from './src/AppNavigator';
 // import rnm from '@rn-matrix/core'; // FROM ALPHA
-import {matrix} from '@rn-matrix/core';
+import rnm, {matrix} from '@rn-matrix/core';
 import initUI, {ThemedStyles} from '@rn-matrix/ui';
 
 const debug = require('debug');
 debug.enable('*');
 
-// rnm.initAuth(); // FROM ALPHA
-matrix.initAuth();
+rnm.initAuth(); // FROM ALPHA
+// matrix.initAuth();
 initUI({
   theme: 'dark',
   brand: 'RnMatrixExample',

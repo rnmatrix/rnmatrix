@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { matrix } from '@rn-matrix/core';
+import rnm, { matrix } from '@rn-matrix/core';
 import { verificationMethods } from 'matrix-js-sdk/src/crypto';
 import { ReciprocateQRCode } from 'matrix-js-sdk/src/crypto/verification/QRCode';
 // import VerificationQRCode from "../elements/crypto/VerificationQRCode";
@@ -218,7 +218,7 @@ export default class VerificationPanel extends React.PureComponent<IProps, IStat
 
   private getDevice() {
     const deviceId = this.props.request && this.props.request.channel.deviceId;
-    return matrix.getClient().getStoredDevice(matrix.getClient().getUserId(), deviceId);
+    return rnm.getClient().getStoredDevice(rnm.getClient().getUserId(), deviceId);
   }
 
   private renderQRReciprocatePhase() {

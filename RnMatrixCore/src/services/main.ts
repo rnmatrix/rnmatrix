@@ -3,6 +3,7 @@ import matrix from './matrix';
 import messages from './message';
 import users from './user';
 import auth from './auth';
+import DeviceListener from '../react-sdk-utils/DeviceListener';
 
 const debug = require('debug')('rnm:services:external.js');
 
@@ -16,7 +17,8 @@ class RnMatrix {
   }
 
   async start(useCrypto) {
-    return matrix.start(useCrypto);
+    await matrix.start(useCrypto);
+    DeviceListener.makeShared().start();
   }
 
   async getHomeserverData(domain) {
@@ -35,8 +37,8 @@ class RnMatrix {
     return auth.init();
   }
 
-  loginWithPassword(username, password, homeserver, initCrypto = false) {
-    return auth.loginWithPassword(username, password, homeserver, initCrypto);
+  loginWithPassword(username, password, homeserver, initCrypto = false, deviceName = undefined) {
+    return auth.loginWithPassword(username, password, homeserver, initCrypto, deviceName = undefined);
   }
 
   logout() {

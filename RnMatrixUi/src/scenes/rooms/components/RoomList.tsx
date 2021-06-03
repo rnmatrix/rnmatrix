@@ -8,7 +8,7 @@ type Props = {
   listHeader: React.ComponentElement<any, any>;
 };
 
-export default function RoomList({ data, renderRow, listHeader }: Props) {
+export default function RoomList({ data, inviteList = [], renderRow, listHeader }: Props) {
   return (
     <FlatList
       data={data}
@@ -18,7 +18,7 @@ export default function RoomList({ data, renderRow, listHeader }: Props) {
       ListHeaderComponent={
         <>
           {listHeader}
-          <InvitesList />
+          <InvitesList invites={inviteList} />
         </>
       }
     />
